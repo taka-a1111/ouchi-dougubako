@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- BUILD_TAG: 2026-11-18a -->
+<!-- BUILD_TAG: 2026-11-18b -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>名前入りなぞり書きプリント｜おうち学習のどうぐばこ</title>
@@ -191,10 +191,10 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
     <p class="note">お手本の字は教科書の字に近い形の書体（Klee One）を使っています。書き順は入っていません。</p>
   </section>
 </main>
-<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18a</span></footer>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18b</span></footer>
 
 <script>
-console.log("BUILD_TAG: 2026-11-18a");
+console.log("BUILD_TAG: 2026-11-18b");
 (function(){
   "use strict";
 
@@ -283,8 +283,11 @@ console.log("BUILD_TAG: 2026-11-18a");
     }else if(opts.mode==="rows"){
       var gs=GROUPS.filter(function(g){return opts.groups.indexOf(g.id)>=0});
       if(!gs.length)errors.push("練習する行を1つ以上選んでください。");
+      // 1つの行（あ行など）は1つのかたまりにして、ページの途中で分けない
       gs.forEach(function(g){
-        chars(g.chars).forEach(function(c){blocks.push([charRow(c,opts.trace,L.cols)])});
+        var blk=chars(g.chars).map(function(c){return charRow(c,opts.trace,L.cols)});
+        blk.label=g.id==="small"?"ちいさい字":g.label+"行";
+        blocks.push(blk);
       });
       title="ひらがな を かこう";
       sub=gs.map(function(g){return g.id==="small"?"ちいさい字":g.label+"行"}).join("・");
@@ -303,11 +306,13 @@ console.log("BUILD_TAG: 2026-11-18a");
       title="ことば を かこう";
     }
     // ブロックごとにページへ詰める（ブロックはページをまたがせない）
-    var pages=[],cur=[];
+    var pages=[],cur=[];cur.labels=[];
+    var newPage=function(){pages.push(cur);cur=[];cur.labels=[]};
     blocks.forEach(function(b){
-      if(cur.length && cur.length+b.length>L.rows){pages.push(cur);cur=[]}
+      if(cur.length && cur.length+b.length>L.rows)newPage();
+      if(b.label&&cur.labels.indexOf(b.label)<0)cur.labels.push(b.label);
       b.forEach(function(r){
-        if(cur.length>=L.rows){pages.push(cur);cur=[]}
+        if(cur.length>=L.rows){newPage();if(b.label)cur.labels.push(b.label)}
         cur.push(r);
       });
     });
@@ -320,7 +325,7 @@ console.log("BUILD_TAG: 2026-11-18a");
   function renderPage(rows,i,n,res,tone){
     var L=res.layout;
     var html='<section class="page" style="--cell:'+L.cell+'mm;--gap:'+L.gap+'mm;--trace:'+TONES[tone]+'">'+
-      '<div class="p-head"><div class="p-left"><div class="p-title">'+esc(res.title)+'</div>'+(res.sub?'<div class="p-sub">'+esc(res.sub)+'</div>':'')+
+      '<div class="p-head"><div class="p-left"><div class="p-title">'+esc(res.title)+'</div>'+((rows.labels&&rows.labels.length)?'<div class="p-sub">'+esc(rows.labels.join("・"))+'</div>':(res.sub?'<div class="p-sub">'+esc(res.sub)+'</div>':''))+
       '<div class="p-stamp">できたら いろを ぬろう <i></i><i></i><i></i></div></div>'+
       '<div class="p-meta"><div>なまえ <span class="blank"></span></div><div><span class="sblank"></span>がつ<span class="sblank"></span>にち</div></div><div class="p-stampbox"><span>スタンプ</span></div></div>'+
       '<div class="p-grid">';
