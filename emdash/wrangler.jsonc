@@ -2,8 +2,8 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "ouchi-dougubako-site",
 	"main": "./src/worker.ts",
-	// 確認用に workers.dev を開ける。管理画面（/_emdash）は src/worker.ts で ouchidougubako.com 以外では404にしている
-	"workers_dev": true,
+	// ouchidougubako.com と www（カスタムドメイン、ダッシュボードで追加済み）で公開。workers.dev は閉じる
+	"workers_dev": false,
 	"preview_urls": false,
 	"compatibility_date": "2026-02-24",
 	"compatibility_flags": ["nodejs_compat"],
