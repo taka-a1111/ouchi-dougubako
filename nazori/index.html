@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- BUILD_TAG: 2026-11-17b -->
+<!-- BUILD_TAG: 2026-11-18a -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>名前入りなぞり書きプリント｜おうち学習のどうぐばこ</title>
@@ -64,6 +64,8 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
 .p-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:7mm;font-weight:600;line-height:1.2;font-family:"Klee One",var(--ui-font)}
 .p-stamp{font-size:3.2mm;margin-top:1mm;display:flex;align-items:center;gap:1.5mm}
 .p-stamp i{display:inline-block;width:5mm;height:5mm;border:.35mm solid #2b2f36;border-radius:50%}
+.p-stampbox{flex:none;width:19mm;height:19mm;border:.4mm solid #2b2f36;border-radius:1.5mm;margin-left:3mm;position:relative}
+.p-stampbox span{position:absolute;top:.8mm;left:0;right:0;text-align:center;font-size:2.4mm;line-height:1;color:#8f99a6}
 .p-meta{flex:none;font-size:4mm;text-align:right;line-height:1.9}
 .p-meta .blank{display:inline-block;width:42mm;border-bottom:.3mm solid #2b2f36}
 .p-meta .sblank{display:inline-block;width:9mm}
@@ -189,10 +191,10 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
     <p class="note">お手本の字は教科書の字に近い形の書体（Klee One）を使っています。書き順は入っていません。</p>
   </section>
 </main>
-<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-17b</span></footer>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18a</span></footer>
 
 <script>
-console.log("BUILD_TAG: 2026-11-17b");
+console.log("BUILD_TAG: 2026-11-18a");
 (function(){
   "use strict";
 
@@ -320,7 +322,7 @@ console.log("BUILD_TAG: 2026-11-17b");
     var html='<section class="page" style="--cell:'+L.cell+'mm;--gap:'+L.gap+'mm;--trace:'+TONES[tone]+'">'+
       '<div class="p-head"><div class="p-left"><div class="p-title">'+esc(res.title)+'</div>'+(res.sub?'<div class="p-sub">'+esc(res.sub)+'</div>':'')+
       '<div class="p-stamp">できたら いろを ぬろう <i></i><i></i><i></i></div></div>'+
-      '<div class="p-meta"><div>なまえ <span class="blank"></span></div><div><span class="sblank"></span>がつ<span class="sblank"></span>にち</div></div></div>'+
+      '<div class="p-meta"><div>なまえ <span class="blank"></span></div><div><span class="sblank"></span>がつ<span class="sblank"></span>にち</div></div><div class="p-stampbox"><span>スタンプ</span></div></div>'+
       '<div class="p-grid">';
     rows.forEach(function(r){
       html+='<div class="p-row">';
