@@ -1,0 +1,27 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "ouchi-dougubako-site",
+	"main": "./src/worker.ts",
+	// 確認用に workers.dev を開ける。管理画面（/_emdash）は src/worker.ts で ouchidougubako.com 以外では404にしている
+	"workers_dev": true,
+	"preview_urls": false,
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "ouchi-dougubako-site",
+			"database_id": "463efb9e-134a-4f1a-b691-d9dd909e9e5b",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "ouchi-dougubako-media",
+		},
+	],
+	// EmDash の予約公開などの処理
+	"triggers": {
+		"crons": ["* * * * *"],
+	},
+}

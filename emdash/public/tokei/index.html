@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- BUILD_TAG: 2026-11-18a -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>時計の読み方プリント（答えつき）｜おうち学習のどうぐばこ</title>
+<meta name="description" content="「なんじ」「なんじはん」「なんじなんぷん」の段階を選ぶだけで、時計の読み方プリントが作れます。針をかく問題・答えのページつき。無料・登録なし。">
+<link rel="stylesheet" href="/assets/fonts/klee-one/klee-one.css">
+<style>
+:root{
+  --navy:#1f2d4d; --cream:#fff9ee; --yellow:#f5c542; --teal:#2a9d8f; --line:#e6dccb;
+  --ui-font:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN","Zen Maru Gothic","游ゴシック","Yu Gothic","メイリオ",Meiryo,"Noto Sans JP","Noto Sans CJK JP",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:var(--ui-font);line-height:1.7}
+a{color:var(--teal)}
+.topbar{background:var(--navy);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.topbar a{color:#fff;text-decoration:none;font-weight:700}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 4px}
+.lead{margin:0 0 16px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px;padding:0;list-style:none}
+.badges li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:.85rem}
+.layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+.layout>*{min-width:0}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:12px}
+@media (max-width:860px){.panel{position:static}}
+.field{margin:0 0 14px}
+.field>label,.field>.label{display:block;font-weight:700;margin:0 0 4px}
+select{width:100%;padding:8px;border:1px solid #c9bfae;border-radius:8px;font:inherit;font-size:16px;background:#fff;color:var(--navy)}
+.steps{display:flex;flex-direction:column;gap:4px}
+.steps label{display:flex;gap:8px;align-items:flex-start;border:1px solid #c9bfae;border-radius:8px;padding:6px 10px;cursor:pointer;background:#fff;line-height:1.4}
+.steps label small{display:block;color:#5a6577;font-size:.78rem}
+.steps input{margin-top:3px}
+.radio{display:flex;flex-wrap:wrap;gap:6px}
+.radio label{border:1px solid #c9bfae;border-radius:8px;padding:4px 10px;cursor:pointer;background:#fff}
+.radio input{margin-right:4px}
+.check{display:flex;gap:6px;align-items:center;cursor:pointer;margin:0 0 6px}
+.note{font-size:.82rem;color:#5a6577;margin:4px 0 0}
+.error{background:#fdecea;color:#8a1f11;border-radius:8px;padding:8px 10px;margin:0 0 12px;font-size:.9rem}
+.print-btn{width:100%;padding:12px;border:none;border-radius:10px;background:var(--yellow);color:var(--navy);font:inherit;font-size:1.1rem;font-weight:700;cursor:pointer}
+.print-btn:disabled{opacity:.5;cursor:default}
+.sub-btn{width:100%;margin:8px 0 0;padding:8px;border:2px solid var(--navy);border-radius:10px;background:#fff;color:var(--navy);font:inherit;font-weight:700;cursor:pointer}
+.summary{font-size:.9rem;margin:8px 0 0;text-align:center}
+.preview-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 8px}
+.preview{display:flex;flex-direction:column;align-items:center;gap:16px;overflow:hidden}
+.page-wrap{position:relative;overflow:hidden}
+.page-wrap .page{transform-origin:top left;box-shadow:0 2px 10px rgba(31,45,77,.15)}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin:24px 0 0}
+.howto h2{font-size:1.15rem;margin:0 0 8px}
+.howto ol{margin:0;padding-left:1.4em}
+footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
+
+/* ===== 印刷するページ（A4・mm単位） ===== */
+.page{width:210mm;height:297mm;background:#fff;padding:12mm 15mm;display:flex;flex-direction:column;color:#2b2f36;font-family:var(--ui-font)}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start;height:22mm;border-bottom:.4mm solid #2b2f36;padding-bottom:2mm}
+.p-left{min-width:0;flex:1;padding-right:4mm}
+.p-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:7mm;font-weight:600;line-height:1.2;font-family:"Klee One",var(--ui-font)}
+.p-sub{font-size:3.4mm;color:#5a6577;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-stamp{font-size:3.2mm;margin-top:1mm;display:flex;align-items:center;gap:1.5mm}
+.p-stamp i{display:inline-block;width:5mm;height:5mm;border:.35mm solid #2b2f36;border-radius:50%}
+.p-stampbox{flex:none;width:19mm;height:19mm;border:.4mm solid #2b2f36;border-radius:1.5mm;margin-left:3mm;position:relative}
+.p-stampbox span{position:absolute;top:.8mm;left:0;right:0;text-align:center;font-size:2.4mm;line-height:1;color:#8f99a6}
+.p-meta{flex:none;font-size:4mm;text-align:right;line-height:1.9}
+.p-meta .blank{display:inline-block;width:42mm;border-bottom:.3mm solid #2b2f36}
+.p-meta .sblank{display:inline-block;width:9mm}
+.p-ans{flex:none;font-size:5mm;font-weight:700;color:#c0392b;border:.5mm solid #c0392b;border-radius:2mm;padding:1mm 4mm;font-family:"Klee One",var(--ui-font)}
+.p-guide{font-size:3.6mm;margin:3mm 0 0;font-family:"Klee One",var(--ui-font);font-weight:600}
+.p-grid{flex:1;display:grid;grid-template-columns:repeat(var(--cols),1fr);grid-template-rows:repeat(var(--rows),1fr);padding-top:2mm;min-height:0}
+.q{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5mm;min-height:0;overflow:hidden}
+.q .no{position:absolute;left:1mm;top:1mm;font-size:3.6mm;font-weight:700;width:6mm;height:6mm;border-radius:50%;background:#eef0f3;display:flex;align-items:center;justify-content:center}
+.q svg{width:var(--clock);height:var(--clock);display:block;flex:none}
+.q .ask{font-family:"Klee One",var(--ui-font);font-weight:600;font-size:var(--fs);line-height:1.2;white-space:nowrap}
+.q .ask b{display:inline-block;min-width:calc(var(--fs) * 2.2);border-bottom:.3mm solid #2b2f36;text-align:center;font-weight:600}
+.q .ask b.wide{min-width:calc(var(--fs) * 3.2)}
+.q .ask.answer b{color:#c0392b;border-bottom-color:#c0392b}
+.q .ask.target{color:#2b2f36}
+.p-foot{height:6mm;font-size:3mm;color:#7a8494;display:flex;justify-content:space-between;align-items:flex-end}
+
+.inapp{background:#fff4d6;border:2px solid var(--yellow);border-radius:12px;padding:12px 14px;margin:0 0 14px;font-size:.92rem;line-height:1.6}
+.inapp strong{display:block;font-size:1rem;margin:0 0 4px}
+.inapp ol{margin:6px 0 0;padding-left:1.3em}
+.inapp .ia-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.inapp .ia-btns a,.inapp .ia-btns button{flex:1 1 auto;text-align:center;padding:10px 12px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.inapp .ia-btns a{background:var(--navy);color:#fff}
+.inapp.flash{animation:iaflash .9s ease 2}
+@keyframes iaflash{50%{background:#ffe08a}}
+@media print{.inapp{display:none!important}}
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  .topbar,.wrap>*:not(.layout),.panel,.preview-head,footer.site,.howto{display:none!important}
+  .wrap{padding:0;max-width:none}
+  .layout{display:block}
+  .preview{display:block;gap:0;overflow:visible}
+  .page-wrap{width:auto!important;height:auto!important;overflow:visible}
+  .page-wrap .page{transform:none!important;box-shadow:none;break-after:page;page-break-after:always}
+  .page-wrap:last-child .page{break-after:auto;page-break-after:auto}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
+<main class="wrap">
+  <h1>時計の読み方プリント</h1>
+  <p class="lead">「なんじ」→「なんじはん」→「なんじなんぷん」の順に、段階を選んで練習できます。時計を読む問題と、針をかく問題が作れて、答えのページもつきます。</p>
+  <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>答えのページつき</li></ul>
+
+  <div class="layout">
+    <form class="panel" id="form" onsubmit="return false">
+      <div class="field">
+        <span class="label">段階</span>
+        <div class="steps" id="levelBox">
+          <label><input type="radio" name="level" value="1" checked><span>1. なんじ<small>3じ、7じ など。ちょうどの時刻</small></span></label>
+          <label><input type="radio" name="level" value="2"><span>2. なんじはん<small>3じはん など。短い針が数字の間にくる</small></span></label>
+          <label><input type="radio" name="level" value="3"><span>3. なんじ・なんじはん<small>1と2をまぜて出す</small></span></label>
+          <label><input type="radio" name="level" value="4"><span>4. 5ふんきざみ<small>3じ25ふん など。長い針を5とびで読む</small></span></label>
+          <label><input type="radio" name="level" value="5"><span>5. 1ぷんきざみ<small>3じ27ふん など。小さい目もりも数える</small></span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="label">問題の形</span>
+        <div class="radio" id="modeRadio">
+          <label><input type="radio" name="mode" value="read" checked>時計を読む</label>
+          <label><input type="radio" name="mode" value="draw">針をかく</label>
+          <label><input type="radio" name="mode" value="mix">まぜる</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="countSel">1枚の問題の数</label>
+        <select id="countSel">
+          <option value="6">6問（時計が大きい・年長さん向け）</option>
+          <option value="9" selected>9問</option>
+          <option value="12">12問（小学生向け）</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="pagesSel">枚数</label>
+        <select id="pagesSel"><option value="1" selected>1枚</option><option value="2">2枚</option><option value="3">3枚</option><option value="4">4枚</option><option value="5">5枚</option></select>
+        <p class="note">同じ枚の中では、同じ時刻は出ません。</p>
+      </div>
+
+      <div class="field">
+        <span class="label">そのほか</span>
+        <label class="check"><input type="checkbox" id="minLabels">時計のまわりに「5・10・15…」の数字をつける</label>
+        <label class="check"><input type="checkbox" id="withAnswer" checked>答えのページをつける</label>
+      </div>
+
+      <div class="inapp" id="inappNote" hidden>
+        <strong>Instagramの中では印刷できません</strong>
+        いま開いているのはInstagramの中のブラウザです。印刷・PDF保存は、ChromeやSafariで開き直すと使えます。
+        <ol id="inappSteps"><li>右上の「︙」または「…」を押す</li><li>「ブラウザで開く」（「Chromeで開く」「Safariで開く」）を選ぶ</li></ol>
+        <div class="ia-btns"><a id="inappOpen" href="#" hidden>Chromeで開く</a><button type="button" id="inappCopy">このページのURLをコピー</button></div>
+        <p class="note" id="inappCopied" hidden>コピーしました。ChromeやSafariのアドレス欄に貼り付けて開いてください。</p>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <button type="button" class="print-btn" id="printBtn">印刷する・PDFで保存</button>
+      <button type="button" class="sub-btn" id="shuffleBtn">べつの問題にする</button>
+      <p class="summary" id="summary"></p>
+    </form>
+
+    <section aria-label="プレビュー">
+      <div class="preview-head"><strong>プレビュー</strong><span class="note" id="pageCount"></span></div>
+      <div class="preview" id="preview"></div>
+    </section>
+  </div>
+
+  <section class="howto">
+    <h2>使い方</h2>
+    <ol>
+      <li>段階を選びます。はじめての子は「1. なんじ」から。できたら次の段階へ進みます。</li>
+      <li>「時計を読む」は時計を見て時刻を書く問題、「針をかく」は時刻を見て時計に針をかく問題です。</li>
+      <li>「印刷する・PDFで保存」を押すと印刷の画面が開きます。プリンターがない場合は「PDFに保存」を選び、コンビニのネットプリントで印刷できます。</li>
+    </ol>
+    <p class="note">短い針は、時刻に合わせて少しずつ動く本物の時計と同じ位置にかいています（3じはんなら、3と4のまん中）。「5ふんきざみ」でつまずくときは、時計のまわりに「5・10・15…」の数字をつけると読みやすくなります。</p>
+  </section>
+</main>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18a</span></footer>
+
+<script>
+console.log("BUILD_TAG: 2026-11-18a");
+(function(){
+  "use strict";
+
+  // Instagramなどアプリの中のブラウザでは印刷が動かないので、外のブラウザで開くよう案内する
+  var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Bytedance|Twitter/i.test(navigator.userAgent||"");
+  var ANDROID=/Android/i.test(navigator.userAgent||"");
+  if(INAPP){
+    var nt=document.getElementById("inappNote"); nt.hidden=false;
+    if(ANDROID){
+      var op=document.getElementById("inappOpen");
+      op.href="intent://"+location.host+location.pathname+location.search+"#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(location.href)+";end";
+      op.hidden=false;
+    }
+    document.getElementById("inappCopy").addEventListener("click",function(){
+      var url=location.href, done=function(){document.getElementById("inappCopied").hidden=false};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){window.prompt("このURLをコピーしてください",url)})}
+      else window.prompt("このURLをコピーしてください",url);
+    });
+  }
+  var LEVELS={
+    1:{label:"なんじ",minutes:[0]},
+    2:{label:"なんじはん",minutes:[30]},
+    3:{label:"なんじ・なんじはん",minutes:[0,30]},
+    4:{label:"5ふんきざみ",minutes:[5,10,15,20,25,30,35,40,45,50,55]},
+    5:{label:"1ぷんきざみ",minutes:null}
+  };
+  // 1ページの並べ方（列×行、時計の直径mm、文字の大きさmm）
+  var LAYOUTS={6:{cols:2,rows:3,clock:62,fs:6},9:{cols:3,rows:3,clock:52,fs:5.2},12:{cols:3,rows:4,clock:42,fs:4.6}};
+
+  var $=function(id){return document.getElementById(id)};
+
+  // 決まった種から同じ並びを作る乱数
+  function rng(seed){
+    var a=seed>>>0;
+    return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296};
+  }
+  function shuffle(list,r){for(var i=list.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=list[i];list[i]=list[j];list[j]=t}return list}
+
+  // その段階で出せる時刻の一覧
+  function candidates(level){
+    var out=[],mins=LEVELS[level].minutes;
+    for(var h=1;h<=12;h++){
+      if(mins){mins.forEach(function(m){out.push({h:h,m:m})})}
+      else{for(var m=0;m<60;m++){if(m%5!==0)out.push({h:h,m:m})}}
+    }
+    return out;
+  }
+  // 「ふん」と「ぷん」：1の位が 2・5・7・9 なら ふん、それ以外（0・1・3・4・6・8）は ぷん
+  function funPun(m){var d=m%10;return (d===2||d===5||d===7||d===9)?"ふん":"ぷん"}
+  function timeText(t){
+    if(t.m===0)return t.h+"じ";
+    if(t.m===30&&t.han)return t.h+"じはん";
+    return t.h+"じ"+t.m+funPun(t.m);
+  }
+  // 針の角度（12時の向きが0度、時計回り）
+  function angles(t){return {hour:((t.h%12)*30+t.m*0.5)%360,minute:(t.m*6)%360}}
+
+  function build(o){
+    var errors=[];
+    if(!LEVELS[o.level])errors.push("段階を選んでください。");
+    if(!LAYOUTS[o.count])errors.push("問題の数を選んでください。");
+    if(!(o.pages>=1&&o.pages<=5))errors.push("枚数は1〜5枚です。");
+    if(errors.length)return {errors:errors,pages:[]};
+    var L=LAYOUTS[o.count],r=rng(o.seed),pool=candidates(o.level);
+    var halfStyle=(o.level===2||o.level===3);
+    var pages=[];
+    for(var p=0;p<o.pages;p++){
+      var picks=shuffle(pool.slice(),r).slice(0,o.count);
+      var qs=picks.map(function(t,i){
+        var kind=o.mode==="mix"?(i%2===0?"read":"draw"):o.mode;
+        var q={h:t.h,m:t.m,han:halfStyle&&t.m===30,kind:kind};
+        q.text=timeText(q);
+        var a=angles(q);q.hourDeg=a.hour;q.minuteDeg=a.minute;
+        return q;
+      });
+      pages.push(qs);
+    }
+    return {errors:[],layout:L,pages:pages,level:o.level,mode:o.mode,withAnswer:o.withAnswer,minLabels:o.minLabels};
+  }
+
+  // ===== 時計の絵（SVG） =====
+  function clockSVG(q,showHands,minLabels){
+    var s='<svg viewBox="-24 -24 248 248" xmlns="http://www.w3.org/2000/svg" data-h="'+q.h+'" data-m="'+q.m+'">';
+    s+='<circle cx="100" cy="100" r="96" fill="#fff" stroke="#2b2f36" stroke-width="4"/>';
+    for(var i=0;i<60;i++){
+      var big=i%5===0,a=i*6*Math.PI/180,r1=big?84:89,r2=94;
+      s+='<line x1="'+f(100+r1*Math.sin(a))+'" y1="'+f(100-r1*Math.cos(a))+'" x2="'+f(100+r2*Math.sin(a))+'" y2="'+f(100-r2*Math.cos(a))+'" stroke="#2b2f36" stroke-width="'+(big?3:1.4)+'"/>';
+    }
+    if(minLabels){
+      for(var k=0;k<12;k++){
+        var c=k*30*Math.PI/180;
+        s+='<text class="minlabel" x="'+f(100+112*Math.sin(c))+'" y="'+f(100-112*Math.cos(c)+5.5)+'" text-anchor="middle" font-size="16" font-weight="700" fill="#2a9d8f" font-family="'+NUMFONT+'">'+(k*5)+'</text>';
+      }
+    }
+    // 針を先にかき、数字は白いふちをつけて上に重ねる（針で数字が読めなくならないように）
+    if(showHands){
+      s+='<line class="hand-hour" x1="100" y1="100" x2="100" y2="50" stroke="#1f2d4d" stroke-width="9" stroke-linecap="round" transform="rotate('+q.hourDeg+' 100 100)"/>';
+      s+='<line class="hand-minute" x1="100" y1="100" x2="100" y2="16" stroke="#2a9d8f" stroke-width="5" stroke-linecap="round" transform="rotate('+q.minuteDeg+' 100 100)"/>';
+    }
+    for(var n=1;n<=12;n++){
+      var b=n*30*Math.PI/180;
+      s+='<text class="num" x="'+f(100+70*Math.sin(b))+'" y="'+f(100-70*Math.cos(b)+8)+'" text-anchor="middle" font-size="23" font-weight="700" fill="#2b2f36" stroke="#fff" stroke-width="4" paint-order="stroke" font-family="'+NUMFONT+'">'+n+'</text>';
+    }
+    s+='<circle cx="100" cy="100" r="6" fill="#2b2f36"/></svg>';
+    return s;
+  }
+  var NUMFONT="Zen Maru Gothic,Hiragino Maru Gothic ProN,Yu Gothic,Meiryo,Noto Sans JP,Noto Sans CJK JP,sans-serif";
+  function f(x){return Math.round(x*100)/100}
+
+  // 答えを書く欄
+  function blankLine(q,level,isAnswer){
+    var B=function(v,wide){return '<b'+(wide?' class="wide"':'')+'>'+(isAnswer?v:'')+'</b>'};
+    if(level===1)return B(q.h)+'じ';
+    if(level===2)return B(q.h)+'じはん';
+    if(level===3)return B(q.h)+'じ'+B(q.m===30?'はん':'',true);
+    return B(q.h)+'じ'+B(q.m)+funPun(q.m);
+  }
+
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+
+  function guideText(res){
+    var g=[];
+    var kinds={};res.pages[0].forEach(function(q){kinds[q.kind]=1});
+    if(kinds.read)g.push("とけいを よんで、じこくを かこう");
+    if(kinds.draw)g.push("じこくに あわせて、はりを かこう（みじかい はりと ながい はり）");
+    if(kinds.read&&res.level===3)g.push("「はん」の ときは うしろの らんに「はん」と かく");
+    return g.join("　／　");
+  }
+
+  function renderPage(qs,idx,total,res,isAnswer){
+    var L=res.layout;
+    var title=isAnswer?"こたえ":"とけいの れんしゅう";
+    var sub="だんかい"+res.level+"："+LEVELS[res.level].label+(isAnswer?"　（"+(idx+1)+"まいめの こたえ）":"");
+    var html='<section class="page'+(isAnswer?' answer':'')+'" style="--cols:'+L.cols+';--rows:'+L.rows+';--clock:'+L.clock+'mm;--fs:'+L.fs+'mm">';
+    html+='<div class="p-head"><div class="p-left"><div class="p-title">'+esc(title)+'</div><div class="p-sub">'+esc(sub)+'</div>';
+    if(!isAnswer)html+='<div class="p-stamp">できたら いろを ぬろう <i></i><i></i><i></i></div>';
+    html+='</div>';
+    html+=isAnswer?'<div class="p-ans">こたえ</div>':'<div class="p-meta"><div>なまえ <span class="blank"></span></div><div><span class="sblank"></span>がつ<span class="sblank"></span>にち</div></div><div class="p-stampbox"><span>スタンプ</span></div>';
+    html+='</div>';
+    if(!isAnswer)html+='<div class="p-guide">'+esc(guideText(res))+'</div>';
+    html+='<div class="p-grid">';
+    qs.forEach(function(q,i){
+      var showHands=q.kind==="read"||isAnswer;
+      html+='<div class="q" data-kind="'+q.kind+'"><span class="no">'+(i+1)+'</span>'+clockSVG(q,showHands,res.minLabels);
+      if(q.kind==="read")html+='<div class="ask'+(isAnswer?' answer':'')+'">'+blankLine(q,res.level,isAnswer)+'</div>';
+      else html+='<div class="ask target">'+esc(q.text)+'</div>';
+      html+='</div>';
+    });
+    html+='</div><div class="p-foot"><span>おうち学習のどうぐばこ　Instagram @ouchi_dougubako</span><span>'+(isAnswer?'こたえ ':'')+(idx+1)+' / '+total+'</span></div></section>';
+    return html;
+  }
+
+  var state={seed:(Date.now()%1000000007)};
+  function readOpts(){
+    return {
+      level:parseInt(document.querySelector('input[name=level]:checked').value,10),
+      mode:document.querySelector('input[name=mode]:checked').value,
+      count:parseInt($("countSel").value,10),
+      pages:parseInt($("pagesSel").value,10),
+      withAnswer:$("withAnswer").checked,
+      minLabels:$("minLabels").checked,
+      seed:state.seed
+    };
+  }
+
+  var lastText="";
+  function update(){
+    var o=readOpts(),res=build(o);
+    var eb=$("errorBox");
+    if(res.errors.length){eb.hidden=false;eb.textContent=res.errors.join(" ")}else eb.hidden=true;
+    var html=[],n=res.pages.length;
+    res.pages.forEach(function(qs,i){html.push(renderPage(qs,i,n,res,false))});
+    if(res.withAnswer)res.pages.forEach(function(qs,i){html.push(renderPage(qs,i,n,res,true))});
+    $("preview").innerHTML=html.map(function(h){return '<div class="page-wrap">'+h+'</div>'}).join("");
+    var total=html.length;
+    $("pageCount").textContent=total?("A4 "+total+"枚"):"";
+    $("summary").textContent=total?("A4で"+total+"枚になります"+(res.withAnswer?"（答え"+n+"枚をふくむ）":"")):"";
+    $("printBtn").disabled=!total;
+    lastText=$("preview").textContent;
+    fit();
+    window.__lastResult=res;
+  }
+
+  function fit(){
+    var pv=$("preview"),avail=Math.min(pv.clientWidth||600,820);
+    var probe=pv.querySelector(".page");if(!probe)return;
+    var pw=probe.offsetWidth,ph=probe.offsetHeight,sc=Math.min(1,avail/pw);
+    pv.querySelectorAll(".page-wrap").forEach(function(wr){
+      wr.style.width=(pw*sc)+"px";wr.style.height=(ph*sc)+"px";
+      wr.firstChild.style.transform="scale("+sc+")";
+    });
+  }
+
+  document.querySelectorAll('input[name=level],input[name=mode],#withAnswer,#minLabels').forEach(function(el){el.addEventListener("change",update)});
+  // 5ふん・1ぷんきざみを選んだら、まわりの数字をつける（あとから外せる）
+  document.querySelectorAll('input[name=level]').forEach(function(el){el.addEventListener("change",function(){
+    var lv=parseInt(el.value,10);$("minLabels").checked=lv>=4;update();
+  })});
+  ["countSel","pagesSel"].forEach(function(id){$(id).addEventListener("change",update)});
+  $("shuffleBtn").addEventListener("click",function(){state.seed=(state.seed*48271+12345)%2147483647;update()});
+  window.addEventListener("resize",fit);
+
+  $("printBtn").addEventListener("click",function(){
+    if(INAPP){var n=document.getElementById("inappNote");n.classList.remove("flash");void n.offsetWidth;n.classList.add("flash");n.scrollIntoView({behavior:"smooth",block:"center"});return;}
+    var btn=this;btn.disabled=true;var label=btn.textContent;btn.textContent="準備中…";
+    var done=function(){btn.textContent=label;btn.disabled=false;window.print()};
+    if(document.fonts&&document.fonts.load){
+      Promise.all([document.fonts.load('600 20px "Klee One"',lastText)]).then(function(){return document.fonts.ready}).then(done,done);
+    }else done();
+  });
+
+  // 検査用：画面を使わずに組み立て結果だけを返す
+  window.__tokei={LEVELS:LEVELS,LAYOUTS:LAYOUTS,build:build,candidates:candidates,funPun:funPun,angles:angles,
+    setSeed:function(s){state.seed=s;update()}};
+
+  update();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>

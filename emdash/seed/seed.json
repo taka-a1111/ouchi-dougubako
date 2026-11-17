@@ -1,0 +1,74 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "おうち学習のどうぐばこ",
+		"description": "おうち学習のどうぐばこ（ouchidougubako.com）の記事の型"
+	},
+	"settings": {
+		"title": "おうち学習のどうぐばこ",
+		"tagline": "年長〜小学生の家庭学習を、無料ツールでラクに"
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "ブログ記事",
+			"labelSingular": "ブログ記事",
+			"urlPattern": "/blog/{slug}/",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search"
+			],
+			"commentsEnabled": false,
+			"fields": [
+				{
+					"slug": "title",
+					"label": "タイトル",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "date",
+					"label": "公開日（YYYY-MM-DD、日本時間のこの日から公開）",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "modified",
+					"label": "更新日（YYYY-MM-DD、任意）",
+					"type": "string"
+				},
+				{
+					"slug": "cat",
+					"label": "カテゴリ",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "description",
+					"label": "メタディスクリプション",
+					"type": "text"
+				},
+				{
+					"slug": "eyecatch",
+					"label": "アイキャッチのファイル名（/blog/img/ の中）",
+					"type": "string"
+				},
+				{
+					"slug": "eyecatch_alt",
+					"label": "アイキャッチの代替テキスト",
+					"type": "string"
+				},
+				{
+					"slug": "body_html",
+					"label": "本文（HTML。h2・h3・figure・装飾は build.py と同じ書き方）",
+					"type": "text",
+					"searchable": true
+				}
+			]
+		}
+	]
+}
