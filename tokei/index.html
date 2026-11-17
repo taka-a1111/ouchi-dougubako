@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- BUILD_TAG: 2026-11-17a -->
+<!-- BUILD_TAG: 2026-11-17b -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>時計の読み方プリント（答えつき）｜おうち学習のどうぐばこ</title>
@@ -77,6 +77,15 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
 .q .ask.target{color:#2b2f36}
 .p-foot{height:6mm;font-size:3mm;color:#7a8494;display:flex;justify-content:space-between;align-items:flex-end}
 
+.inapp{background:#fff4d6;border:2px solid var(--yellow);border-radius:12px;padding:12px 14px;margin:0 0 14px;font-size:.92rem;line-height:1.6}
+.inapp strong{display:block;font-size:1rem;margin:0 0 4px}
+.inapp ol{margin:6px 0 0;padding-left:1.3em}
+.inapp .ia-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.inapp .ia-btns a,.inapp .ia-btns button{flex:1 1 auto;text-align:center;padding:10px 12px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.inapp .ia-btns a{background:var(--navy);color:#fff}
+.inapp.flash{animation:iaflash .9s ease 2}
+@keyframes iaflash{50%{background:#ffe08a}}
+@media print{.inapp{display:none!important}}
 @media print{
   @page{size:A4;margin:0}
   body{background:#fff}
@@ -140,6 +149,13 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
         <label class="check"><input type="checkbox" id="withAnswer" checked>答えのページをつける</label>
       </div>
 
+      <div class="inapp" id="inappNote" hidden>
+        <strong>Instagramの中では印刷できません</strong>
+        いま開いているのはInstagramの中のブラウザです。印刷・PDF保存は、ChromeやSafariで開き直すと使えます。
+        <ol id="inappSteps"><li>右上の「︙」または「…」を押す</li><li>「ブラウザで開く」（「Chromeで開く」「Safariで開く」）を選ぶ</li></ol>
+        <div class="ia-btns"><a id="inappOpen" href="#" hidden>Chromeで開く</a><button type="button" id="inappCopy">このページのURLをコピー</button></div>
+        <p class="note" id="inappCopied" hidden>コピーしました。ChromeやSafariのアドレス欄に貼り付けて開いてください。</p>
+      </div>
       <div class="error" id="errorBox" hidden></div>
       <button type="button" class="print-btn" id="printBtn">印刷する・PDFで保存</button>
       <button type="button" class="sub-btn" id="shuffleBtn">べつの問題にする</button>
@@ -162,12 +178,29 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
     <p class="note">短い針は、時刻に合わせて少しずつ動く本物の時計と同じ位置にかいています（3じはんなら、3と4のまん中）。「5ふんきざみ」でつまずくときは、時計のまわりに「5・10・15…」の数字をつけると読みやすくなります。</p>
   </section>
 </main>
-<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-17a</span></footer>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-17b</span></footer>
 
 <script>
-console.log("BUILD_TAG: 2026-11-17a");
+console.log("BUILD_TAG: 2026-11-17b");
 (function(){
   "use strict";
+
+  // Instagramなどアプリの中のブラウザでは印刷が動かないので、外のブラウザで開くよう案内する
+  var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Bytedance|Twitter/i.test(navigator.userAgent||"");
+  var ANDROID=/Android/i.test(navigator.userAgent||"");
+  if(INAPP){
+    var nt=document.getElementById("inappNote"); nt.hidden=false;
+    if(ANDROID){
+      var op=document.getElementById("inappOpen");
+      op.href="intent://"+location.host+location.pathname+location.search+"#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(location.href)+";end";
+      op.hidden=false;
+    }
+    document.getElementById("inappCopy").addEventListener("click",function(){
+      var url=location.href, done=function(){document.getElementById("inappCopied").hidden=false};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){window.prompt("このURLをコピーしてください",url)})}
+      else window.prompt("このURLをコピーしてください",url);
+    });
+  }
   var LEVELS={
     1:{label:"なんじ",minutes:[0]},
     2:{label:"なんじはん",minutes:[30]},
@@ -352,6 +385,7 @@ console.log("BUILD_TAG: 2026-11-17a");
   window.addEventListener("resize",fit);
 
   $("printBtn").addEventListener("click",function(){
+    if(INAPP){var n=document.getElementById("inappNote");n.classList.remove("flash");void n.offsetWidth;n.classList.add("flash");n.scrollIntoView({behavior:"smooth",block:"center"});return;}
     var btn=this;btn.disabled=true;var label=btn.textContent;btn.textContent="準備中…";
     var done=function(){btn.textContent=label;btn.disabled=false;window.print()};
     if(document.fonts&&document.fonts.load){
