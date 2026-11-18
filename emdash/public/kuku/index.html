@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- BUILD_TAG: 2026-11-18a -->
+<!-- BUILD_TAG: 2026-11-18b -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="canonical" href="https://ouchidougubako.com/kuku/">
-<title>九九タイムアタック（苦手だけ練習・記録つき）｜おうち学習のどうぐばこ</title>
-<meta name="description" content="スマホで遊べる九九のタイムアタックです。段ごと・バラバラ・苦手だけの3つのモードで練習でき、タイムと苦手な問題が記録されます。無料・登録なしで使えます。">
+<title>九九タイムアタック・九九プリント（苦手だけ練習・答えつき）｜おうち学習のどうぐばこ</title>
+<meta name="description" content="スマホで遊べる九九のタイムアタックです。段ごと・バラバラ・苦手だけの3つのモードで練習でき、タイムと苦手な問題が記録されます。同じ問題をA4の九九プリント（答えつき）にして印刷することもできます。無料・登録なしで使えます。">
 <meta property="og:title" content="九九タイムアタック（苦手だけ練習・記録つき）">
 <meta property="og:description" content="段ごと・バラバラ・苦手だけ。タイムと苦手な問題が記録される、スマホで遊べる九九の練習です。">
 <meta property="og:url" content="https://ouchidougubako.com/kuku/">
@@ -100,10 +100,52 @@ table.rec td.t{font-variant-numeric:tabular-nums;text-align:right;white-space:no
 .inapp .ia-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
 .inapp .ia-btns a,.inapp .ia-btns button{flex:1 1 auto;text-align:center;padding:10px 12px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font-weight:700;text-decoration:none;cursor:pointer}
 .inapp .ia-btns a{background:var(--navy);color:#fff}
+.inapp.flash{animation:iaflash .9s ease 2}
+@keyframes iaflash{50%{background:#ffe08a}}
 .howto h2{font-size:1.1rem;margin:0 0 6px}
 .howto ol,.howto ul{margin:0;padding-left:1.4em}
 footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
 [hidden]{display:none!important}
+
+/* 印刷のパネルとプレビュー */
+.pfield{margin:0 0 10px}
+select{width:100%;padding:8px;border:1px solid #c9bfae;border-radius:8px;font:inherit;font-size:16px;background:#fff;color:var(--navy)}
+.check{display:flex;gap:6px;align-items:center;cursor:pointer;margin:0 0 6px}
+.print-btn{width:100%;padding:12px;border:none;border-radius:12px;background:var(--navy);color:#fff;font-size:1.05rem;font-weight:700;cursor:pointer}
+.preview{display:flex;flex-direction:column;align-items:center;gap:12px;overflow:hidden;margin:12px 0 0;min-width:0}
+.page-wrap{position:relative;overflow:hidden}
+.page-wrap .page{transform-origin:top left;box-shadow:0 2px 10px rgba(31,45,77,.15)}
+
+/* ===== 印刷するページ（A4・mm単位） ===== */
+.page{width:210mm;height:297mm;background:#fff;padding:12mm 15mm;display:flex;flex-direction:column;color:#2b2f36;font-family:var(--ui-font)}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start;height:24mm;border-bottom:.4mm solid #2b2f36;padding-bottom:2mm}
+.p-left{min-width:0;flex:1;padding-right:4mm}
+.p-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:7mm;font-weight:600;line-height:1.2;font-family:"Klee One",var(--ui-font)}
+.p-sub{font-size:3.4mm;color:#5a6577;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-meta{flex:none;font-size:3.8mm;text-align:right;line-height:1.8}
+.p-meta .blank{display:inline-block;width:40mm;border-bottom:.3mm solid #2b2f36}
+.p-meta .sblank{display:inline-block;width:8mm;border-bottom:.3mm solid #2b2f36}
+.p-meta .mblank{display:inline-block;width:10mm;border-bottom:.3mm solid #2b2f36}
+.p-stampbox{flex:none;width:19mm;height:19mm;border:.4mm solid #2b2f36;border-radius:1.5mm;margin-left:3mm;position:relative}
+.p-stampbox span{position:absolute;top:.8mm;left:0;right:0;text-align:center;font-size:2.4mm;line-height:1;color:#8f99a6}
+.p-ans{flex:none;font-size:5mm;font-weight:700;color:#c0392b;border:.5mm solid #c0392b;border-radius:2mm;padding:1mm 4mm;font-family:"Klee One",var(--ui-font)}
+.p-guide{font-size:3.6mm;margin:2.5mm 0 0;font-family:"Klee One",var(--ui-font);font-weight:600}
+.p-grid{flex:1;display:grid;grid-auto-flow:column;grid-template-columns:repeat(var(--cols),1fr);grid-template-rows:repeat(var(--rows),1fr);column-gap:4mm;padding-top:2mm;min-height:0}
+.pq{display:flex;align-items:center;gap:1.5mm;min-width:0;overflow:hidden;border-bottom:.2mm dashed #d5d9df;font-family:"Klee One",var(--ui-font);font-weight:600;font-size:var(--fs);white-space:nowrap}
+.pq .no{flex:none;font-family:var(--ui-font);font-weight:700;font-size:calc(var(--fs) * .55);color:#7a8494;width:calc(var(--fs) * 1.3);text-align:right}
+.pq .ex{flex:none}
+.pq b{flex:none;display:inline-block;min-width:calc(var(--fs) * 1.9);border-bottom:.3mm solid #2b2f36;text-align:center;font-weight:600}
+.pq b.a{color:#c0392b;border-bottom-color:#c0392b}
+.p-foot{height:6mm;font-size:3mm;color:#7a8494;display:flex;justify-content:space-between;align-items:flex-end}
+#printArea{position:absolute;left:-9999px;top:0}
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  .topbar,main.wrap,footer.site{display:none!important}
+  #printArea{position:static;display:block!important}
+  #printArea .page{break-after:page;page-break-after:always}
+  #printArea .page:last-child{break-after:auto;page-break-after:auto}
+}
 </style>
 </head>
 <body>
@@ -112,12 +154,12 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
 
 <section id="setup">
   <h1>九九タイムアタック</h1>
-  <p class="lead">九九を何秒で言えるかな？ 段ごと・バラバラ・苦手だけの3つのモードで練習できます。タイムと、まちがえた問題が記録されます。</p>
-  <ul class="badges"><li>無料</li><li>登録なし</li><li>スマホで遊べる</li><li>苦手だけもう一度</li></ul>
+  <p class="lead">九九を何秒で言えるかな？ 段ごと・バラバラ・苦手だけの3つのモードで練習できます。タイムと、まちがえた問題が記録されます。同じ問題を、紙で練習するプリントにもできます。</p>
+  <ul class="badges"><li>無料</li><li>登録なし</li><li>スマホで遊べる</li><li>苦手だけもう一度</li><li>A4プリント（答えつき）</li></ul>
 
   <div class="inapp" id="inappNote" hidden>
-    <strong>記録を残すなら、ブラウザで開くのがおすすめ</strong>
-    いま開いているのはInstagramなどアプリの中のブラウザです。このままでも遊べますが、記録が消えることがあります。ChromeやSafariで開くと、記録が残りやすくなります。
+    <strong>印刷・記録を残すなら、ブラウザで開いてください</strong>
+    いま開いているのはInstagramなどアプリの中のブラウザです。このままでも遊べますが、プリントの印刷はできず、記録が消えることもあります。ChromeやSafariで開き直すと使えます。
     <ol><li>右上の「︙」または「…」を押す</li><li>「ブラウザで開く」（「Chromeで開く」「Safariで開く」）を選ぶ</li></ol>
     <div class="ia-btns"><a id="inappOpen" href="#" hidden>Chromeで開く</a><button type="button" id="inappCopy">このページのURLをコピー</button></div>
     <p class="note" id="inappCopied" hidden>コピーしました。ChromeやSafariのアドレス欄に貼り付けて開いてください。</p>
@@ -167,6 +209,21 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
   <button type="button" class="start" id="startBtn">スタート</button>
   <p class="note" id="summary" style="text-align:center"></p>
 
+  <div class="card" id="printCard" style="margin-top:18px">
+    <span class="label">プリントにする</span>
+    <p class="note" style="margin:0 0 10px">上で選んだモード・段で、紙で練習するプリントを作ります。「苦手だけ」を選ぶと、スマホでまちがえた問題をプリントでもう一度練習できます。</p>
+    <div class="pfield"><label class="label" for="pCount" style="font-size:.9rem">1枚の問題の数</label>
+      <select id="pCount"><option value="20" selected>20問（字が大きい）</option><option value="30">30問</option><option value="40">40問</option></select></div>
+    <div class="pfield"><label class="label" for="pPages" style="font-size:.9rem">枚数</label>
+      <select id="pPages"><option value="1" selected>1枚</option><option value="2">2枚</option><option value="3">3枚</option><option value="4">4枚</option><option value="5">5枚</option></select></div>
+    <label class="check"><input type="checkbox" id="pAnswer" checked>答えのページをつける</label>
+    <div class="error" id="pError" hidden></div>
+    <button type="button" class="print-btn" id="printBtn">印刷する・PDFで保存</button>
+    <button type="button" class="sub" id="pShuffle">べつの問題にする</button>
+    <p class="note" id="pSummary" style="text-align:center"></p>
+    <div class="preview" id="preview" aria-label="プリントのプレビュー"></div>
+  </div>
+
   <div class="card" id="recCard" style="margin-top:18px">
     <span class="label">きろく</span>
     <div id="recBody"></div>
@@ -184,6 +241,7 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
       <li>モードを選んで「スタート」を押します。3・2・1のあとに問題が出ます。</li>
       <li>下の数字のボタンで答えを入れます。答えの数字を入れると、すぐに次の問題へ進みます。</li>
       <li>まちがえたときは正しい答えが出て、そのまま次へ進みます。まちがえた問題と、答えるのに時間がかかった問題は「苦手だけ」に入ります。</li>
+      <li>紙で練習するときは「プリントにする」で問題の数と枚数を選び、「印刷する・PDFで保存」を押します。プリンターがない場合は「PDFに保存」を選び、コンビニのネットプリントで印刷できます。</li>
     </ol>
     <p class="note">記録はこのスマホ（パソコン）のブラウザの中だけに保存します。サーバーには送りません。ブラウザの履歴を消すと、記録も消えます。</p>
   </section>
@@ -222,10 +280,11 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
 </section>
 
 </main>
-<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18a</span></footer>
+<div id="printArea" aria-hidden="true"></div>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18b</span></footer>
 
 <script>
-console.log("BUILD_TAG: 2026-11-18a");
+console.log("BUILD_TAG: 2026-11-18b");
 (function(){
   "use strict";
   var $=function(id){return document.getElementById(id)};
@@ -419,7 +478,7 @@ console.log("BUILD_TAG: 2026-11-18a");
     $("errorBox").hidden=!res.error;$("errorBox").textContent=res.error||"";
     $("startBtn").disabled=!!res.error;
     $("summary").textContent=res.error?"":modeLabel(opts)+"・"+res.list.length+"問";
-    renderRecords();renderWeakGrid();
+    renderRecords();renderWeakGrid();renderPrint();
   }
 
   $("modeSeg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;opts.mode=b.getAttribute("data-mode");renderAll()});
@@ -527,9 +586,105 @@ console.log("BUILD_TAG: 2026-11-18a");
   $("weakAgainBtn").addEventListener("click",function(){opts.mode="weak";start({mode:"weak",dans:[],order:"up",n:10})});
   $("backBtn").addEventListener("click",function(){show("setup");renderAll()});
 
+
+  // ---- プリント ----
+  var PLAYOUT={20:{cols:2,rows:10,fs:8},30:{cols:3,rows:10,fs:6.4},40:{cols:4,rows:10,fs:5.2}};
+  var printSeed=1;
+  function baseFacts(o){
+    var list=[];
+    if(o.mode==="dan"){
+      var dans=(o.dans||[]).slice().sort(function(x,y){return x-y});
+      if(o.order==="down")dans.forEach(function(a){for(var b=9;b>=1;b--)list.push(fact(a,b))});
+      else dans.forEach(function(a){for(var b=1;b<=9;b++)list.push(fact(a,b))});
+    }else if(o.mode==="mix"){for(var a=1;a<=9;a++)for(var b=1;b<=9;b++)list.push(fact(a,b))}
+    else list=weakList(o.facts||{});
+    return list;
+  }
+  // 足りない分は、まぜた同じ問題でうめる（となり合う2問が同じにならないように）
+  function fillTo(seq,base,n,r){
+    var guard=0;
+    while(seq.length<n&&guard++<200){
+      var chunk=shuffle(base.slice(),r);
+      if(seq.length&&chunk.length>1&&chunk[0].key===seq[seq.length-1].key){var t=chunk[0];chunk[0]=chunk[1];chunk[1]=t}
+      seq=seq.concat(chunk);
+    }
+    return seq.slice(0,n);
+  }
+  // o: {mode,dans,order,n,pages,seed,facts}
+  function buildPrint(o){
+    var base=baseFacts(o);
+    if(o.mode==="dan"&&!(o.dans||[]).length)return {error:"段を1つ以上えらんでください。",sheets:[]};
+    if(!base.length)return {error:"苦手な問題はまだありません。ほかのモードで遊ぶと、まちがえた問題がプリントにできるようになります。",sheets:[]};
+    var sheets=[];
+    for(var s=0;s<(o.pages||1);s++){
+      var r=rng((o.seed||1)*31+s*7919+11),seq;
+      if(o.mode==="dan"&&o.order!=="rand"&&s===0)seq=fillTo(base.slice(),base,o.n,r);   // 1枚目は順番どおり始める
+      else if(o.mode==="mix")seq=shuffle(base.slice(),r).slice(0,o.n);
+      else seq=fillTo([],base,o.n,r);
+      sheets.push(seq);
+    }
+    return {error:null,sheets:sheets};
+  }
+  function printLabel(o){
+    if(o.mode==="weak")return "苦手な問題";
+    if(o.mode==="mix")return "1〜9の段からバラバラ";
+    return modeLabel(o);
+  }
+  function renderSheet(list,idx,total,isAnswer,o){
+    var L=PLAYOUT[o.n],h='<section class="page"><div class="p-head"><div class="p-left">';
+    h+='<div class="p-title">九九プリント</div><div class="p-sub">'+esc(printLabel(o))+'・'+list.length+'もん'+(isAnswer?'・こたえ':'')+'</div>';
+    h+='</div>';
+    if(isAnswer)h+='<div class="p-ans">こたえ</div>';
+    else h+='<div class="p-meta">なまえ <span class="blank"></span><br><span class="sblank"></span>がつ<span class="sblank"></span>にち　かかった じかん <span class="sblank"></span>ふん<span class="mblank"></span>びょう</div><div class="p-stampbox"><span>スタンプ</span></div>';
+    h+='</div>';
+    h+='<div class="p-guide">'+(isAnswer?'まるつけを しよう。まちがえた もんだいは、もういちど。':'じかんを はかって やってみよう。こたえを ＿ に かこう。')+'</div>';
+    h+='<div class="p-grid" style="--cols:'+L.cols+';--rows:'+L.rows+';--fs:'+L.fs+'mm">';
+    list.forEach(function(q,i){
+      h+='<div class="pq"><span class="no">('+(i+1)+')</span><span class="ex">'+q.a+' × '+q.b+' =</span><b'+(isAnswer?' class="a"':'')+'>'+(isAnswer?q.ans:'')+'</b></div>';
+    });
+    h+='</div><div class="p-foot"><span>おうち学習のどうぐばこ　Instagram @ouchi_dougubako</span><span>'+(isAnswer?'こたえ ':'')+(idx+1)+' / '+total+'</span></div></section>';
+    return h;
+  }
+  var lastPrint=null,lastPrintText="";
+  function readPrintOpts(){return {mode:opts.mode,dans:opts.dans.slice(),order:opts.order,n:Number($("pCount").value),pages:Number($("pPages").value),seed:printSeed,facts:pdata().facts,answer:$("pAnswer").checked}}
+  function renderPrint(){
+    var o=readPrintOpts(),res=buildPrint(o);
+    lastPrint={o:o,res:res};
+    $("pError").hidden=!res.error;$("pError").textContent=res.error||"";
+    $("printBtn").disabled=!!res.error;$("pShuffle").disabled=!!res.error;
+    if(res.error){$("preview").innerHTML="";$("printArea").innerHTML="";$("pSummary").textContent="";return}
+    var html="",total=res.sheets.length;
+    res.sheets.forEach(function(sh,i){html+=renderSheet(sh,i,total,false,o)});
+    if(o.answer)res.sheets.forEach(function(sh,i){html+=renderSheet(sh,i,total,true,o)});
+    $("printArea").innerHTML=html;
+    lastPrintText=$("printArea").textContent;
+    var pv="";
+    res.sheets.forEach(function(sh,i){pv+='<div class="page-wrap">'+renderSheet(sh,i,total,false,o)+'</div>'});
+    if(o.answer)pv+='<div class="page-wrap">'+renderSheet(res.sheets[0],0,total,true,o)+'</div>';
+    $("preview").innerHTML=pv;
+    $("pSummary").textContent="A4 "+(total*(o.answer?2:1))+"ページ（問題 "+total+"枚"+(o.answer?"・答え "+total+"枚":"")+"）"+(o.answer&&total>1?"。プレビューは答えの1枚目だけ表示":"");
+    fit();
+  }
+  function fit(){
+    var box=$("preview"),w=box.clientWidth;if(!w)return;
+    Array.prototype.forEach.call(box.querySelectorAll(".page-wrap"),function(pw){
+      var pg=pw.querySelector(".page");pg.style.transform="none";
+      var pw0=pg.offsetWidth,ph0=pg.offsetHeight,sc=Math.min(1,(w-4)/pw0);
+      pg.style.transform="scale("+sc+")";pw.style.width=(pw0*sc)+"px";pw.style.height=(ph0*sc)+"px";
+    });
+  }
+  window.addEventListener("resize",fit);
+  ["pCount","pPages","pAnswer"].forEach(function(id){$(id).addEventListener("change",renderPrint)});
+  $("pShuffle").addEventListener("click",function(){printSeed=(printSeed*48271+12345)%2147483647;renderPrint()});
+  $("printBtn").addEventListener("click",function(){
+    if(INAPP){var n=$("inappNote");n.classList.remove("flash");void n.offsetWidth;n.classList.add("flash");n.scrollIntoView({behavior:"smooth",block:"center"});return}
+    var btn=this;btn.disabled=true;var label=btn.textContent;btn.textContent="準備中…";
+    var done=function(){btn.textContent=label;btn.disabled=false;window.print()};
+    if(document.fonts&&document.fonts.load){Promise.all([document.fonts.load('600 20px "Klee One"',lastPrintText)]).then(function(){return document.fonts.ready}).then(done,done)}else done();
+  });
   // 検査用
   window.__kuku={build:build,weakList:weakList,recordFact:recordFact,isWeak:isWeak,modeKey:modeKey,modeLabel:modeLabel,SLOW_MS:SLOW_MS,WEAK_MAX:WEAK_MAX,
-    db:function(){return db},press:press,state:function(){return {game:game,last:lastResult}},setOpts:function(o){for(var k in o)opts[k]=o[k];renderAll()}};
+    db:function(){return db},press:press,buildPrint:buildPrint,PLAYOUT:PLAYOUT,lastPrint:function(){return lastPrint},state:function(){return {game:game,last:lastResult}},setOpts:function(o){for(var k in o)opts[k]=o[k];renderAll()}};
 
   renderAll();
 })();
