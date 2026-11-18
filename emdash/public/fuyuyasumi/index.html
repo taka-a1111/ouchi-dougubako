@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- BUILD_TAG: 2026-11-18a -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://ouchidougubako.com/fuyuyasumi/">
+<title>冬休みの学習計画表メーカー（チェック表つき）｜おうち学習のどうぐばこ</title>
+<meta name="description" content="冬休みの日にちと、宿題の量を入れるだけで、毎日やる量を割りふった学習計画表が作れます。お正月や予備日も入れられて、チェック欄つき。A4で印刷でき、無料・登録なしで使えます。">
+<link rel="stylesheet" href="/assets/fonts/klee-one/klee-one.css">
+<style>
+:root{
+  --navy:#1f2d4d; --cream:#fff9ee; --yellow:#f5c542; --teal:#2a9d8f; --line:#e6dccb;
+  --ui-font:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN","Zen Maru Gothic","游ゴシック","Yu Gothic","メイリオ",Meiryo,"Noto Sans JP","Noto Sans CJK JP",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:var(--ui-font);line-height:1.7}
+a{color:var(--teal)}
+.topbar{background:var(--navy);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.topbar a{color:#fff;text-decoration:none;font-weight:700}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 4px}
+.lead{margin:0 0 16px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px;padding:0;list-style:none}
+.badges li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:.85rem}
+.layout{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+.layout>*{min-width:0}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:12px}
+@media (max-width:860px){.panel{position:static}}
+.field{margin:0 0 14px}
+.field>label,.field>.label{display:block;font-weight:700;margin:0 0 4px}
+input[type=date],input[type=text],input[type=number],select{padding:7px;border:1px solid #c9bfae;border-radius:8px;font:inherit;font-size:16px;background:#fff;color:var(--navy);min-width:0}
+.dates{display:flex;align-items:center;gap:6px}
+.dates input{flex:1;width:0}
+.check{display:flex;gap:6px;align-items:center;cursor:pointer;margin:0 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 0}
+.chips button{font:inherit;font-size:.78rem;padding:2px 6px;border:1px solid #c9bfae;border-radius:6px;background:#fff;color:var(--navy);cursor:pointer;line-height:1.4}
+.chips button.rest{background:#eef0f3;color:#8a93a3;text-decoration:line-through}
+.tasks{display:flex;flex-direction:column;gap:8px}
+.task{border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--cream);display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center}
+.task .name{grid-column:1 / 2;width:100%}
+.task .del{grid-column:2 / 3;font:inherit;font-size:.8rem;border:1px solid #c9bfae;background:#fff;border-radius:6px;cursor:pointer;padding:4px 8px}
+.task .row2{grid-column:1 / 3;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.task .row2 input[type=number]{width:72px}
+.task .row2 select{flex:1;min-width:0}
+.add-btn{font:inherit;font-weight:700;border:2px dashed #c9bfae;background:#fff;border-radius:10px;padding:6px;cursor:pointer;color:var(--navy)}
+.note{font-size:.82rem;color:#5a6577;margin:4px 0 0}
+.error{background:#fdecea;color:#8a1f11;border-radius:8px;padding:8px 10px;margin:0 0 12px;font-size:.9rem}
+.warn{background:#fff4d6;border-radius:8px;padding:8px 10px;margin:0 0 12px;font-size:.88rem}
+.print-btn{width:100%;padding:12px;border:none;border-radius:10px;background:var(--yellow);color:var(--navy);font:inherit;font-size:1.1rem;font-weight:700;cursor:pointer}
+.print-btn:disabled{opacity:.5;cursor:default}
+.summary{font-size:.9rem;margin:8px 0 0;text-align:center}
+.preview-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 8px}
+.preview{display:flex;flex-direction:column;align-items:center;gap:16px;overflow:hidden}
+.page-wrap{position:relative;overflow:hidden}
+.page-wrap .page{transform-origin:top left;box-shadow:0 2px 10px rgba(31,45,77,.15)}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin:24px 0 0}
+.howto h2{font-size:1.15rem;margin:0 0 8px}
+.howto ol{margin:0;padding-left:1.4em}
+footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
+
+/* ===== 印刷するページ（A4・mm単位） ===== */
+.page{width:210mm;height:297mm;background:#fff;padding:12mm 13mm 9mm;display:flex;flex-direction:column;color:#2b2f36;font-family:var(--ui-font)}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start;height:22mm;border-bottom:.4mm solid #2b2f36;padding-bottom:2mm;flex:none}
+.p-left{min-width:0;flex:1;padding-right:4mm}
+.p-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:7mm;font-weight:600;line-height:1.35;font-family:"Klee One",var(--ui-font)}
+.p-sub{font-size:3.3mm;color:#5a6577;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-stamp{font-size:3.2mm;margin-top:1mm;display:flex;align-items:center;gap:1.5mm}
+.p-stamp i{display:inline-block;width:5mm;height:5mm;border:.35mm solid #2b2f36;border-radius:50%}
+.p-stampbox{flex:none;width:19mm;height:19mm;border:.4mm solid #2b2f36;border-radius:1.5mm;margin-left:3mm;position:relative}
+.p-stampbox span{position:absolute;top:.8mm;left:0;right:0;text-align:center;font-size:2.4mm;line-height:1;color:#8f99a6}
+.p-meta{flex:none;font-size:4mm;text-align:right;line-height:1.9}
+.p-meta .blank{display:inline-block;width:40mm;border-bottom:.3mm solid #2b2f36}
+.p-meta .sblank{display:inline-block;width:9mm}
+.p-body{flex:1;min-height:0;padding-top:3mm;display:flex;flex-direction:column}
+table.plan{width:100%;border-collapse:collapse;table-layout:fixed;flex:none}
+.plan th,.plan td{border:.3mm solid #8f99a6;text-align:center;vertical-align:middle;padding:0 .8mm;overflow:hidden}
+.plan thead th{background:#fdf0d2;font-size:3.1mm;font-weight:700;line-height:1.25;height:11mm}
+.plan thead th small{display:block;font-size:2.6mm;font-weight:500;color:#5a6577}
+.plan th.d{width:28mm}
+.plan th.ok{width:15mm}
+.plan td{height:var(--rh);font-size:var(--fs);font-family:"Klee One",var(--ui-font);font-weight:600;white-space:nowrap}
+.plan td.d{text-align:left;padding-left:1.5mm}
+.plan td.d .w{display:inline-block;margin-left:.5mm;font-size:.8em;color:#5a6577}
+.plan td.d .w.sun{color:#c0392b}
+.plan td.d .w.sat{color:#2c6fb7}
+.plan td.v{font-size:var(--cfs)}
+.plan td .u{font-size:.72em;margin-left:.3mm}
+.plan td .bx{display:inline-block;width:calc(var(--fs) * .9);height:calc(var(--fs) * .9);border:.3mm solid #2b2f36;border-radius:.6mm;vertical-align:middle;margin-left:1mm}
+.plan td.none{color:#c9cfd8}
+.plan tr.rest td{background:#f1f2f5;color:#8a93a3}
+.plan tr.rest td.label{font-family:var(--ui-font);font-weight:700;font-size:calc(var(--fs) * .85);letter-spacing:.2em}
+.plan tr.spare td{background:#e8f6f3}
+.plan tr.spare td.label{font-family:var(--ui-font);font-weight:700;font-size:calc(var(--fs) * .8);color:#1e7a6f;text-align:left;padding-left:2mm}
+.plan td.okc i{display:inline-block;width:calc(var(--rh) * .62);height:calc(var(--rh) * .62);max-width:7mm;max-height:7mm;border:.3mm dashed #8f99a6;border-radius:50%;vertical-align:middle}
+.plan tfoot td{background:#fdf0d2;font-family:var(--ui-font);font-size:3mm;font-weight:700;height:8mm}
+.p-memo{flex:1;min-height:0;margin-top:3mm;border:.3mm solid #c9cfd8;border-radius:2mm;padding:1.5mm 3mm;font-size:3mm;color:#8a93a3}
+.p-foot{height:6mm;font-size:3mm;color:#7a8494;display:flex;justify-content:space-between;align-items:flex-end;flex:none}
+
+.inapp{background:#fff4d6;border:2px solid var(--yellow);border-radius:12px;padding:12px 14px;margin:0 0 14px;font-size:.92rem;line-height:1.6}
+.inapp strong{display:block;font-size:1rem;margin:0 0 4px}
+.inapp ol{margin:6px 0 0;padding-left:1.3em}
+.inapp .ia-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.inapp .ia-btns a,.inapp .ia-btns button{flex:1 1 auto;text-align:center;padding:10px 12px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.inapp .ia-btns a{background:var(--navy);color:#fff}
+.inapp.flash{animation:iaflash .9s ease 2}
+@keyframes iaflash{50%{background:#ffe08a}}
+@media print{.inapp{display:none!important}}
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  .topbar,.wrap>*:not(.layout),.panel,.preview-head,footer.site,.howto{display:none!important}
+  .wrap{padding:0;max-width:none}
+  .layout{display:block}
+  .preview{display:block;gap:0;overflow:visible}
+  .page-wrap{width:auto!important;height:auto!important;overflow:visible}
+  .page-wrap .page{transform:none!important;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
+<main class="wrap">
+  <h1>冬休みの学習計画表メーカー</h1>
+  <p class="lead">冬休みの日にちと、宿題の量を入れるだけ。毎日やる量を自動で割りふった、チェック欄つきの計画表が作れます。お正月のおやすみや、終わらなかった分をやる「よび日」も入れられます。</p>
+  <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>チェック欄つき</li></ul>
+
+  <div class="layout">
+    <form class="panel" id="form" onsubmit="return false">
+      <div class="field">
+        <span class="label">冬休みの日にち</span>
+        <div class="dates"><input type="date" id="startDate" aria-label="はじまり">〜<input type="date" id="endDate" aria-label="おわり"></div>
+        <p class="note">学校のお知らせで確かめて入れてください。</p>
+      </div>
+
+      <div class="field">
+        <span class="label">おやすみの日（予定を入れない）</span>
+        <label class="check"><input type="checkbox" id="newYear" checked>12/31〜1/3 はおやすみ</label>
+        <p class="note">日にちを押すと、おやすみにする・もどすを切りかえられます。</p>
+        <div class="chips" id="chips"></div>
+      </div>
+
+      <div class="field">
+        <label for="spareSel">よび日（終わらなかった分をやる日）</label>
+        <select id="spareSel"><option value="0">なし</option><option value="1">最後の1日</option><option value="2" selected>最後の2日</option><option value="3">最後の3日</option></select>
+      </div>
+
+      <div class="field">
+        <span class="label">やること（6つまで）</span>
+        <div class="tasks" id="tasks"></div>
+        <button type="button" class="add-btn" id="addTask" style="margin-top:8px;width:100%">＋ やることを足す</button>
+        <p class="note">「全部で」は冬休み中の合計です。やる日に、なるべく同じ量になるように割りふります。「毎日」は、やる日とよび日にチェック欄を入れます。</p>
+      </div>
+
+      <div class="inapp" id="inappNote" hidden>
+        <strong>Instagramの中では印刷できません</strong>
+        いま開いているのはInstagramの中のブラウザです。印刷・PDF保存は、ChromeやSafariで開き直すと使えます。
+        <ol><li>右上の「︙」または「…」を押す</li><li>「ブラウザで開く」（「Chromeで開く」「Safariで開く」）を選ぶ</li></ol>
+        <div class="ia-btns"><a id="inappOpen" href="#" hidden>Chromeで開く</a><button type="button" id="inappCopy">このページのURLをコピー</button></div>
+        <p class="note" id="inappCopied" hidden>コピーしました。ChromeやSafariのアドレス欄に貼り付けて開いてください。</p>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <div class="warn" id="warnBox" hidden></div>
+      <button type="button" class="print-btn" id="printBtn">印刷する・PDFで保存</button>
+      <p class="summary" id="summary"></p>
+      <p class="note">入れた内容は、このスマホ・パソコンの中だけで使います。送信・保存はしません。</p>
+    </form>
+
+    <section aria-label="プレビュー">
+      <div class="preview-head"><strong>プレビュー</strong><span class="note" id="pageCount"></span></div>
+      <div class="preview" id="preview"></div>
+    </section>
+  </div>
+
+  <section class="howto">
+    <h2>使い方</h2>
+    <ol>
+      <li>冬休みのはじまりと終わりの日を入れます。</li>
+      <li>お正月など、予定を入れない日を選びます。最後の数日は「よび日」にしておくと、終わらなかった分をそこで取りもどせます。</li>
+      <li>宿題を「全部で何ページ・何まい・何回」と入れます。音読のように毎日やるものは「毎日」を選びます。</li>
+      <li>「印刷する・PDFで保存」を押します。プリンターがない場合は「PDFに保存」を選び、コンビニのネットプリントで印刷できます。</li>
+    </ol>
+    <p class="note">計画表は冷蔵庫や机の前にはって、終わったら□にチェック、いちばん右に花まるやシールを。宿題の内容や量は、学校のお知らせを優先してください。</p>
+  </section>
+</main>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18a</span></footer>
+
+<script>
+console.log("BUILD_TAG: 2026-11-18a");
+(function(){
+  "use strict";
+  var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Bytedance|Twitter/i.test(navigator.userAgent||"");
+  var ANDROID=/Android/i.test(navigator.userAgent||"");
+  if(INAPP){
+    document.getElementById("inappNote").hidden=false;
+    if(ANDROID){
+      var op=document.getElementById("inappOpen");
+      op.href="intent://"+location.host+location.pathname+location.search+"#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(location.href)+";end";
+      op.hidden=false;
+    }
+    document.getElementById("inappCopy").addEventListener("click",function(){
+      var url=location.href, done=function(){document.getElementById("inappCopied").hidden=false};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){window.prompt("このURLをコピーしてください",url)})}
+      else window.prompt("このURLをコピーしてください",url);
+    });
+  }
+
+  var $=function(id){return document.getElementById(id)};
+  var WD=["日","月","火","水","木","金","土"];
+  var UNITS={page:"ページ",sheet:"まい",times:"かい"};
+  var MAX_DAYS=31, MAX_TASKS=6, MAX_TOTAL=300, MAX_NAME=10;
+
+  function pad(n){return (n<10?"0":"")+n}
+  function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+  function parse(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||"");if(!m)return null;var d=new Date(+m[1],+m[2]-1,+m[3]);return (d.getMonth()===+m[2]-1)?d:null}
+  function md(d){return (d.getMonth()+1)+"/"+d.getDate()}
+  function isNewYear(d){var m=d.getMonth()+1,x=d.getDate();return (m===12&&x===31)||(m===1&&x<=3)}
+
+  // 合計 total を n 日に割りふる。total>=n なら差は1まで（前の日を多めに）、total<n ならなるべく間をあけて1ずつ
+  function distribute(total,n){
+    var a=[],i;for(i=0;i<n;i++)a.push(0);
+    if(n<=0||total<=0)return a;
+    if(total>=n){var b=Math.floor(total/n),r=total%n;for(i=0;i<n;i++)a[i]=b+(i<r?1:0)}
+    else{for(var k=0;k<total;k++)a[Math.floor((k+0.5)*n/total)]+=1}
+    return a;
+  }
+
+  // 計画を組み立てる（画面を使わない）
+  function build(o){
+    var errors=[],warns=[];
+    var s=parse(o.start),e=parse(o.end);
+    if(!s||!e)errors.push("冬休みのはじまりと終わりの日を入れてください。");
+    var days=[];
+    if(s&&e){
+      if(e<s)errors.push("終わりの日が、はじまりの日より前になっています。");
+      else{
+        for(var d=new Date(s.getTime());d<=e;d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1)){
+          days.push(d);if(days.length>MAX_DAYS)break;
+        }
+        if(days.length>MAX_DAYS){errors.push("日にちは"+MAX_DAYS+"日までにしてください。");days=days.slice(0,MAX_DAYS)}
+      }
+    }
+    var toggled=o.toggled||{};
+    var rows=days.map(function(d){
+      var key=iso(d),rest=(o.newYear&&isNewYear(d));
+      if(toggled[key])rest=!rest;
+      return {date:key,label:md(d),wd:WD[d.getDay()],dow:d.getDay(),kind:rest?"rest":"work"};
+    });
+    // よび日：最後から数えて、おやすみでない日を spare 日
+    var spare=Math.max(0,Math.min(3,o.spare|0)),cnt=0;
+    for(var i=rows.length-1;i>=0&&cnt<spare;i--){if(rows[i].kind==="work"){rows[i].kind="spare";cnt++}}
+    var work=rows.filter(function(r){return r.kind==="work"});
+    if(rows.length&&!work.length)errors.push("やる日がありません。おやすみの日やよび日をへらしてください。");
+    if(spare&&cnt<spare&&rows.length)warns.push("よび日が"+cnt+"日しかとれませんでした。");
+
+    var tasks=(o.tasks||[]).map(function(t){return {name:String(t.name||"").replace(/\s+/g," ").trim(),total:t.total,unit:t.unit,mode:t.mode}})
+      .filter(function(t){return t.name});
+    if(!tasks.length)errors.push("やることを1つ以上入れてください。");
+    if(tasks.length>MAX_TASKS)errors.push("やることは"+MAX_TASKS+"つまでです。");
+    tasks.forEach(function(t){
+      if(Array.from(t.name).length>MAX_NAME)errors.push("「"+t.name+"」は"+MAX_NAME+"文字までにしてください。");
+      if(t.mode==="split"){
+        var n=Number(t.total);
+        if(!(n>=1&&n<=MAX_TOTAL&&Math.floor(n)===n))errors.push("「"+t.name+"」の全部の量は1〜"+MAX_TOTAL+"の数で入れてください。");
+        t.total=n;
+      }
+    });
+    if(errors.length)return {errors:errors,warns:warns,rows:[],tasks:[],counts:{}};
+
+    tasks.forEach(function(t){
+      if(t.mode==="split"){
+        var a=distribute(t.total,work.length),k=0;
+        t.plan=rows.map(function(r){return r.kind==="work"?a[k++]:0});
+        t.max=Math.max.apply(null,a);
+        if(t.total>work.length*10)warns.push("「"+t.name+"」は1日に"+t.max+UNITS[t.unit]+"になります。量を見直すか、やる日をふやしてください。");
+      }else{
+        t.plan=rows.map(function(r){return r.kind==="rest"?0:1});
+      }
+    });
+    var counts={days:rows.length,work:work.length,spare:cnt,rest:rows.filter(function(r){return r.kind==="rest"}).length};
+    return {errors:errors,warns:warns,rows:rows,tasks:tasks,counts:counts};
+  }
+
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+
+  function cellText(t,v){
+    if(t.mode==="daily")return '<span class="bx"></span>';
+    if(!v)return "";
+    return v+'<span class="u">'+UNITS[t.unit]+'</span><span class="bx"></span>';
+  }
+
+  function renderPage(res){
+    var R=res.rows,T=res.tasks,n=R.length;
+    // 行の高さ：表の高さ（ヘッダ・合計を除く）を行数で割る。上限 12mm、下限 6.5mm
+    var avail=297-12-9-22-3-6-11-8-14; // ページ高 − 余白 − 見出し − 表の見出し − 合計 − メモの最低
+    var rh=Math.max(6.5,Math.min(12,avail/Math.max(n,1)));
+    var fs=Math.max(3,Math.min(4.6,rh*0.42));
+    // やることの列の幅に合わせて、ます目の字の大きさをおさえる（「100ページ□」が入る大きさ）
+    var colW=(210-26-28-15)/Math.max(T.length,1),cfs=Math.min(fs,colW/6.6);
+    var a=R[0],z=R[n-1],c=res.counts;
+    var sub=a.label+"（"+a.wd+"）〜"+z.label+"（"+z.wd+"）"+c.days+"日間　やる日"+c.work+(c.spare?"・よび日"+c.spare:"")+(c.rest?"・おやすみ"+c.rest:"");
+    var h='<section class="page" style="--rh:'+rh.toFixed(2)+'mm;--fs:'+fs.toFixed(2)+'mm;--cfs:'+cfs.toFixed(2)+'mm">';
+    h+='<div class="p-head"><div class="p-left"><div class="p-title">ふゆやすみの けいかくひょう</div><div class="p-sub">'+esc(sub)+'</div><div class="p-stamp">ぜんぶ おわったら いろを ぬろう <i></i><i></i><i></i></div></div>';
+    h+='<div class="p-meta"><div>なまえ <span class="blank"></span></div><div><span class="sblank"></span>がつ<span class="sblank"></span>にち</div></div><div class="p-stampbox"><span>スタンプ</span></div></div>';
+    h+='<div class="p-body"><table class="plan"><thead><tr><th class="d">ひにち</th>';
+    T.forEach(function(t){h+='<th>'+esc(t.name)+'<small>'+(t.mode==="daily"?"まいにち":"ぜんぶで "+t.total+UNITS[t.unit])+'</small></th>'});
+    h+='<th class="ok">できた</th></tr></thead><tbody>';
+    R.forEach(function(r,i){
+      var w='<span class="w'+(r.dow===0?' sun':r.dow===6?' sat':'')+'">（'+r.wd+'）</span>';
+      if(r.kind==="rest"){h+='<tr class="rest" data-kind="rest"><td class="d">'+r.label+w+'</td><td class="label" colspan="'+(T.length+1)+'">おやすみ</td></tr>';return}
+      h+='<tr class="'+(r.kind==="spare"?"spare":"work")+'" data-kind="'+r.kind+'"><td class="d">'+r.label+w+'</td>';
+      if(r.kind==="spare"){
+        var daily=T.filter(function(t){return t.mode==="daily"});
+        if(daily.length===0){h+='<td class="label" colspan="'+T.length+'">よび日：終わらなかった分をやる日</td>'}
+        else T.forEach(function(t,j){h+=t.mode==="daily"?'<td class="v">'+cellText(t,1)+'</td>':'<td class="label">'+(j===T.findIndex(function(x){return x.mode!=="daily"})?'よび日':'')+'</td>'});
+      }else{
+        T.forEach(function(t){var v=t.plan[i];h+='<td class="v'+(t.mode==="split"&&!v?' none':'')+'">'+(t.mode==="split"&&!v?'ー':cellText(t,v))+'</td>'});
+      }
+      h+='<td class="okc"><i></i></td></tr>';
+    });
+    h+='</tbody><tfoot><tr><td class="d">ごうけい</td>';
+    T.forEach(function(t){
+      var sum=t.plan.reduce(function(x,y){return x+y},0);
+      h+='<td>'+(t.mode==="daily"?sum+"日":sum+UNITS[t.unit])+'</td>';
+    });
+    h+='<td></td></tr></tfoot></table>';
+    h+='<div class="p-memo">おうちの人から ひとこと</div></div>';
+    h+='<div class="p-foot"><span>おうち学習のどうぐばこ　Instagram @ouchi_dougubako</span><span>1 / 1</span></div></section>';
+    return h;
+  }
+
+  // ===== 画面 =====
+  var state={toggled:{},tasks:[
+    {name:"漢字ドリル",total:10,unit:"page",mode:"split"},
+    {name:"計算プリント",total:8,unit:"sheet",mode:"split"},
+    {name:"日記",total:3,unit:"times",mode:"split"},
+    {name:"音読",total:"",unit:"times",mode:"daily"}
+  ]};
+
+  function defaultYear(){var t=new Date();return t.getMonth()<=1?t.getFullYear()-1:t.getFullYear()}
+  (function(){var y=defaultYear();$("startDate").value=y+"-12-25";$("endDate").value=(y+1)+"-01-07"})();
+
+  function renderTasks(){
+    var box=$("tasks");box.innerHTML="";
+    state.tasks.forEach(function(t,i){
+      var el=document.createElement("div");el.className="task";
+      el.innerHTML='<input type="text" class="name" maxlength="10" placeholder="例：漢字ドリル" value="'+esc(t.name)+'" aria-label="やること">'+
+        '<button type="button" class="del" aria-label="けす">けす</button>'+
+        '<div class="row2"><select class="mode" aria-label="やり方"><option value="split">全部で</option><option value="daily">毎日</option></select>'+
+        '<input type="number" class="total" min="1" max="300" inputmode="numeric" value="'+esc(t.total)+'" aria-label="全部の量">'+
+        '<select class="unit" aria-label="単位"><option value="page">ページ</option><option value="sheet">まい</option><option value="times">かい</option></select></div>';
+      el.querySelector(".mode").value=t.mode;el.querySelector(".unit").value=t.unit;
+      var sync=function(){var dl=el.querySelector(".mode").value==="daily";el.querySelector(".total").hidden=dl;el.querySelector(".unit").hidden=dl};
+      sync();
+      el.querySelector(".name").addEventListener("input",function(){t.name=this.value;update()});
+      el.querySelector(".total").addEventListener("input",function(){t.total=this.value;update()});
+      el.querySelector(".unit").addEventListener("change",function(){t.unit=this.value;update()});
+      el.querySelector(".mode").addEventListener("change",function(){t.mode=this.value;sync();update()});
+      el.querySelector(".del").addEventListener("click",function(){state.tasks.splice(i,1);renderTasks();update()});
+      box.appendChild(el);
+    });
+    $("addTask").disabled=state.tasks.length>=MAX_TASKS;
+  }
+  $("addTask").addEventListener("click",function(){if(state.tasks.length<MAX_TASKS){state.tasks.push({name:"",total:"",unit:"page",mode:"split"});renderTasks();update()}});
+
+  function readOpts(){
+    return {start:$("startDate").value,end:$("endDate").value,newYear:$("newYear").checked,spare:parseInt($("spareSel").value,10),
+      toggled:state.toggled,tasks:state.tasks.map(function(t){return {name:t.name,total:t.total,unit:t.unit,mode:t.mode}})};
+  }
+
+  function renderChips(res){
+    var box=$("chips");box.innerHTML="";
+    (res.rows||[]).forEach(function(r){
+      var b=document.createElement("button");b.type="button";b.textContent=r.label+"("+r.wd+")";
+      if(r.kind==="rest")b.className="rest";
+      b.addEventListener("click",function(){state.toggled[r.date]=!state.toggled[r.date];update()});
+      box.appendChild(b);
+    });
+  }
+
+  var lastText="";
+  function update(){
+    var res=build(readOpts());
+    var eb=$("errorBox"),wb=$("warnBox");
+    if(res.errors.length){eb.hidden=false;eb.textContent=res.errors.join(" ")}else eb.hidden=true;
+    if(res.warns.length){wb.hidden=false;wb.textContent=res.warns.join(" ")}else wb.hidden=true;
+    // おやすみを選ぶチップは、エラーがあっても日にちが読めれば出す
+    var chipRes=res.rows.length?res:build(Object.assign(readOpts(),{tasks:[{name:"x",total:1,unit:"page",mode:"split"}]}));
+    renderChips(chipRes);
+    $("preview").innerHTML=res.rows.length?'<div class="page-wrap">'+renderPage(res)+'</div>':"";
+    $("pageCount").textContent=res.rows.length?"A4 1枚":"";
+    $("summary").textContent=res.rows.length?("やる日"+res.counts.work+"日に割りふりました"):"";
+    $("printBtn").disabled=!res.rows.length;
+    lastText=$("preview").textContent;
+    fit();
+    window.__lastResult=res;
+  }
+
+  function fit(){
+    var pv=$("preview"),avail=Math.min(pv.clientWidth||600,820);
+    var probe=pv.querySelector(".page");if(!probe)return;
+    var pw=probe.offsetWidth,ph=probe.offsetHeight,sc=Math.min(1,avail/pw);
+    pv.querySelectorAll(".page-wrap").forEach(function(wr){
+      wr.style.width=(pw*sc)+"px";wr.style.height=(ph*sc)+"px";
+      wr.firstChild.style.transform="scale("+sc+")";
+    });
+  }
+
+  ["startDate","endDate","newYear","spareSel"].forEach(function(id){$(id).addEventListener("change",update)});
+  window.addEventListener("resize",fit);
+
+  $("printBtn").addEventListener("click",function(){
+    if(INAPP){var n=$("inappNote");n.classList.remove("flash");void n.offsetWidth;n.classList.add("flash");n.scrollIntoView({behavior:"smooth",block:"center"});return;}
+    var btn=this;btn.disabled=true;var label=btn.textContent;btn.textContent="準備中…";
+    var done=function(){btn.textContent=label;btn.disabled=false;window.print()};
+    if(document.fonts&&document.fonts.load){
+      Promise.all([document.fonts.load('600 20px "Klee One"',lastText)]).then(function(){return document.fonts.ready}).then(done,done);
+    }else done();
+  });
+
+  // 検査用
+  window.__fuyu={build:build,distribute:distribute,renderPage:renderPage,isNewYear:isNewYear,MAX_DAYS:MAX_DAYS,
+    setTasks:function(ts){state.tasks=ts;renderTasks();update()}};
+
+  renderTasks();
+  update();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>
