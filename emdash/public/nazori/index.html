@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- BUILD_TAG: 2026-11-18b -->
+<!-- BUILD_TAG: 2026-11-18c -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://ouchidougubako.com/nazori/">
@@ -135,11 +135,11 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
       </div>
 
       <div class="field" data-for="words" hidden>
-        <label for="wordsInput">ことば（1行に1つ・5つまで）</label>
+        <label for="wordsInput">ことば・数字（1行に1つ・5つまで）</label>
         <textarea id="wordsInput">りんご
 ありがとう
 がっこう</textarea>
-        <p class="note">ひらがな・カタカナ・漢字が使えます。</p>
+        <p class="note">ひらがな・カタカナ・漢字・数字（0〜9）が使えます。数字の練習は「12345」「67890」のように入れてください。</p>
       </div>
 
       <div class="field">
@@ -192,10 +192,10 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
     <p class="note">お手本の字は教科書の字に近い形の書体（Klee One）を使っています。書き順は入っていません。</p>
   </section>
 </main>
-<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18b</span></footer>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18c</span></footer>
 
 <script>
-console.log("BUILD_TAG: 2026-11-18b");
+console.log("BUILD_TAG: 2026-11-18c");
 (function(){
   "use strict";
 
@@ -242,7 +242,9 @@ console.log("BUILD_TAG: 2026-11-18b");
   }
   function chars(str){return Array.from(str)}
   function isHiragana(ch){return /^[ぁ-ゖー]$/.test(ch)}
-  function allowed(ch){return /^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー々A-Za-z]$/u.test(ch)}
+  function allowed(ch){return /^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー々A-Za-z0-9]$/u.test(ch)}
+  // 全角の数字は半角にそろえる（スマホのキーボードで全角になることがあるため）
+  function hanNum(str){return String(str||"").replace(/[０-９]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-0xFEE0)})}
 
   // 1文字の練習行：お手本1つ＋なぞるn個＋残りは自分で書くマス
   function charRow(ch,trace,cols){
@@ -264,7 +266,7 @@ console.log("BUILD_TAG: 2026-11-18b");
   function build(opts){
     var L=layoutFor(opts.size), blocks=[], errors=[], warns=[], title="", sub="";
     if(opts.mode==="name"){
-      var name=(opts.name||"").replace(/\s+/g,"");
+      var name=hanNum(opts.name).replace(/\s+/g,"");
       var cs=chars(name);
       if(!name){errors.push("名前を入れてください。")}
       else{
@@ -294,7 +296,7 @@ console.log("BUILD_TAG: 2026-11-18b");
       sub=gs.map(function(g){return g.id==="small"?"ちいさい字":g.label+"行"}).join("・");
       if(sub.length>40)sub=sub.slice(0,39)+"…";
     }else{
-      var words=(opts.words||"").split(/\n/).map(function(w){return w.replace(/\s+/g,"")}).filter(Boolean);
+      var words=hanNum(opts.words).split(/\n/).map(function(w){return w.replace(/\s+/g,"")}).filter(Boolean);
       if(!words.length)errors.push("ことばを1つ以上入れてください。");
       if(words.length>MAX_WORDS)errors.push("ことばは"+MAX_WORDS+"つまでです。");
       words.forEach(function(w){
@@ -304,7 +306,7 @@ console.log("BUILD_TAG: 2026-11-18b");
         if(wc.length>L.cols)errors.push("「"+w+"」が長くて1行に入りません（このサイズは"+L.cols+"文字まで）。");
       });
       if(!errors.length)words.forEach(function(w){blocks.push(wordBlock(w,opts.trace,L.cols))});
-      title="ことば を かこう";
+      title=(words.length&&words.every(function(w){return /^[0-9]+$/.test(w)}))?"すうじ を かこう":"ことば を かこう";
     }
     // ブロックごとにページへ詰める（ブロックはページをまたがせない）
     var pages=[],cur=[];cur.labels=[];
