@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- BUILD_TAG: 2026-11-18a -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="canonical" href="https://ouchidougubako.com/kuku/">
+<title>九九タイムアタック（苦手だけ練習・記録つき）｜おうち学習のどうぐばこ</title>
+<meta name="description" content="スマホで遊べる九九のタイムアタックです。段ごと・バラバラ・苦手だけの3つのモードで練習でき、タイムと苦手な問題が記録されます。無料・登録なしで使えます。">
+<meta property="og:title" content="九九タイムアタック（苦手だけ練習・記録つき）">
+<meta property="og:description" content="段ごと・バラバラ・苦手だけ。タイムと苦手な問題が記録される、スマホで遊べる九九の練習です。">
+<meta property="og:url" content="https://ouchidougubako.com/kuku/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="おうち学習のどうぐばこ">
+<meta property="og:locale" content="ja_JP">
+<link rel="stylesheet" href="/assets/fonts/klee-one/klee-one.css">
+<style>
+:root{
+  --navy:#1f2d4d; --cream:#fff9ee; --yellow:#f5c542; --teal:#2a9d8f; --line:#e6dccb; --red:#c8323c;
+  --ui-font:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN","Zen Maru Gothic","游ゴシック","Yu Gothic","メイリオ",Meiryo,"Noto Sans JP","Noto Sans CJK JP",sans-serif;
+  --num-font:"Klee One",var(--ui-font);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:var(--ui-font);line-height:1.7}
+a{color:var(--teal)}
+button{font:inherit;color:inherit}
+.topbar{background:var(--navy);color:#fff;padding:10px 16px;position:sticky;top:0;z-index:50}
+.topbar a{color:#fff;text-decoration:none;font-weight:700}
+.wrap{max-width:520px;margin:0 auto;padding:16px}
+h1{font-size:1.45rem;margin:8px 0 4px;line-height:1.4}
+.lead{margin:0 0 12px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px;padding:0;list-style:none}
+.badges li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:.85rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px}
+.label{display:block;font-weight:700;margin:0 0 6px}
+.note{font-size:.82rem;color:#5a6577;margin:6px 0 0}
+.seg{display:flex;gap:6px}
+.seg button{flex:1;padding:10px 4px;border:2px solid #c9bfae;border-radius:12px;background:#fff;font-weight:700;cursor:pointer;line-height:1.3}
+.seg button small{display:block;font-weight:400;font-size:.72rem;color:#5a6577}
+.seg button[aria-pressed="true"]{border-color:var(--navy);background:var(--navy);color:#fff}
+.seg button[aria-pressed="true"] small{color:#dfe5ef}
+.seg button:disabled{opacity:.45;cursor:default}
+.dans{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.dans button{padding:10px 0;border:2px solid #c9bfae;border-radius:12px;background:#fff;font-weight:700;font-size:1.05rem;cursor:pointer}
+.dans button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal);color:#fff}
+.dans .all{grid-column:span 1;font-size:.8rem}
+.players{display:flex;flex-wrap:wrap;gap:6px}
+.players button{padding:6px 12px;border:2px solid #c9bfae;border-radius:999px;background:#fff;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.players button[aria-pressed="true"]{border-color:var(--navy);background:var(--navy);color:#fff}
+.players .add{border-style:dashed;color:#5a6577}
+.start{width:100%;padding:16px;border:none;border-radius:14px;background:var(--yellow);font-size:1.25rem;font-weight:700;cursor:pointer;box-shadow:0 3px 0 #d7a81f}
+.start:disabled{opacity:.5;cursor:default}
+.sub{width:100%;margin:8px 0 0;padding:10px;border:2px solid var(--navy);border-radius:12px;background:#fff;font-weight:700;cursor:pointer}
+.error{background:#fdecea;color:#8a1f11;border-radius:10px;padding:8px 10px;margin:0 0 10px;font-size:.9rem}
+
+/* プレイ画面 */
+.play{display:flex;flex-direction:column;gap:12px}
+.bar{display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.bar .timer{font-family:var(--num-font);font-size:1.6rem;font-variant-numeric:tabular-nums;min-width:5.5em;text-align:right}
+.prog{height:10px;background:#efe6d6;border-radius:999px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--teal);transition:width .2s}
+.qbox{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 8px;text-align:center;position:relative;min-height:170px;display:flex;flex-direction:column;justify-content:center}
+.qbox .q{font-family:var(--num-font);font-weight:600;font-size:3.4rem;line-height:1.2;white-space:nowrap}
+.qbox .ans{display:inline-block;min-width:1.6em;border-bottom:4px solid var(--navy);color:var(--teal)}
+.qbox .msg{height:1.6em;font-weight:700;margin-top:6px}
+.qbox.ok{border-color:var(--teal)}
+.qbox.ng{border-color:var(--red);animation:shake .35s}
+.qbox.ng .msg{color:var(--red)}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.count{font-family:var(--num-font);font-size:5rem;font-weight:600}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.keys button{padding:14px 0;border:none;border-radius:14px;background:#fff;box-shadow:0 3px 0 #d9cfbd;font-family:var(--num-font);font-weight:600;font-size:1.8rem;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.keys button:active{transform:translateY(2px);box-shadow:0 1px 0 #d9cfbd}
+.keys .fn{font-family:var(--ui-font);font-size:1rem;font-weight:700;background:#f3ecdf}
+.quit{background:none;border:none;color:#5a6577;text-decoration:underline;cursor:pointer;font-size:.85rem;align-self:center}
+
+/* 結果 */
+.result{text-align:center}
+.result .big{font-family:var(--num-font);font-size:3rem;font-weight:600;line-height:1.2;margin:4px 0}
+.result .best{display:inline-block;background:var(--red);color:#fff;border-radius:999px;padding:2px 14px;font-weight:700;margin:4px 0}
+.result .stats{display:flex;justify-content:center;gap:18px;margin:8px 0 0;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0 0;padding:0;list-style:none}
+.chips li{background:#fdecea;color:#8a1f11;border-radius:999px;padding:2px 12px;font-family:var(--num-font);font-weight:600}
+.chips.good li{background:#e3f4f1;color:#1d6f65}
+table.rec{width:100%;border-collapse:collapse;font-size:.9rem}
+table.rec th,table.rec td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left}
+table.rec th{white-space:nowrap;font-size:.8rem}
+table.rec td.t{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.weakgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;font-size:.72rem;text-align:center}
+.weakgrid span{padding:3px 0;border-radius:4px;background:#f3ecdf;font-variant-numeric:tabular-nums}
+.weakgrid span.h{background:none;font-weight:700}
+.weakgrid span.w1{background:#ffe2a8}
+.weakgrid span.w2{background:#f7a8a8}
+.weakgrid span.ok{background:#cdeee8}
+
+.inapp{background:#fff4d6;border:2px solid var(--yellow);border-radius:12px;padding:12px 14px;margin:0 0 14px;font-size:.92rem;line-height:1.6}
+.inapp strong{display:block;font-size:1rem;margin:0 0 4px}
+.inapp ol{margin:6px 0 0;padding-left:1.3em}
+.inapp .ia-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.inapp .ia-btns a,.inapp .ia-btns button{flex:1 1 auto;text-align:center;padding:10px 12px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font-weight:700;text-decoration:none;cursor:pointer}
+.inapp .ia-btns a{background:var(--navy);color:#fff}
+.howto h2{font-size:1.1rem;margin:0 0 6px}
+.howto ol,.howto ul{margin:0;padding-left:1.4em}
+footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
+<main class="wrap">
+
+<section id="setup">
+  <h1>九九タイムアタック</h1>
+  <p class="lead">九九を何秒で言えるかな？ 段ごと・バラバラ・苦手だけの3つのモードで練習できます。タイムと、まちがえた問題が記録されます。</p>
+  <ul class="badges"><li>無料</li><li>登録なし</li><li>スマホで遊べる</li><li>苦手だけもう一度</li></ul>
+
+  <div class="inapp" id="inappNote" hidden>
+    <strong>記録を残すなら、ブラウザで開くのがおすすめ</strong>
+    いま開いているのはInstagramなどアプリの中のブラウザです。このままでも遊べますが、記録が消えることがあります。ChromeやSafariで開くと、記録が残りやすくなります。
+    <ol><li>右上の「︙」または「…」を押す</li><li>「ブラウザで開く」（「Chromeで開く」「Safariで開く」）を選ぶ</li></ol>
+    <div class="ia-btns"><a id="inappOpen" href="#" hidden>Chromeで開く</a><button type="button" id="inappCopy">このページのURLをコピー</button></div>
+    <p class="note" id="inappCopied" hidden>コピーしました。ChromeやSafariのアドレス欄に貼り付けて開いてください。</p>
+  </div>
+
+  <div class="card">
+    <span class="label">だれが遊ぶ？</span>
+    <div class="players" id="players"></div>
+    <p class="note">名前ごとに記録を分けられます。名前はこのスマホ（パソコン）の中だけに保存し、どこにも送信しません。</p>
+  </div>
+
+  <div class="card">
+    <span class="label">モード</span>
+    <div class="seg" id="modeSeg">
+      <button type="button" data-mode="dan" aria-pressed="true">段ごと<small>選んだ段だけ</small></button>
+      <button type="button" data-mode="mix" aria-pressed="false">バラバラ<small>1〜9の段から</small></button>
+      <button type="button" data-mode="weak" aria-pressed="false" id="weakBtn">苦手だけ<small id="weakSmall">まだなし</small></button>
+    </div>
+
+    <div id="danBox" style="margin-top:14px">
+      <span class="label">段（いくつでも選べます）</span>
+      <div class="dans" id="dans"></div>
+      <span class="label" style="margin-top:12px">出る順番</span>
+      <div class="seg" id="orderSeg">
+        <button type="button" data-order="up" aria-pressed="true">じゅんばん<small>×1から×9</small></button>
+        <button type="button" data-order="down" aria-pressed="false">ぎゃく<small>×9から×1</small></button>
+        <button type="button" data-order="rand" aria-pressed="false">バラバラ<small>順番をまぜる</small></button>
+      </div>
+    </div>
+
+    <div id="mixBox" style="margin-top:14px" hidden>
+      <span class="label">問題の数</span>
+      <div class="seg" id="mixSeg">
+        <button type="button" data-n="10" aria-pressed="true">10問</button>
+        <button type="button" data-n="20" aria-pressed="false">20問</button>
+        <button type="button" data-n="30" aria-pressed="false">30問</button>
+        <button type="button" data-n="81" aria-pressed="false">81問<small>ぜんぶ</small></button>
+      </div>
+    </div>
+
+    <div id="weakBox" style="margin-top:14px" hidden>
+      <p class="note" id="weakNote" style="margin:0"></p>
+    </div>
+  </div>
+
+  <div class="error" id="errorBox" hidden></div>
+  <button type="button" class="start" id="startBtn">スタート</button>
+  <p class="note" id="summary" style="text-align:center"></p>
+
+  <div class="card" id="recCard" style="margin-top:18px">
+    <span class="label">きろく</span>
+    <div id="recBody"></div>
+  </div>
+
+  <div class="card">
+    <span class="label">苦手マップ</span>
+    <div class="weakgrid" id="weakGrid" aria-label="九九の苦手マップ"></div>
+    <p class="note">黄色は「時間がかかった」、赤は「まちがえた」問題です。2回つづけてすぐに正解すると、苦手から外れて緑になります。</p>
+  </div>
+
+  <section class="card howto">
+    <h2>使い方</h2>
+    <ol>
+      <li>モードを選んで「スタート」を押します。3・2・1のあとに問題が出ます。</li>
+      <li>下の数字のボタンで答えを入れます。答えの数字を入れると、すぐに次の問題へ進みます。</li>
+      <li>まちがえたときは正しい答えが出て、そのまま次へ進みます。まちがえた問題と、答えるのに時間がかかった問題は「苦手だけ」に入ります。</li>
+    </ol>
+    <p class="note">記録はこのスマホ（パソコン）のブラウザの中だけに保存します。サーバーには送りません。ブラウザの履歴を消すと、記録も消えます。</p>
+  </section>
+</section>
+
+<section id="playView" class="play" hidden aria-live="polite">
+  <div class="bar"><span id="progText">1 / 9</span><span class="timer" id="timer">0.0 秒</span></div>
+  <div class="prog"><i id="progBar"></i></div>
+  <div class="qbox" id="qbox">
+    <div class="count" id="countDown">3</div>
+    <div class="q" id="qText" hidden></div>
+    <div class="msg" id="qMsg"></div>
+  </div>
+  <div class="keys" id="keys">
+    <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button>
+    <button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button>
+    <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button>
+    <button type="button" data-k="del" class="fn">けす</button><button type="button" data-k="0">0</button><button type="button" data-k="pass" class="fn">わからない</button>
+  </div>
+  <button type="button" class="quit" id="quitBtn">やめる</button>
+</section>
+
+<section id="resultView" hidden>
+  <div class="card result" aria-live="polite">
+    <div id="resTitle" style="font-weight:700"></div>
+    <div class="big" id="resTime"></div>
+    <div id="resBest"></div>
+    <div class="stats"><span id="resScore"></span><span id="resAvg"></span></div>
+    <div id="resMissBox" hidden><p class="label" style="margin:12px 0 0">まちがえた問題</p><ul class="chips" id="resMiss"></ul></div>
+    <div id="resSlowBox" hidden><p class="label" style="margin:12px 0 0">時間がかかった問題</p><ul class="chips" id="resSlow"></ul></div>
+    <div id="resPerfect" hidden><ul class="chips good"><li>ぜんぶ正解！</li></ul></div>
+  </div>
+  <button type="button" class="start" id="againBtn">もう一度</button>
+  <button type="button" class="sub" id="weakAgainBtn">苦手だけ練習する</button>
+  <button type="button" class="sub" id="backBtn">モードをえらぶ</button>
+</section>
+
+</main>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18a</span></footer>
+
+<script>
+console.log("BUILD_TAG: 2026-11-18a");
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id)};
+
+  // ---- アプリ内ブラウザの案内 ----
+  var UA=navigator.userAgent||"";
+  var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Bytedance|Twitter/i.test(UA);
+  if(INAPP){
+    $("inappNote").hidden=false;
+    if(/Android/i.test(UA)){
+      var op=$("inappOpen");
+      op.href="intent://"+location.host+location.pathname+location.search+"#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(location.href)+";end";
+      op.hidden=false;
+    }
+    $("inappCopy").addEventListener("click",function(){
+      var url=location.href,done=function(){$("inappCopied").hidden=false};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){window.prompt("このURLをコピーしてください",url)})}
+      else window.prompt("このURLをコピーしてください",url);
+    });
+  }
+
+  // ---- 定数 ----
+  var SLOW_MS=5000;          // これより時間がかかったら「時間がかかった」
+  var WEAK_MAX=10;           // 苦手だけモードの最大問題数
+  var KEY="dougubako_kuku_v1";
+  var GUEST="ゲスト";
+
+  // ---- 保存（このブラウザの中だけ） ----
+  var memStore=null;
+  function load(){
+    try{var s=localStorage.getItem(KEY);if(s)return JSON.parse(s)}catch(e){}
+    return memStore||{players:[GUEST],current:GUEST,data:{}};
+  }
+  function save(){
+    memStore=db;
+    try{localStorage.setItem(KEY,JSON.stringify(db));return true}catch(e){return false}
+  }
+  var db=load();
+  if(!db.players||!db.players.length)db.players=[GUEST];
+  if(db.players.indexOf(db.current)<0)db.current=db.players[0];
+  db.data=db.data||{};
+  function pdata(name){
+    name=name||db.current;
+    if(!db.data[name])db.data[name]={facts:{},best:{},history:[]};
+    return db.data[name];
+  }
+
+  // ---- 問題を作る ----
+  function rng(seed){var s=seed%2147483647;if(s<=0)s+=2147483646;return function(){s=s*16807%2147483647;return (s-1)/2147483646}}
+  function shuffle(list,r){for(var i=list.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=list[i];list[i]=list[j];list[j]=t}return list}
+  function fact(a,b){return {a:a,b:b,ans:a*b,key:a+"x"+b}}
+  // となり合う2問が同じ問題にならないようにする（バラバラのとき）
+  function avoidAdjacent(list,r){
+    for(var i=1;i<list.length;i++){
+      if(list[i].key===list[i-1].key){
+        for(var j=i+1;j<list.length;j++){if(list[j].key!==list[i-1].key){var t=list[i];list[i]=list[j];list[j]=t;break}}
+      }
+    }
+    return list;
+  }
+  function weakScore(f){
+    if(!f)return 0;
+    return (f.missStreak||0)*3+(f.slowStreak||0)*1+(f.miss?1:0)*0.5;
+  }
+  function isWeak(f){return !!f&&((f.missStreak||0)>0||(f.slowStreak||0)>0)}
+  function weakList(facts){
+    var out=[];
+    for(var a=1;a<=9;a++)for(var b=1;b<=9;b++){var k=a+"x"+b;if(isWeak(facts[k]))out.push({f:fact(a,b),s:weakScore(facts[k]),last:facts[k].lastAt||0})}
+    out.sort(function(x,y){return y.s-x.s||x.last-y.last||(x.f.a-y.f.a)||(x.f.b-y.f.b)});
+    return out.map(function(o){return o.f});
+  }
+  // o: {mode:'dan'|'mix'|'weak', dans:[...], order:'up'|'down'|'rand', n:10, seed, facts}
+  function build(o){
+    var r=rng(o.seed||1),list=[];
+    if(o.mode==="dan"){
+      var dans=(o.dans||[]).slice().sort(function(x,y){return x-y});
+      if(!dans.length)return {error:"段を1つ以上えらんでください。",list:[]};
+      dans.forEach(function(a){for(var b=1;b<=9;b++)list.push(fact(a,b))});
+      if(o.order==="down"){var byDan=[];dans.forEach(function(a){for(var b=9;b>=1;b--)byDan.push(fact(a,b))});list=byDan}
+      else if(o.order==="rand"){list=avoidAdjacent(shuffle(list,r),r)}
+    }else if(o.mode==="mix"){
+      var all=[];for(var a=1;a<=9;a++)for(var b=1;b<=9;b++)all.push(fact(a,b));
+      shuffle(all,r);
+      list=all.slice(0,Math.min(81,o.n||10));
+    }else if(o.mode==="weak"){
+      list=weakList(o.facts||{}).slice(0,WEAK_MAX);
+      if(!list.length)return {error:"苦手な問題はまだありません。ほかのモードで遊ぶと、まちがえた問題がここに入ります。",list:[]};
+      shuffle(list,r);
+    }
+    return {error:null,list:list};
+  }
+  function modeKey(o){
+    if(o.mode==="dan")return "dan:"+(o.dans||[]).slice().sort().join("")+":"+o.order;
+    if(o.mode==="mix")return "mix:"+o.n;
+    return "weak";
+  }
+  function modeLabel(o){
+    if(o.mode==="dan"){var d=(o.dans||[]).slice().sort(function(x,y){return x-y});var t=d.length===9?"1〜9の段":d.join("・")+"の段";return t+"（"+({up:"じゅんばん",down:"ぎゃく",rand:"バラバラ"})[o.order]+"）"}
+    if(o.mode==="mix")return "バラバラ "+o.n+"問";
+    return "苦手だけ";
+  }
+  // 1問の結果を記録に入れる
+  function recordFact(facts,f,ok,ms,now){
+    var s=facts[f.key]||(facts[f.key]={n:0,miss:0,slow:0,missStreak:0,slowStreak:0,goodStreak:0});
+    s.n++;s.lastAt=now;
+    if(!ok){s.miss++;s.missStreak=1;s.goodStreak=0}
+    else if(ms>SLOW_MS){s.slow++;s.slowStreak=1;s.goodStreak=0}
+    else{
+      s.goodStreak=(s.goodStreak||0)+1;
+      if(s.goodStreak>=2){s.missStreak=0;s.slowStreak=0}
+    }
+    return s;
+  }
+  function fmt(ms){return (Math.floor(ms/100)/10).toFixed(1)}
+
+  // ---- 画面の状態 ----
+  var opts={mode:"dan",dans:[2],order:"up",n:10};
+  function pressGroup(box,attr,val){Array.prototype.forEach.call(box.querySelectorAll("button"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute(attr)===String(val)))})}
+
+  function renderPlayers(){
+    var box=$("players");box.innerHTML="";
+    db.players.forEach(function(n){
+      var b=document.createElement("button");b.type="button";b.textContent=n;b.setAttribute("aria-pressed",String(n===db.current));
+      b.addEventListener("click",function(){db.current=n;save();renderAll()});
+      box.appendChild(b);
+    });
+    if(db.players.length<4){
+      var add=document.createElement("button");add.type="button";add.className="add";add.textContent="＋ 名前をふやす";
+      add.addEventListener("click",function(){
+        var n=(window.prompt("名前（ニックネームでOK・10文字まで）","")||"").trim().slice(0,10);
+        if(!n||db.players.indexOf(n)>=0)return;
+        db.players.push(n);db.current=n;save();renderAll();
+      });
+      box.appendChild(add);
+    }
+  }
+  function renderDans(){
+    var box=$("dans");box.innerHTML="";
+    for(var a=1;a<=9;a++)(function(a){
+      var b=document.createElement("button");b.type="button";b.textContent=a+"の段";b.style.fontSize=".85rem";
+      b.setAttribute("aria-pressed",String(opts.dans.indexOf(a)>=0));
+      b.addEventListener("click",function(){var i=opts.dans.indexOf(a);if(i>=0)opts.dans.splice(i,1);else opts.dans.push(a);renderAll()});
+      box.appendChild(b);
+    })(a);
+    var all=document.createElement("button");all.type="button";all.className="all";all.textContent="ぜんぶ";
+    all.setAttribute("aria-pressed",String(opts.dans.length===9));
+    all.addEventListener("click",function(){opts.dans=opts.dans.length===9?[]:[1,2,3,4,5,6,7,8,9];renderAll()});
+    box.appendChild(all);
+  }
+  function renderRecords(){
+    var p=pdata(),h=p.history||[];
+    if(!h.length){$("recBody").innerHTML='<p class="note" style="margin:0">まだ記録はありません。</p>';return}
+    var html='<table class="rec"><thead><tr><th>日付</th><th>モード</th><th>正解</th><th style="text-align:right">タイム</th></tr></thead><tbody>';
+    h.slice(-10).reverse().forEach(function(x){
+      html+='<tr><td>'+esc(x.date)+'</td><td>'+esc(x.label)+(x.best?' <b style="color:var(--red)">ベスト</b>':'')+'</td><td>'+x.ok+'/'+x.total+'</td><td class="t">'+fmt(x.ms)+' 秒</td></tr>';
+    });
+    html+='</tbody></table><button type="button" class="sub" id="clearBtn" style="font-size:.85rem;padding:6px">「'+esc(db.current)+'」の記録を消す</button>';
+    $("recBody").innerHTML=html;
+    $("clearBtn").addEventListener("click",function(){
+      if(!window.confirm("「"+db.current+"」の記録と苦手マップを消します。よろしいですか？"))return;
+      delete db.data[db.current];
+      if(db.current!==GUEST&&window.confirm("名前「"+db.current+"」も一覧から消しますか？")){db.players=db.players.filter(function(n){return n!==db.current});if(!db.players.length)db.players=[GUEST];db.current=db.players[0]}
+      save();renderAll();
+    });
+  }
+  function renderWeakGrid(){
+    var f=pdata().facts,html='<span class="h">×</span>';
+    for(var b=1;b<=9;b++)html+='<span class="h">'+b+'</span>';
+    for(var a=1;a<=9;a++){
+      html+='<span class="h">'+a+'</span>';
+      for(var b2=1;b2<=9;b2++){
+        var s=f[a+"x"+b2],cls="";
+        if(s){cls=(s.missStreak>0)?"w2":(s.slowStreak>0)?"w1":"ok"}
+        html+='<span class="'+cls+'" title="'+a+'×'+b2+'">'+(a*b2)+'</span>';
+      }
+    }
+    $("weakGrid").innerHTML=html;
+  }
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+
+  function renderAll(){
+    renderPlayers();renderDans();
+    pressGroup($("modeSeg"),"data-mode",opts.mode);
+    pressGroup($("orderSeg"),"data-order",opts.order);
+    pressGroup($("mixSeg"),"data-n",opts.n);
+    var wl=weakList(pdata().facts);
+    $("weakSmall").textContent=wl.length?wl.length+"問":"まだなし";
+    $("danBox").hidden=opts.mode!=="dan";$("mixBox").hidden=opts.mode!=="mix";$("weakBox").hidden=opts.mode!=="weak";
+    $("weakNote").textContent=wl.length?"まちがえた問題と時間がかかった問題から、多くて"+WEAK_MAX+"問を出します（いま "+wl.length+"問）。2回つづけてすぐに正解すると、苦手から外れます。":"苦手な問題はまだありません。ほかのモードで遊ぶと、まちがえた問題がここに入ります。";
+    var res=build({mode:opts.mode,dans:opts.dans,order:opts.order,n:opts.n,seed:1,facts:pdata().facts});
+    $("errorBox").hidden=!res.error;$("errorBox").textContent=res.error||"";
+    $("startBtn").disabled=!!res.error;
+    $("summary").textContent=res.error?"":modeLabel(opts)+"・"+res.list.length+"問";
+    renderRecords();renderWeakGrid();
+  }
+
+  $("modeSeg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;opts.mode=b.getAttribute("data-mode");renderAll()});
+  $("orderSeg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;opts.order=b.getAttribute("data-order");renderAll()});
+  $("mixSeg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;opts.n=Number(b.getAttribute("data-n"));renderAll()});
+
+  // ---- プレイ ----
+  var game=null,tick=null;
+  function show(id){["setup","playView","resultView"].forEach(function(x){$(x).hidden=x!==id});window.scrollTo(0,0)}
+  function start(o){
+    var seed=(Date.now()%2147483646)+1;
+    var res=build({mode:o.mode,dans:o.dans,order:o.order,n:o.n,seed:seed,facts:pdata().facts});
+    if(res.error){renderAll();return}
+    game={o:{mode:o.mode,dans:o.dans.slice(),order:o.order,n:o.n},list:res.list,i:0,input:"",t0:0,qt0:0,results:[],lock:true};
+    show("playView");
+    $("qText").hidden=true;$("countDown").hidden=false;$("qMsg").textContent="";$("qbox").className="qbox";
+    $("timer").textContent="0.0 秒";$("progText").textContent="1 / "+game.list.length;$("progBar").style.width="0";
+    var c=3;$("countDown").textContent=c;
+    var cd=setInterval(function(){
+      if(!game){clearInterval(cd);return}
+      c--;
+      if(c>0){$("countDown").textContent=c;return}
+      clearInterval(cd);$("countDown").hidden=true;$("qText").hidden=false;
+      game.t0=performance.now();game.lock=false;showQ();
+      tick=setInterval(function(){if(game)$("timer").textContent=fmt(performance.now()-game.t0)+" 秒"},100);
+    },700);
+  }
+  function showQ(){
+    var q=game.list[game.i];game.input="";game.qt0=performance.now();
+    $("qbox").className="qbox";$("qMsg").textContent="";
+    $("progText").textContent=(game.i+1)+" / "+game.list.length;
+    $("progBar").style.width=(game.i/game.list.length*100)+"%";
+    drawQ();
+  }
+  function drawQ(){var q=game.list[game.i];$("qText").innerHTML=q.a+" × "+q.b+" = <span class=\"ans\">"+(game.input||"&nbsp;")+"</span>"}
+  function answer(ok,given){
+    var q=game.list[game.i],ms=performance.now()-game.qt0;
+    game.results.push({key:q.key,a:q.a,b:q.b,ans:q.ans,given:given,ok:ok,ms:ms});
+    game.lock=true;
+    if(ok){$("qbox").className="qbox ok";$("qMsg").textContent="";setTimeout(next,180)}
+    else{
+      $("qbox").className="qbox ng";
+      $("qText").innerHTML=q.a+" × "+q.b+" = <span class=\"ans\" style=\"color:var(--red)\">"+q.ans+"</span>";
+      $("qMsg").textContent=given===null?"こたえは "+q.ans:"ざんねん！ こたえは "+q.ans;
+      setTimeout(next,1300);
+    }
+  }
+  function next(){
+    if(!game)return;
+    game.i++;game.lock=false;
+    if(game.i>=game.list.length){finish();return}
+    showQ();
+  }
+  function press(k){
+    if(!game||game.lock)return;
+    var q=game.list[game.i];
+    if(k==="del"){game.input=game.input.slice(0,-1);drawQ();return}
+    if(k==="pass"){answer(false,null);return}
+    if(!/^\d$/.test(k))return;
+    if(game.input===""&&k==="0")return;
+    game.input+=k;drawQ();
+    var want=String(q.ans);
+    if(game.input.length>=want.length)answer(game.input===want,game.input);
+  }
+  $("keys").addEventListener("click",function(e){var b=e.target.closest("button");if(b)press(b.getAttribute("data-k"))});
+  document.addEventListener("keydown",function(e){
+    if($("playView").hidden)return;
+    if(/^\d$/.test(e.key))press(e.key);else if(e.key==="Backspace")press("del");
+  });
+  $("quitBtn").addEventListener("click",function(){if(!window.confirm("やめますか？（記録は残りません）"))return;stop();show("setup");renderAll()});
+  function stop(){clearInterval(tick);tick=null;game=null}
+
+  function finish(){
+    var g=game,total=performance.now()-g.t0;stop();
+    $("progBar").style.width="100%";
+    var now=Date.now(),p=pdata();
+    g.results.forEach(function(r){recordFact(p.facts,r,r.ok,r.ms,now)});
+    var okN=g.results.filter(function(r){return r.ok}).length,n=g.results.length;
+    var key=modeKey(g.o),prev=p.best[key],isBest=false;
+    // ベストは全問正解のときだけ
+    // 苦手だけは毎回問題が変わるのでベストを付けない
+    if(g.o.mode!=="weak"&&okN===n&&(!prev||total<prev.ms)){p.best[key]={ms:total,date:today()};isBest=true}
+    p.history.push({date:today(),label:modeLabel(g.o),ok:okN,total:n,ms:total,best:isBest});
+    if(p.history.length>50)p.history=p.history.slice(-50);
+    var saved=save();
+    lastResult={results:g.results,total:total,okN:okN,n:n,isBest:isBest,prev:prev,key:key,saved:saved};
+    $("resTitle").textContent=modeLabel(g.o);
+    $("resTime").textContent=fmt(total)+" 秒";
+    $("resBest").innerHTML=isBest?'<span class="best">'+(prev?"じこベスト！":"はじめての記録！")+'</span>':(p.best[key]?'<span class="note">ベスト '+fmt(p.best[key].ms)+' 秒</span>':(okN<n?'<span class="note">ぜんぶ正解すると、ベスト記録になります</span>':''));
+    $("resScore").textContent="正解 "+okN+" / "+n;
+    $("resAvg").textContent="1問 "+(total/n/1000).toFixed(1)+" 秒";
+    var miss=g.results.filter(function(r){return !r.ok}),slow=g.results.filter(function(r){return r.ok&&r.ms>SLOW_MS});
+    $("resMiss").innerHTML=miss.map(function(r){return "<li>"+r.a+"×"+r.b+"="+r.ans+"</li>"}).join("");
+    $("resSlow").innerHTML=slow.map(function(r){return "<li>"+r.a+"×"+r.b+"="+r.ans+"</li>"}).join("");
+    $("resMissBox").hidden=!miss.length;$("resSlowBox").hidden=!slow.length;$("resPerfect").hidden=!!miss.length;
+    $("weakAgainBtn").hidden=!weakList(p.facts).length;
+    lastOpts=g.o;
+    show("resultView");
+  }
+  var lastResult=null,lastOpts=null;
+  function today(){var d=new Date(Date.now()+9*3600e3);return d.toISOString().slice(5,10).replace("-","/")}
+
+  $("startBtn").addEventListener("click",function(){start(opts)});
+  $("againBtn").addEventListener("click",function(){start(lastOpts||opts)});
+  $("weakAgainBtn").addEventListener("click",function(){opts.mode="weak";start({mode:"weak",dans:[],order:"up",n:10})});
+  $("backBtn").addEventListener("click",function(){show("setup");renderAll()});
+
+  // 検査用
+  window.__kuku={build:build,weakList:weakList,recordFact:recordFact,isWeak:isWeak,modeKey:modeKey,modeLabel:modeLabel,SLOW_MS:SLOW_MS,WEAK_MAX:WEAK_MAX,
+    db:function(){return db},press:press,state:function(){return {game:game,last:lastResult}},setOpts:function(o){for(var k in o)opts[k]=o[k];renderAll()}};
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
