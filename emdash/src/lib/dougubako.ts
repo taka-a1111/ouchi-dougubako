@@ -66,13 +66,15 @@ a{color:var(--teal)}.topbar{background:var(--navy);padding:10px 16px}.topbar a{c
 .meta{font-size:.85rem;color:#5a6577;margin:0 0 16px}.eye{width:100%;height:auto;border-radius:12px;display:block;margin:0 0 20px}
 article h2{font-size:1.25rem;margin:32px 0 10px;padding:6px 12px;background:#fff;border-left:6px solid var(--teal);border-radius:6px}
 article h3{font-size:1.08rem;margin:24px 0 8px}article img{max-width:100%;height:auto}
+article figure{margin:20px auto;max-width:440px;text-align:center}article figure img{border-radius:12px;border:1px solid var(--line)}article figcaption{font-size:.85rem;color:#5a6577;margin-top:4px}
+article ol,article ul{padding-left:1.4em}article li{margin:4px 0}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;list-style:none;padding:0}
 .cards a{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;text-decoration:none;color:inherit}
 .cards a:hover{border-color:var(--teal)}.cards .t{font-weight:700}.cards .d{font-size:.8rem;color:#5a6577}
 footer{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}`;
 
 /** ページの枠（記事一覧・記事ページで共通） */
-export function layout(o: { title: string; description: string; path: string; body: string; jsonld?: unknown }): string {
+export function layout(o: { title: string; description: string; path: string; body: string; jsonld?: unknown; image?: string }): string {
 	const full = o.path === "/blog/" ? `${o.title}｜${SITE}` : `${o.title}｜${SITE}`;
 	return `<!DOCTYPE html>
 <html lang="ja">
@@ -87,6 +89,8 @@ export function layout(o: { title: string; description: string; path: string; bo
 <meta property="og:url" content="${BASE}${o.path}">
 <meta property="og:site_name" content="${SITE}">
 <meta property="og:locale" content="ja_JP">
+${o.image ? `<meta property="og:image" content="${BASE}${o.image}">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n<meta name="twitter:card" content="summary_large_image">` : ""}
+<meta property="og:type" content="${o.path.startsWith("/blog/") && o.path !== "/blog/" ? "article" : "website"}">
 ${o.jsonld ? `<script type="application/ld+json">${JSON.stringify(o.jsonld).replace(/</g, "\\u003c")}</script>` : ""}
 <style>${STYLE}</style>
 </head>
@@ -124,12 +128,14 @@ export function renderPost(p: Post): string {
 		dateModified: p.modified || p.date,
 		mainEntityOfPage: `${BASE}${path}`,
 		publisher: { "@type": "Organization", name: SITE, url: `${BASE}/` },
+		...(p.eyecatch ? { image: `${BASE}/blog/img/${p.eyecatch}` } : {}),
 	};
 	return layout({
 		title: p.title,
 		description: p.description,
 		path,
 		jsonld,
+		image: p.eyecatch ? `/blog/img/${p.eyecatch}` : undefined,
 		body: `<article><h1>${esc(p.title)}</h1><p class="meta">${esc(p.date.replace(/-/g, "."))}${p.modified ? `（更新 ${esc(p.modified.replace(/-/g, "."))}）` : ""}・${esc(p.cat)}</p>${eye}${p.body_html}</article>`,
 	});
 }

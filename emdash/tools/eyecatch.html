@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/posts/fonts/zmg.css">
+<style>
+:root{--navy:#1f2d4d;--cream:#fff9ee;--yellow:#f5c542;--teal:#2a9d8f}
+body{margin:0;font-family:"Zen Maru Gothic","Noto Sans JP",sans-serif}
+.ec{width:1200px;height:630px;background:var(--cream);position:relative;overflow:hidden;color:var(--navy)}
+.ec .band{position:absolute;left:0;top:0;bottom:0;width:22px;background:var(--teal)}
+.ec .tag{position:absolute;left:80px;top:70px;background:var(--navy);color:#fff;font-weight:700;font-size:30px;border-radius:999px;padding:6px 26px}
+.ec h1{position:absolute;left:80px;top:150px;width:760px;margin:0;font-size:68px;font-weight:900;line-height:1.35}
+.ec h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--yellow) 62%)}
+.ec .sub{position:absolute;left:80px;top:390px;font-size:32px;font-weight:700;color:#5a6577}
+.ec .box{position:absolute;right:70px;top:150px;width:250px;height:250px}
+.ec .brand{position:absolute;right:70px;bottom:50px;font-size:28px;font-weight:700}
+</style>
+</head>
+<body>
+<section class="ec" id="e1">
+  <div class="band"></div>
+  <div class="tag" id="tag"></div>
+  <h1 id="title"></h1>
+  <div class="sub" id="sub"></div>
+  <svg class="box" viewBox="0 0 96 96" aria-hidden="true">
+    <rect x="30" y="10" width="8" height="30" rx="2" fill="#f5c542" transform="rotate(-12 34 25)"/>
+    <rect x="52" y="12" width="7" height="28" rx="2" fill="#2a9d8f" transform="rotate(10 55 26)"/>
+    <rect x="14" y="34" width="68" height="12" rx="4" fill="#b7793f"/>
+    <rect x="18" y="44" width="60" height="40" rx="6" fill="#d9a066"/>
+    <circle cx="38" cy="61" r="3.5" fill="#1f2d4d"/><circle cx="58" cy="61" r="3.5" fill="#1f2d4d"/>
+    <path d="M42 70 Q48 75 54 70" stroke="#1f2d4d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+  <div class="brand">おうち学習のどうぐばこ</div>
+</section>
+<script>
+const p=new URLSearchParams(location.search);
+document.getElementById('tag').textContent=p.get('tag')||'';
+document.getElementById('title').innerHTML=p.get('title')||'';
+document.getElementById('sub').textContent=p.get('sub')||'';
+</script>
+</body>
+</html>
