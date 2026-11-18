@@ -61,13 +61,14 @@ export function esc(s: string): string {
 const STYLE = `:root{--navy:#1f2d4d;--cream:#fff9ee;--yellow:#f5c542;--teal:#2a9d8f;--line:#e6dccb;
 --ui-font:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN","Zen Maru Gothic","游ゴシック","Yu Gothic","メイリオ",Meiryo,"Noto Sans JP","Noto Sans CJK JP",sans-serif}
 *{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--navy);font-family:var(--ui-font);line-height:1.9}
-a{color:var(--teal)}.topbar{background:var(--navy);padding:10px 16px}.topbar a{color:#fff;text-decoration:none;font-weight:700}
+a{color:var(--teal)}.topbar{background:var(--navy);padding:10px 16px;position:sticky;top:0;z-index:50;box-shadow:0 2px 6px rgba(31,45,77,.15)}.topbar a{color:#fff;text-decoration:none;font-weight:700}
 .wrap{max-width:760px;margin:0 auto;padding:20px 16px}h1{font-size:1.5rem;line-height:1.5;margin:8px 0 12px}
 .meta{font-size:.85rem;color:#5a6577;margin:0 0 16px}.eye{width:100%;height:auto;border-radius:12px;display:block;margin:0 0 20px}
 article h2{font-size:1.25rem;margin:32px 0 10px;padding:6px 12px;background:#fff;border-left:6px solid var(--teal);border-radius:6px}
 article h3{font-size:1.08rem;margin:24px 0 8px}article img{max-width:100%;height:auto}
 article figure{margin:20px auto;max-width:440px;text-align:center}article figure img{border-radius:12px;border:1px solid var(--line)}article figcaption{font-size:.85rem;color:#5a6577;margin-top:4px}
 article ol,article ul{padding-left:1.4em}article li{margin:4px 0}
+article strong.red{color:#c8323c;font-weight:700}article mark{background:linear-gradient(transparent 55%,#f8dc7a 55%);color:inherit;padding:0 1px}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;list-style:none;padding:0}
 .cards a{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;text-decoration:none;color:inherit}
 .cards a:hover{border-color:var(--teal)}.cards .t{font-weight:700}.cards .d{font-size:.8rem;color:#5a6577}
