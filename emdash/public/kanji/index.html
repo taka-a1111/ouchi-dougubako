@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- BUILD_TAG: 2026-11-19a -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://ouchidougubako.com/kanji/">
+<title>漢字練習プリント（小1・小2）｜おうち学習のどうぐばこ</title>
+<meta name="description" content="練習したい漢字を、教科書やドリルで習った順に選ぶだけで、お手本・なぞる・自分で書くの漢字練習プリントが作れます。小1・小2の漢字240字に対応し、無料・登録なしで使えます。">
+<link rel="stylesheet" href="/assets/fonts/klee-one/klee-one.css">
+<style>
+:root{
+  --navy:#1f2d4d; --cream:#fff9ee; --yellow:#f5c542; --teal:#2a9d8f; --line:#e6dccb;
+  --ui-font:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN","Zen Maru Gothic","游ゴシック","Yu Gothic","メイリオ",Meiryo,"Noto Sans JP","Noto Sans CJK JP",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:var(--ui-font);line-height:1.7}
+a{color:var(--teal)}
+.topbar{background:var(--navy);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.topbar a{color:#fff;text-decoration:none;font-weight:700}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 4px}
+.lead{margin:0 0 16px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px;padding:0;list-style:none}
+.badges li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:.85rem}
+.layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:12px}
+@media (max-width:860px){.panel{position:static}}
+.field{margin:0 0 14px}
+.field>label,.field>.label{display:block;font-weight:700;margin:0 0 4px}
+.tabs{display:flex;gap:6px}
+.tabs button{flex:1;padding:8px 4px;border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:8px;font:inherit;font-weight:700;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--navy);color:#fff}
+input[type=text],textarea,select{width:100%;padding:8px;border:1px solid #c9bfae;border-radius:8px;font:inherit;font-size:16px;background:#fff;color:var(--navy)}
+textarea{min-height:110px}
+.mini{display:flex;gap:6px;margin:6px 0 0}
+.mini button{font:inherit;font-size:.8rem;padding:2px 8px;border:1px solid #c9bfae;background:#fff;border-radius:6px;cursor:pointer}
+.radio{display:flex;flex-wrap:wrap;gap:6px}
+.radio label{border:1px solid #c9bfae;border-radius:8px;padding:4px 10px;cursor:pointer;background:#fff}
+.radio input{margin-right:4px}
+.note{font-size:.82rem;color:#5a6577;margin:4px 0 0}
+.warn{font-size:.85rem;color:#a14b00;margin:4px 0 0}
+.error{background:#fdecea;color:#8a1f11;border-radius:8px;padding:8px 10px;margin:0 0 12px;font-size:.9rem}
+.print-btn{width:100%;padding:12px;border:none;border-radius:10px;background:var(--yellow);color:var(--navy);font:inherit;font-size:1.1rem;font-weight:700;cursor:pointer}
+.print-btn:disabled{opacity:.5;cursor:default}
+.summary{font-size:.9rem;margin:8px 0 0;text-align:center}
+.preview-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 8px}
+.layout>section{min-width:0}
+.preview{display:flex;flex-direction:column;align-items:center;gap:16px;overflow:hidden}
+.page-wrap{position:relative;overflow:hidden}
+.page-wrap .page{transform-origin:top left;box-shadow:0 2px 10px rgba(31,45,77,.15)}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin:24px 0 0}
+.howto h2{font-size:1.15rem;margin:0 0 8px}
+.howto ol{margin:0;padding-left:1.4em}
+footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
+
+/* ===== 印刷するページ（A4・mm単位） ===== */
+.page{width:210mm;height:297mm;background:#fff;padding:12mm 15mm;display:flex;flex-direction:column;color:#2b2f36;font-family:var(--ui-font)}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start;height:22mm;border-bottom:.4mm solid #2b2f36;padding-bottom:2mm}
+.p-left{min-width:0;flex:1;padding-right:4mm}
+.p-sub{font-size:3.4mm;color:#5a6577;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:7mm;font-weight:600;line-height:1.2;font-family:"Klee One",var(--ui-font)}
+.p-stamp{font-size:3.2mm;margin-top:1mm;display:flex;align-items:center;gap:1.5mm}
+.p-stamp i{display:inline-block;width:5mm;height:5mm;border:.35mm solid #2b2f36;border-radius:50%}
+.p-stampbox{flex:none;width:19mm;height:19mm;border:.4mm solid #2b2f36;border-radius:1.5mm;margin-left:3mm;position:relative}
+.p-stampbox span{position:absolute;top:.8mm;left:0;right:0;text-align:center;font-size:2.4mm;line-height:1;color:#8f99a6}
+.p-meta{flex:none;font-size:4mm;text-align:right;line-height:1.9}
+.p-meta .blank{display:inline-block;width:42mm;border-bottom:.3mm solid #2b2f36}
+.p-meta .sblank{display:inline-block;width:9mm}
+.p-grid{flex:1;display:flex;flex-direction:column;align-items:center;gap:var(--gap);padding-top:5mm}
+.p-row{display:flex}
+.cell{width:var(--cell);height:var(--cell);border:.35mm solid #8f99a6;border-right:none;position:relative;display:flex;align-items:center;justify-content:center;font-family:"Klee One",serif;font-weight:600;font-size:calc(var(--cell) * .74);line-height:1}
+.p-row .cell:last-child{border-right:.35mm solid #8f99a6}
+.cell::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:.25mm dashed #c5ccd5}
+.cell::after{content:"";position:absolute;top:50%;left:0;right:0;border-top:.25mm dashed #c5ccd5}
+.cell span{position:relative;z-index:1}
+.cell.model{color:#2b2f36}
+.cell.trace{color:var(--trace)}
+.p-foot{height:6mm;font-size:3mm;color:#7a8494;display:flex;justify-content:space-between;align-items:flex-end}
+
+.inapp{background:#fff4d6;border:2px solid var(--yellow);border-radius:12px;padding:12px 14px;margin:0 0 14px;font-size:.92rem;line-height:1.6}
+.inapp strong{display:block;font-size:1rem;margin:0 0 4px}
+.inapp ol{margin:6px 0 0;padding-left:1.3em}
+.inapp .ia-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.inapp .ia-btns a,.inapp .ia-btns button{flex:1 1 auto;text-align:center;padding:10px 12px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.inapp .ia-btns a{background:var(--navy);color:#fff}
+.inapp.flash{animation:iaflash .9s ease 2}
+@keyframes iaflash{50%{background:#ffe08a}}
+@media print{.inapp{display:none!important}}
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  .topbar,.wrap>*:not(.layout),.panel,.preview-head,footer.site,.howto{display:none!important}
+  .wrap{padding:0;max-width:none}
+  .layout{display:block}
+  .preview{display:block;gap:0;overflow:visible}
+  .page-wrap{width:auto!important;height:auto!important;overflow:visible}
+  .page-wrap .page{transform:none!important;box-shadow:none;break-after:page;page-break-after:always}
+  .page-wrap:last-child .page{break-after:auto;page-break-after:auto}
+}
+
+.kgrid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;max-height:390px;overflow-y:auto;padding:2px}
+.kgrid button{font-family:"Klee One",serif;font-weight:600;font-size:1.15rem;line-height:1;padding:7px 0;border:1px solid #c9bfae;border-radius:6px;background:#fff;color:var(--navy);cursor:pointer}
+.kgrid button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.cnt{font-size:.82rem;color:#5a6577}
+</style>
+</head>
+<body>
+<div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
+<main class="wrap">
+  <h1>漢字練習プリント（小1・小2）</h1>
+  <p class="lead">練習したい漢字を、教科書やドリルで習った順に選ぶだけ。お手本→なぞる→自分で書く、の順に並んだプリントが作れます。教科書の会社や学校で習う順番が違っても、そのまま使えます。</p>
+  <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>小1の80字・小2の160字</li></ul>
+
+  <div class="layout">
+    <form class="panel" id="form" onsubmit="return false">
+      <div class="field">
+        <label for="kanjiInput">練習する漢字（習った順に）</label>
+        <input type="text" id="kanjiInput" value="一二三四五" autocomplete="off">
+        <p class="note">下の表を押すと、押した順に入ります。キーボードで「一二三」のように入れてもOK。</p>
+        <p class="cnt" id="count"></p>
+        <p class="warn" id="kanjiWarn" hidden></p>
+      </div>
+
+      <div class="field">
+        <span class="label">漢字の表</span>
+        <div class="tabs" role="group" aria-label="学年">
+          <button type="button" data-grade="1" aria-pressed="true">1年（80字）</button>
+          <button type="button" data-grade="2" aria-pressed="false">2年（160字）</button>
+        </div>
+        <div class="kgrid" id="kgrid" style="margin-top:8px"></div>
+        <div class="mini"><button type="button" id="selAll">この学年をぜんぶ</button><button type="button" id="selNone">ぜんぶはずす</button></div>
+        <p class="note">表は文部科学省の学年別漢字配当表の字です（並びは表のとおりの音読み順）。</p>
+      </div>
+
+      <div class="field">
+        <label for="wordsInput">漢字を使ったことば（なくてもOK・1行に1つ・5つまで）</label>
+        <textarea id="wordsInput" placeholder="例：一つ&#10;二人"></textarea>
+        <p class="note">送りがなもいっしょに練習できます。プリントの最後に入ります。</p>
+      </div>
+
+      <div class="field">
+        <span class="label">マスの大きさ</span>
+        <div class="radio">
+          <label><input type="radio" name="size" value="L" checked>大（1年生）</label>
+          <label><input type="radio" name="size" value="M">中（2年生）</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="traceCount">なぞる回数（1字あたり）</label>
+        <select id="traceCount"><option value="1">1回</option><option value="2" selected>2回</option><option value="3">3回</option></select>
+      </div>
+
+      <div class="field">
+        <span class="label">なぞる字の濃さ</span>
+        <div class="radio">
+          <label><input type="radio" name="tone" value="normal" checked>ふつう</label>
+          <label><input type="radio" name="tone" value="light">うすい</label>
+        </div>
+      </div>
+
+      <div class="inapp" id="inappNote" hidden>
+        <strong>Instagramの中では印刷できません</strong>
+        いま開いているのはInstagramの中のブラウザです。印刷・PDF保存は、ChromeやSafariで開き直すと使えます。
+        <ol id="inappSteps"><li>右上の「︙」または「…」を押す</li><li>「ブラウザで開く」（「Chromeで開く」「Safariで開く」）を選ぶ</li></ol>
+        <div class="ia-btns"><a id="inappOpen" href="#" hidden>Chromeで開く</a><button type="button" id="inappCopy">このページのURLをコピー</button></div>
+        <p class="note" id="inappCopied" hidden>コピーしました。ChromeやSafariのアドレス欄に貼り付けて開いてください。</p>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <button type="button" class="print-btn" id="printBtn">印刷する・PDFで保存</button>
+      <p class="summary" id="summary"></p>
+    </form>
+
+    <section aria-label="プレビュー">
+      <div class="preview-head"><strong>プレビュー</strong><span class="note" id="pageCount"></span></div>
+      <div class="preview" id="preview"></div>
+    </section>
+  </div>
+
+  <section class="howto">
+    <h2>使い方</h2>
+    <ol>
+      <li>教科書の「新しく習う漢字」やドリルを見ながら、練習したい漢字を習った順に選びます。</li>
+      <li>漢字を使ったことば（「一つ」「二人」など）を入れると、送りがなもいっしょに練習できます。</li>
+      <li>「印刷する・PDFで保存」を押します。プリンターがない場合は「PDFに保存」を選び、コンビニのネットプリントで印刷できます。</li>
+    </ol>
+    <p class="note">お手本の字は教科書の字に近い形の書体（Klee One）を使っています。書き順と読みは入っていません。書き順は教科書やドリルで確かめてください。入力した内容はこの画面の中だけで使い、どこにも送りません。</p>
+  </section>
+</main>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19a</span></footer>
+<script>
+console.log("BUILD_TAG: 2026-11-19a");
+(function(){
+  "use strict";
+  var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Bytedance|Twitter/i.test(navigator.userAgent||"");
+  var ANDROID=/Android/i.test(navigator.userAgent||"");
+  if(INAPP){
+    var nt=document.getElementById("inappNote"); nt.hidden=false;
+    if(ANDROID){
+      var op=document.getElementById("inappOpen");
+      op.href="intent://"+location.host+location.pathname+location.search+"#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(location.href)+";end";
+      op.hidden=false;
+    }
+    document.getElementById("inappCopy").addEventListener("click",function(){
+      var url=location.href, done=function(){document.getElementById("inappCopied").hidden=false};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){window.prompt("このURLをコピーしてください",url)})}
+      else window.prompt("このURLをコピーしてください",url);
+    });
+  }
+  // 文部科学省「学年別漢字配当表」（小学校学習指導要領 別表）の第1学年・第2学年。表のとおりの順
+  var GRADES={1:Array.from("一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六"),2:Array.from("引羽雲園遠何科夏家歌画回会海絵外角楽活間丸岩顔汽記帰弓牛魚京強教近兄形計元言原戸古午後語工公広交光考行高黄合谷国黒今才細作算止市矢姉思紙寺自時室社弱首秋週春書少場色食心新親図数西声星晴切雪船線前組走多太体台地池知茶昼長鳥朝直通弟店点電刀冬当東答頭同道読内南肉馬売買麦半番父風分聞米歩母方北毎妹万明鳴毛門夜野友用曜来里理話")};
+  // マスの大きさ（mm）。A4の書ける範囲（横180mm×縦約240mm）から列数・行数を計算する
+  var SIZES={L:{cell:25,gap:3},M:{cell:20,gap:3}};
+  var AREA_W=180, AREA_H=240;
+  var TONES={normal:"#b9c0c9",light:"#d6dbe1"};
+  var MAX_KANJI=60, MAX_WORDS=5;
+  var state={grade:1};
+  var $=function(id){return document.getElementById(id)};
+
+  function layoutFor(sizeKey){
+    var s=SIZES[sizeKey];
+    return {cell:s.cell,gap:s.gap,cols:Math.floor(AREA_W/s.cell),rows:Math.floor((AREA_H+s.gap)/(s.cell+s.gap))};
+  }
+  function chars(str){return Array.from(str)}
+  function isKanji(ch){return /^[\p{Script=Han}々]$/u.test(ch)}
+  function gradeOf(ch){return GRADES[1].indexOf(ch)>=0?1:(GRADES[2].indexOf(ch)>=0?2:0)}
+  // 入力から漢字を取り出す。空白・読点・カンマは無視、同じ字は最初の1回だけ
+  function parseKanji(str){
+    var list=[],bad=[],dup=[];
+    chars(String(str||"")).forEach(function(c){
+      if(/[\s、，,。・\/／]/.test(c))return;
+      if(!isKanji(c)||c==="々"){if(bad.indexOf(c)<0)bad.push(c);return}
+      if(list.indexOf(c)>=0){if(dup.indexOf(c)<0)dup.push(c);return}
+      list.push(c);
+    });
+    return {list:list,bad:bad,dup:dup};
+  }
+  function wordAllowed(ch){return /^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー々]$/u.test(ch)}
+  function charRow(ch,trace,cols){
+    var cells=[{ch:ch,kind:"model"}];
+    for(var i=0;i<trace&&cells.length<cols;i++)cells.push({ch:ch,kind:"trace"});
+    while(cells.length<cols)cells.push({ch:"",kind:"free"});
+    return cells;
+  }
+  function wordBlock(word,trace,cols){
+    var cs=chars(word),rows=[];
+    var pad=function(list){while(list.length<cols)list.push({ch:"",kind:"free"});return list};
+    rows.push(pad(cs.map(function(c){return {ch:c,kind:"model"}})));
+    for(var i=0;i<trace;i++)rows.push(pad(cs.map(function(c){return {ch:c,kind:"trace"}})));
+    rows.push(pad([]));
+    rows.label="ことば";
+    return rows;
+  }
+
+  function build(opts){
+    var L=layoutFor(opts.size), errors=[], warns=[], blocks=[];
+    var p=parseKanji(opts.kanji);
+    if(p.bad.length)errors.push("漢字ではない文字があります："+p.bad.join(" "));
+    if(!p.list.length&&!p.bad.length)errors.push("練習する漢字を1つ以上選んでください。");
+    if(p.list.length>MAX_KANJI)errors.push("漢字は"+MAX_KANJI+"字までにしてください（いま"+p.list.length+"字）。");
+    if(p.dup.length)warns.push("同じ字は1回にまとめました："+p.dup.join(" "));
+    var other=p.list.filter(function(c){return !gradeOf(c)});
+    if(other.length)warns.push("1・2年の表にない字も、そのまま作れます："+other.join(" "));
+    var words=String(opts.words||"").split(/\n/).map(function(w){return w.replace(/\s+/g,"")}).filter(Boolean);
+    if(words.length>MAX_WORDS)errors.push("ことばは"+MAX_WORDS+"つまでです。");
+    words.forEach(function(w){
+      var wc=chars(w), bad=wc.filter(function(c){return !wordAllowed(c)});
+      if(bad.length)errors.push("「"+w+"」に使えない文字があります："+bad.join(" "));
+      if(wc.length>L.cols)errors.push("「"+w+"」が長くて1行に入りません（このサイズは"+L.cols+"文字まで）。");
+    });
+    if(!errors.length){
+      p.list.forEach(function(c){var b=[charRow(c,opts.trace,L.cols)];b.label="かんじ";blocks.push(b)});
+      words.forEach(function(w){blocks.push(wordBlock(w,opts.trace,L.cols))});
+    }
+    var gs=p.list.map(gradeOf), sub="";
+    if(p.list.length&&gs.every(function(g){return g===1}))sub="1ねんの かんじ";
+    else if(p.list.length&&gs.every(function(g){return g===2}))sub="2ねんの かんじ";
+    else if(p.list.length&&gs.every(function(g){return g>0}))sub="1・2ねんの かんじ";
+    var pages=[],cur=[];
+    blocks.forEach(function(b){
+      if(cur.length&&cur.length+b.length>L.rows){pages.push(cur);cur=[]}
+      b.forEach(function(r){if(cur.length>=L.rows){pages.push(cur);cur=[]}cur.push(r)});
+    });
+    if(cur.length)pages.push(cur);
+    return {layout:L,pages:errors.length?[]:pages,errors:errors,warns:warns,title:"かんじ を かこう",sub:sub,kanji:p.list};
+  }
+
+  function esc(s){return s.replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+
+  function renderPage(rows,i,n,res,tone){
+    var L=res.layout;
+    var html='<section class="page" style="--cell:'+L.cell+'mm;--gap:'+L.gap+'mm;--trace:'+TONES[tone]+'">'+
+      '<div class="p-head"><div class="p-left"><div class="p-title">'+esc(res.title)+'</div>'+(res.sub?'<div class="p-sub">'+esc(res.sub)+'</div>':'')+
+      '<div class="p-stamp">できたら いろを ぬろう <i></i><i></i><i></i></div></div>'+
+      '<div class="p-meta"><div>なまえ <span class="blank"></span></div><div><span class="sblank"></span>がつ<span class="sblank"></span>にち</div></div><div class="p-stampbox"><span>スタンプ</span></div></div>'+
+      '<div class="p-grid">';
+    rows.forEach(function(r){
+      html+='<div class="p-row">';
+      r.forEach(function(c){html+='<div class="cell '+c.kind+'">'+(c.ch?'<span>'+esc(c.ch)+'</span>':'')+'</div>'});
+      html+='</div>';
+    });
+    html+='</div><div class="p-foot"><span>おうち学習のどうぐばこ　Instagram @ouchi_dougubako</span><span>'+(i+1)+' / '+n+'</span></div></section>';
+    return html;
+  }
+
+  function readOpts(){
+    return {kanji:$("kanjiInput").value,words:$("wordsInput").value,
+      size:document.querySelector('input[name=size]:checked').value,
+      trace:parseInt($("traceCount").value,10),
+      tone:document.querySelector('input[name=tone]:checked').value};
+  }
+
+  var lastText="";
+  function update(){
+    var o=readOpts(), res=build(o);
+    var eb=$("errorBox");
+    if(res.errors.length){eb.hidden=false;eb.textContent=res.errors.join(" ")}else{eb.hidden=true}
+    var w=$("kanjiWarn");
+    if(res.warns.length){w.hidden=false;w.textContent=res.warns.join(" ")}else{w.hidden=true}
+    $("count").textContent=res.kanji.length?("いま "+res.kanji.length+" 字"):"";
+    var pv=$("preview");
+    pv.innerHTML=res.pages.map(function(p,i){return '<div class="page-wrap">'+renderPage(p,i,res.pages.length,res,o.tone)+'</div>'}).join("");
+    $("pageCount").textContent=res.pages.length?("A4 "+res.pages.length+"枚"):"";
+    $("summary").textContent=res.pages.length?("A4で"+res.pages.length+"枚になります"):"";
+    $("printBtn").disabled=!res.pages.length;
+    lastText=res.pages.map(function(p){return p.map(function(r){return r.map(function(c){return c.ch}).join("")}).join("")}).join("")+res.title+(res.sub||"");
+    syncGrid(res.kanji);
+    fit();
+    window.__lastResult=res;
+  }
+
+  function fit(){
+    var pv=$("preview"), avail=Math.min(pv.clientWidth||600,820);
+    var probe=pv.querySelector(".page"); if(!probe)return;
+    var pw=probe.offsetWidth, ph=probe.offsetHeight, sc=Math.min(1,avail/pw);
+    pv.querySelectorAll(".page-wrap").forEach(function(wr){
+      wr.style.width=(pw*sc)+"px"; wr.style.height=(ph*sc)+"px";
+      wr.firstChild.style.transform="scale("+sc+")";
+    });
+  }
+
+  function renderGrid(){
+    $("kgrid").innerHTML=GRADES[state.grade].map(function(c){return '<button type="button" data-k="'+c+'" aria-pressed="false">'+c+'</button>'}).join("");
+    syncGrid(parseKanji($("kanjiInput").value).list);
+  }
+  function syncGrid(list){
+    document.querySelectorAll("#kgrid button").forEach(function(b){b.setAttribute("aria-pressed",String(list.indexOf(b.dataset.k)>=0))});
+  }
+  function setGrade(g){
+    state.grade=g;
+    document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-pressed",String(+b.dataset.grade===g))});
+    renderGrid();
+  }
+  // 表を押したら、入っていなければ最後に足す。入っていれば外す
+  function toggle(k){
+    var list=parseKanji($("kanjiInput").value).list, i=list.indexOf(k);
+    if(i>=0)list.splice(i,1);else list.push(k);
+    $("kanjiInput").value=list.join("");
+    update();
+  }
+
+  $("kgrid").addEventListener("click",function(e){var b=e.target.closest("button[data-k]");if(b)toggle(b.dataset.k)});
+  document.querySelectorAll(".tabs button").forEach(function(b){b.addEventListener("click",function(){setGrade(+b.dataset.grade)})});
+  $("selAll").addEventListener("click",function(){
+    var list=parseKanji($("kanjiInput").value).list;
+    GRADES[state.grade].forEach(function(c){if(list.indexOf(c)<0)list.push(c)});
+    $("kanjiInput").value=list.join(""); update();
+  });
+  $("selNone").addEventListener("click",function(){$("kanjiInput").value="";update()});
+  ["kanjiInput","wordsInput","traceCount"].forEach(function(id){$(id).addEventListener("input",update)});
+  document.querySelectorAll('input[name=size],input[name=tone]').forEach(function(r){r.addEventListener("change",update)});
+  window.addEventListener("resize",fit);
+
+  $("printBtn").addEventListener("click",function(){
+    if(INAPP){var n=document.getElementById("inappNote");n.classList.remove("flash");void n.offsetWidth;n.classList.add("flash");n.scrollIntoView({behavior:"smooth",block:"center"});return;}
+    var btn=this; btn.disabled=true; var label=btn.textContent; btn.textContent="準備中…";
+    var done=function(){btn.textContent=label;btn.disabled=false;window.print()};
+    if(document.fonts&&document.fonts.load){
+      Promise.all([document.fonts.load('600 40px "Klee One"',lastText),document.fonts.load('600 20px "Klee One"',lastText)]).then(function(){return document.fonts.ready}).then(done,done);
+    }else done();
+  });
+
+  // 検査用：画面を使わずに組み立て結果だけを返す
+  window.__kanji={GRADES:GRADES,SIZES:SIZES,build:build,layoutFor:layoutFor,parseKanji:parseKanji,toggle:toggle,setGrade:setGrade};
+
+  renderGrid();
+  update();
+  if(document.fonts&&document.fonts.load)document.fonts.load('600 20px "Klee One"',GRADES[1].join("")+GRADES[2].join("")).then(fit,fit);
+})();
+</script>
+</body>
+</html>

@@ -9,6 +9,7 @@ const PAGES: [string, string][] = [
 	["/bunkai/", "2026-11-18"],
 	["/kuku/", "2026-11-18"],
 	["/fuyuyasumi/", "2026-11-18"],
+	["/kanji/", "2026-11-19"],
 	["/print/checklist/", "2026-11-18"],
 	["/print/kukuhyo/", "2026-11-18"],
 	["/print/schedule/", "2026-11-18"],
