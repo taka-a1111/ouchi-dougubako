@@ -15,6 +15,7 @@ const PAGES: [string, string][] = [
 	["/bunshodai/", "2026-11-19"],
 	["/nyugaku-calendar/", "2026-11-19"],
 	["/suuji/", "2026-11-19"],
+	["/hyakumasu/", "2026-11-19"],
 	["/print/checklist/", "2026-11-18"],
 	["/print/kukuhyo/", "2026-11-18"],
 	["/print/schedule/", "2026-11-18"],
@@ -22,11 +23,13 @@ const PAGES: [string, string][] = [
 	["/print/yakusoku/", "2026-11-19"],
 	["/print/mokuhyo/", "2026-11-19"],
 	["/print/kanji80/", "2026-11-19"],
+	["/print/kanji160/", "2026-11-19"],
 	["/print/nyugaku3/", "2026-11-19"],
 	["/print/matome1/", "2026-11-19"],
 	["/print/namae/", "2026-11-19"],
 	["/print/kata-miwake/", "2026-11-19"],
 	["/print/otetsudai/", "2026-11-19"],
+	["/print/jikanwari/", "2026-11-19"],
 	["/blog/", "2026-11-18"],
 ];
 
