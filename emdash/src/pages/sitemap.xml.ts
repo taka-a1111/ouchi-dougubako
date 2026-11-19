@@ -16,6 +16,8 @@ const PAGES: [string, string][] = [
 	["/nyugaku-calendar/", "2026-11-19"],
 	["/suuji/", "2026-11-19"],
 	["/hyakumasu/", "2026-11-19"],
+	["/jikanwari-maker/", "2026-11-19"],
+	["/namae-label/", "2026-11-19"],
 	["/print/checklist/", "2026-11-18"],
 	["/print/kukuhyo/", "2026-11-18"],
 	["/print/schedule/", "2026-11-18"],
