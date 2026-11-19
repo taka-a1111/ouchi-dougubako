@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- BUILD_TAG: 2026-11-19a -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://ouchidougubako.com/suuji/">
+<title>数字のなぞり書き・数表プリント（0〜100）｜おうち学習のどうぐばこ</title>
+<meta name="description" content="0〜100の数字を、なぞって書くプリントと、数の並びをうめる数表プリントが作れます。範囲や空らんの数を選べて、数表には答えのページもつきます。無料・登録なしで使えます。">
+<link rel="stylesheet" href="/assets/fonts/klee-one/klee-one.css">
+<style>
+:root{
+  --navy:#1f2d4d; --cream:#fff9ee; --yellow:#f5c542; --teal:#2a9d8f; --line:#e6dccb;
+  --ui-font:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN","Zen Maru Gothic","游ゴシック","Yu Gothic","メイリオ",Meiryo,"Noto Sans JP","Noto Sans CJK JP",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:var(--ui-font);line-height:1.7}
+a{color:var(--teal)}
+.topbar{background:var(--navy);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.topbar a{color:#fff;text-decoration:none;font-weight:700}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 4px}
+.lead{margin:0 0 16px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px;padding:0;list-style:none}
+.badges li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:.85rem}
+.layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+.layout>*{min-width:0}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:12px}
+@media (max-width:860px){.panel{position:static}}
+.field{margin:0 0 14px}
+.field>label,.field>.label{display:block;font-weight:700;margin:0 0 4px}
+select{width:100%;padding:8px;border:1px solid #c9bfae;border-radius:8px;font:inherit;font-size:16px;background:#fff;color:var(--navy)}
+.steps{display:flex;flex-direction:column;gap:4px}
+.steps label{display:flex;gap:8px;align-items:flex-start;border:1px solid #c9bfae;border-radius:8px;padding:6px 10px;cursor:pointer;background:#fff;line-height:1.4}
+.steps label small{display:block;color:#5a6577;font-size:.78rem}
+.steps input{margin-top:3px}
+.radio{display:flex;flex-wrap:wrap;gap:6px}
+.radio label{border:1px solid #c9bfae;border-radius:8px;padding:4px 10px;cursor:pointer;background:#fff}
+.radio input{margin-right:4px}
+.check{display:flex;gap:6px;align-items:center;cursor:pointer;margin:0 0 6px}
+.note{font-size:.82rem;color:#5a6577;margin:4px 0 0}
+.error{background:#fdecea;color:#8a1f11;border-radius:8px;padding:8px 10px;margin:0 0 12px;font-size:.9rem}
+.print-btn{width:100%;padding:12px;border:none;border-radius:10px;background:var(--yellow);color:var(--navy);font:inherit;font-size:1.1rem;font-weight:700;cursor:pointer}
+.print-btn:disabled{opacity:.5;cursor:default}
+.sub-btn{width:100%;margin:8px 0 0;padding:8px;border:2px solid var(--navy);border-radius:10px;background:#fff;color:var(--navy);font:inherit;font-weight:700;cursor:pointer}
+.summary{font-size:.9rem;margin:8px 0 0;text-align:center}
+.preview-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 8px}
+.preview{display:flex;flex-direction:column;align-items:center;gap:16px;overflow:hidden}
+.page-wrap{position:relative;overflow:hidden}
+.page-wrap .page{transform-origin:top left;box-shadow:0 2px 10px rgba(31,45,77,.15)}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin:24px 0 0}
+.howto h2{font-size:1.15rem;margin:0 0 8px}
+.howto ol{margin:0;padding-left:1.4em}
+footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
+
+
+/* ===== 印刷するページ（A4・mm単位） ===== */
+.page{width:210mm;height:297mm;background:#fff;padding:12mm 15mm;display:flex;flex-direction:column;color:#2b2f36;font-family:var(--ui-font)}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start;height:22mm;border-bottom:.4mm solid #2b2f36;padding-bottom:2mm}
+.p-left{min-width:0;flex:1;padding-right:4mm}
+.p-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:7mm;font-weight:600;line-height:1.2;font-family:"Klee One",var(--ui-font)}
+.p-sub{font-size:3.4mm;color:#5a6577;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-stamp{font-size:3.2mm;margin-top:1mm;display:flex;align-items:center;gap:1.5mm}
+.p-stamp i{display:inline-block;width:5mm;height:5mm;border:.35mm solid #2b2f36;border-radius:50%}
+.p-stampbox{flex:none;width:19mm;height:19mm;border:.4mm solid #2b2f36;border-radius:1.5mm;margin-left:3mm;position:relative}
+.p-stampbox span{position:absolute;top:.8mm;left:0;right:0;text-align:center;font-size:2.4mm;line-height:1;color:#8f99a6}
+.p-meta{flex:none;font-size:4mm;text-align:right;line-height:1.9}
+.p-meta .blank{display:inline-block;width:42mm;border-bottom:.3mm solid #2b2f36}
+.p-meta .sblank{display:inline-block;width:9mm}
+.p-ans{flex:none;font-size:5mm;font-weight:700;color:#c0392b;border:.5mm solid #c0392b;border-radius:2mm;padding:1mm 4mm;font-family:"Klee One",var(--ui-font)}
+.p-guide{font-size:3.6mm;margin:3mm 0 0;font-family:"Klee One",var(--ui-font);font-weight:600}
+.p-grid{flex:1;display:grid;grid-template-columns:repeat(var(--cols),1fr);grid-template-rows:repeat(var(--rows),1fr);padding-top:2mm;min-height:0}
+.q{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2mm;min-height:0;overflow:hidden}
+.q .no{position:absolute;left:1mm;top:1mm;font-size:3.6mm;font-weight:700;width:6mm;height:6mm;border-radius:50%;background:#eef0f3;display:flex;align-items:center;justify-content:center}
+.p-foot{height:6mm;font-size:3mm;color:#7a8494;display:flex;justify-content:space-between;align-items:flex-end}
+
+.inapp{background:#fff4d6;border:2px solid var(--yellow);border-radius:12px;padding:12px 14px;margin:0 0 14px;font-size:.92rem;line-height:1.6}
+.inapp strong{display:block;font-size:1rem;margin:0 0 4px}
+.inapp ol{margin:6px 0 0;padding-left:1.3em}
+.inapp .ia-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.inapp .ia-btns a,.inapp .ia-btns button{flex:1 1 auto;text-align:center;padding:10px 12px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.inapp .ia-btns a{background:var(--navy);color:#fff}
+.inapp.flash{animation:iaflash .9s ease 2}
+@keyframes iaflash{50%{background:#ffe08a}}
+@media print{.inapp{display:none!important}}
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  .topbar,.wrap>*:not(.layout),.panel,.preview-head,footer.site,.howto{display:none!important}
+  .wrap{padding:0;max-width:none}
+  .layout{display:block}
+  .preview{display:block;gap:0;overflow:visible}
+  .page-wrap{width:auto!important;height:auto!important;overflow:visible}
+  .page-wrap .page{transform:none!important;box-shadow:none;break-after:page;page-break-after:always}
+  .page-wrap:last-child .page{break-after:auto;page-break-after:auto}
+}
+
+
+.types{display:flex;flex-direction:column;gap:4px}
+.types label{display:flex;gap:8px;align-items:flex-start;border:1px solid #c9bfae;border-radius:8px;padding:6px 10px;cursor:pointer;background:#fff;line-height:1.4}
+.types label small{display:block;color:#5a6577;font-size:.78rem}
+.types input{margin-top:3px}
+/* なぞり */
+.tr-grid{flex:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-auto-rows:var(--rowh);column-gap:3mm;padding-top:2mm;min-height:0;align-content:start}
+.tc{display:flex;gap:1.2mm;align-items:center;justify-content:center;border-bottom:.25mm dashed #d5dae2}
+.tc span{width:var(--bw);height:calc(var(--rowh) - 4mm);border:.35mm solid #9aa3b3;border-radius:1mm;display:flex;align-items:center;justify-content:center;font-family:"Klee One",var(--ui-font);font-weight:600;font-size:var(--fs);line-height:1;background:linear-gradient(#eef0f3,#eef0f3) center/100% .2mm no-repeat}
+.tc span.g{color:#bfc5ce}
+/* 数表 */
+.tb{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:4mm}
+.tb td{border:.35mm solid #9aa3b3;height:var(--cell);text-align:center;vertical-align:middle;font-family:"Klee One",var(--ui-font);font-weight:600;font-size:7mm;line-height:1}
+.tb td.b{background:#fff}
+.tb td.s{background:#f6f7f9}
+.tb td.e{border:none}
+.page.answer .tb td.b{color:#c0392b}
+.tb-note{font-size:3.2mm;color:#5a6577;margin:3mm 0 0}
+</style>
+</head>
+<body>
+<div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
+<main class="wrap">
+  <h1>数字のなぞり書き・数表プリント（0〜100）</h1>
+  <p class="lead">数字を「なぞる → 自分で書く」プリントと、数の並びをうめる「数表」のプリントが作れます。数字の形と、数の並び方をいっしょに練習できます。</p>
+  <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>数表は答えつき</li></ul>
+
+  <div class="layout">
+    <form class="panel" id="form" onsubmit="return false">
+      <div class="field">
+        <span class="label">プリントの種類</span>
+        <div class="types">
+          <label><input type="radio" name="mode" value="trace" checked><span>なぞり書き<small>うすい数字をなぞってから、となりに自分で書く</small></span></label>
+          <label><input type="radio" name="mode" value="table"><span>数表のあなうめ<small>10ずつ並んだ表の、空いているところに数を書く</small></span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="range">数の範囲</label>
+        <select id="range"><option value="0-10">0〜10</option><option value="1-20" selected>1〜20</option><option value="1-50">1〜50</option><option value="1-100">1〜100</option><option value="51-100">51〜100</option></select>
+      </div>
+      <div class="field" id="repField">
+        <label for="rep">1つの数を なぞる回数</label>
+        <select id="rep"><option value="1">1回</option><option value="2" selected>2回</option><option value="3">3回</option></select>
+      </div>
+      <div class="field" id="blankField" hidden>
+        <span class="label">空らんの数</span>
+        <div class="radio">
+          <label><input type="radio" name="blank" value="0.3" checked>すこし</label>
+          <label><input type="radio" name="blank" value="0.6">はんぶんより多め</label>
+          <label><input type="radio" name="blank" value="1">ぜんぶ（行のはじめだけ）</label>
+        </div>
+        <label class="check" style="margin-top:8px"><input type="checkbox" id="answers" checked>答えのページをつける</label>
+      </div>
+      <div class="inapp" id="inappNote" hidden>
+        <strong>Instagramの中では印刷できません</strong>
+        いま開いているのはInstagramの中のブラウザです。印刷・PDF保存は、ChromeやSafariで開き直すと使えます。
+        <ol id="inappSteps"><li>右上の「︙」または「…」を押す</li><li>「ブラウザで開く」（「Chromeで開く」「Safariで開く」）を選ぶ</li></ol>
+        <div class="ia-btns"><a id="inappOpen" href="#" hidden>Chromeで開く</a><button type="button" id="inappCopy">このページのURLをコピー</button></div>
+        <p class="note" id="inappCopied" hidden>コピーしました。ChromeやSafariのアドレス欄に貼り付けて開いてください。</p>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <button type="button" class="print-btn" id="printBtn">印刷する・PDFで保存</button>
+      <button type="button" class="sub-btn" id="newBtn" hidden>空らんの場所をかえる</button>
+      <p class="summary" id="summary"></p>
+    </form>
+
+    <section aria-label="プレビュー">
+      <div class="preview-head"><strong>プレビュー</strong><span class="note" id="pageCount"></span></div>
+      <div class="preview" id="preview"></div>
+    </section>
+  </div>
+
+  <section class="howto">
+    <h2>使い方</h2>
+    <ol>
+      <li>はじめは「なぞり書き」で、数字の形を練習します。</li>
+      <li>なれたら「数表のあなうめ」で、数の並び方（1ずつ・10ずつ）を確かめます。</li>
+      <li>数表は、たてに見ると10ずつ、よこに見ると1ずつふえています。空らんを考えるときのヒントにしてください。</li>
+    </ol>
+    <p class="note">名前などの入力はありません。プリントはこのページの中で作り、どこにも送りません。数字の書き方は、学校で習う書き方を優先してください。</p>
+  </section>
+</main>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19a</span></footer>
+<script>
+console.log("BUILD_TAG: 2026-11-19a");
+(function(){
+  "use strict";
+  var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Bytedance|Twitter/i.test(navigator.userAgent||"");
+  var ANDROID=/Android/i.test(navigator.userAgent||"");
+  if(INAPP){
+    var nt=document.getElementById("inappNote"); nt.hidden=false;
+    if(ANDROID){
+      var op=document.getElementById("inappOpen");
+      op.href="intent://"+location.host+location.pathname+location.search+"#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(location.href)+";end";
+      op.hidden=false;
+    }
+    document.getElementById("inappCopy").addEventListener("click",function(){
+      var url=location.href, done=function(){document.getElementById("inappCopied").hidden=false};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){window.prompt("このURLをコピーしてください",url)})}
+      else window.prompt("このURLをコピーしてください",url);
+    });
+  }
+
+
+  var RANGES={"0-10":[0,10],"1-20":[1,20],"1-50":[1,50],"1-100":[1,100],"51-100":[51,100]};
+  var TRACE_ROWS=12, TRACE_COLS=5;
+  var $=function(id){return document.getElementById(id)};
+  function rng(seed){var s=seed>>>0||1;return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296}}
+  function build(o){
+    var errors=[],R=RANGES[o.range];
+    if(!R)errors.push("数の範囲を選んでください。");
+    if(o.mode!=="trace"&&o.mode!=="table")errors.push("プリントの種類を選んでください。");
+    var rep=parseInt(o.rep,10);if(o.mode==="trace"&&[1,2,3].indexOf(rep)<0)errors.push("なぞる回数を選んでください。");
+    var ratio=parseFloat(o.blank);if(o.mode==="table"&&[0.3,0.6,1].indexOf(ratio)<0)errors.push("空らんの数を選んでください。");
+    if(errors.length)return {errors:errors,pages:[]};
+    var nums=[];for(var n=R[0];n<=R[1];n++)nums.push(n);
+    if(o.mode==="trace"){
+      var cards=[];nums.forEach(function(n){for(var k=0;k<rep;k++)cards.push(n)});
+      var per=TRACE_ROWS*TRACE_COLS,pages=[];
+      for(var i=0;i<cards.length;i+=per)pages.push(cards.slice(i,i+per));
+      return {errors:[],mode:"trace",pages:pages,range:o.range,rep:rep,count:nums.length};
+    }
+    // 数表：10ずつの行。行のはじめは (n-1)%10===0 などでそろえる
+    var r=rng(o.seed),rows=[],startCol=(R[0]%10===0)?0:((R[0]-1)%10),row=null;
+    var base=R[0]===0?0:1; // 0からは 0〜9、1からは 1〜10 で1行
+    nums.forEach(function(n){
+      var col=base===0?n%10:(n-1)%10;
+      if(!row||col===0){row=[];for(var c=0;c<10;c++)row.push(null);rows.push(row)}
+      row[col]={n:n,blank:false};
+    });
+    // 空らん：各行のはじめの数は残す（ぜんぶのときのヒント）
+    var cand=[];rows.forEach(function(rw,ri){var first=rw.findIndex(function(x){return x});rw.forEach(function(x,ci){if(x&&ci!==first)cand.push(x)})});
+    for(var j=cand.length-1;j>0;j--){var k2=Math.floor(r()*(j+1));var t=cand[j];cand[j]=cand[k2];cand[k2]=t}
+    var nb=ratio>=1?cand.length:Math.round(cand.length*ratio);
+    cand.slice(0,nb).forEach(function(x){x.blank=true});
+    return {errors:[],mode:"table",pages:[rows],range:o.range,ratio:ratio,answers:!!o.answers,count:nums.length,blanks:nb};
+  }
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function head(title,sub,isAnswer){
+    return '<div class="p-head"><div class="p-left"><div class="p-title">'+title+'</div><div class="p-sub">'+esc(sub)+'</div>'+(isAnswer?'':'<div class="p-stamp">できたら いろを ぬろう <i></i><i></i><i></i></div>')+'</div>'+
+      (isAnswer?'<div class="p-ans">こたえ</div>':'<div class="p-meta"><div>なまえ <span class="blank"></span></div><div><span class="sblank"></span>がつ<span class="sblank"></span>にち</div></div><div class="p-stampbox"><span>スタンプ</span></div>')+'</div>';
+  }
+  function foot(pi,np){return '<div class="p-foot"><span>おうち学習のどうぐばこ　Instagram @ouchi_dougubako</span><span>'+(pi+1)+' / '+np+'</span></div>'}
+  function renderTrace(cards,pi,np,res){
+    var R=RANGES[res.range],maxd=String(R[1]).length,bw=maxd>=3?15:maxd===2?12:10,fs=maxd>=3?7.4:9;
+    var h='<section class="page" style="--rowh:19mm;--bw:'+bw+'mm;--fs:'+fs+'mm">'+head("すうじ なぞりがき","すうじ "+R[0]+"〜"+R[1]+"（うすい すうじを なぞってから、となりに かこう）",false);
+    h+='<div class="tr-grid">'+cards.map(function(n){return '<div class="tc"><span class="g">'+n+'</span><span></span></div>'}).join("")+'</div>'+foot(pi,np)+'</section>';
+    return h;
+  }
+  function renderTable(rows,pi,np,res,isAnswer){
+    var R=RANGES[res.range],cell=Math.min(19,Math.floor(200/Math.max(rows.length,1)));
+    var h='<section class="page'+(isAnswer?' answer':'')+'" style="--cell:'+cell+'mm">'+head("かずの ひょう",(R[0])+"〜"+R[1]+"（あいている ところに かずを かこう）",isAnswer);
+    h+='<table class="tb"><tbody>'+rows.map(function(rw){return '<tr>'+rw.map(function(x){if(!x)return '<td class="e"></td>';return x.blank?'<td class="b">'+(isAnswer?x.n:'')+'</td>':'<td class="s">'+x.n+'</td>'}).join("")+'</tr>'}).join("")+'</tbody></table>';
+    if(!isAnswer)h+='<p class="tb-note">よこに 1ずつ、たてに 10ずつ ふえて いるよ。</p>';
+    h+='<div style="flex:1"></div>'+foot(pi,np)+'</section>';
+    return h;
+  }
+  var state={seed:(Date.now()%100000)+1};
+  function readOpts(){return {mode:document.querySelector('input[name=mode]:checked').value,range:$("range").value,rep:$("rep").value,blank:document.querySelector('input[name=blank]:checked').value,answers:$("answers").checked,seed:state.seed}}
+  function update(){
+    var o=readOpts(),res=build(o);
+    $("repField").hidden=o.mode!=="trace";$("blankField").hidden=o.mode!=="table";$("newBtn").hidden=o.mode!=="table";
+    var eb=$("errorBox");if(res.errors.length){eb.hidden=false;eb.textContent=res.errors.join(" ")}else eb.hidden=true;
+    var html="",np=0;
+    if(res.mode==="trace"){np=res.pages.length;html=res.pages.map(function(p,i){return '<div class="page-wrap">'+renderTrace(p,i,np,res)+'</div>'}).join("")}
+    else if(res.mode==="table"){np=res.answers?2:1;html='<div class="page-wrap">'+renderTable(res.pages[0],0,np,res,false)+'</div>'+(res.answers?'<div class="page-wrap">'+renderTable(res.pages[0],1,np,res,true)+'</div>':'')}
+    $("preview").innerHTML=html;
+    $("pageCount").textContent=np?("A4 "+np+"枚"):"";
+    $("summary").textContent=np?(res.mode==="trace"?(res.count+"この数・A4で"+np+"枚"):("空らん"+res.blanks+"こ・A4で"+np+"枚（答えをふくむ）")):"";
+    $("printBtn").disabled=!np;
+    fit();window.__lastResult=res;
+  }
+  function fit(){
+    var pv=$("preview"),avail=Math.min(pv.clientWidth||600,820),probe=pv.querySelector(".page");if(!probe)return;
+    var pw=probe.offsetWidth,ph=probe.offsetHeight,sc=Math.min(1,avail/pw);
+    pv.querySelectorAll(".page-wrap").forEach(function(wr){wr.style.width=(pw*sc)+"px";wr.style.height=(ph*sc)+"px";wr.firstChild.style.transform="scale("+sc+")"});
+  }
+  document.querySelectorAll('input[name=mode],input[name=blank]').forEach(function(r){r.addEventListener("change",update)});
+  ["range","rep","answers"].forEach(function(id){$(id).addEventListener("change",update)});
+  $("newBtn").addEventListener("click",function(){state.seed=(state.seed*7919+13)%1000003+1;update()});
+  window.addEventListener("resize",fit);
+  $("printBtn").addEventListener("click",function(){
+    if(INAPP){var nt=$("inappNote");nt.classList.remove("flash");void nt.offsetWidth;nt.classList.add("flash");nt.scrollIntoView({behavior:"smooth",block:"center"});return;}
+    var btn=this;btn.disabled=true;var label=btn.textContent;btn.textContent="準備中…";
+    var done=function(){btn.textContent=label;btn.disabled=false;window.print()};
+    if(document.fonts&&document.fonts.load){document.fonts.load('600 30px "Klee One"',"0123456789すうじなぞりがきかずのひょうこたえ").then(function(){return document.fonts.ready}).then(done,done)}else done();
+  });
+  window.__suuji={RANGES:RANGES,build:build,TRACE_ROWS:TRACE_ROWS,TRACE_COLS:TRACE_COLS};
+  update();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>
