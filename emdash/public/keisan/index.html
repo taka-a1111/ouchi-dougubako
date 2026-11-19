@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- BUILD_TAG: 2026-11-19a -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://ouchidougubako.com/keisan/">
+<title>苦手だけもう一度出る計算プリント｜おうち学習のどうぐばこ</title>
+<meta name="description" content="たし算・ひき算の計算プリントを、くり上がり・くり下がりなどの型を選んで作れます。まちがえた問題を記録すると、次の日は苦手な問題と同じ型だけのプリントが作れます。無料・登録なしで使えます。">
+<link rel="stylesheet" href="/assets/fonts/klee-one/klee-one.css">
+<style>
+:root{
+  --navy:#1f2d4d; --cream:#fff9ee; --yellow:#f5c542; --teal:#2a9d8f; --line:#e6dccb;
+  --ui-font:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN","Zen Maru Gothic","游ゴシック","Yu Gothic","メイリオ",Meiryo,"Noto Sans JP","Noto Sans CJK JP",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:var(--ui-font);line-height:1.7}
+a{color:var(--teal)}
+.topbar{background:var(--navy);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.topbar a{color:#fff;text-decoration:none;font-weight:700}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 4px}
+.lead{margin:0 0 16px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px;padding:0;list-style:none}
+.badges li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:.85rem}
+.layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+.layout>*{min-width:0}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:12px}
+@media (max-width:860px){.panel{position:static}}
+.field{margin:0 0 14px}
+.field>label,.field>.label{display:block;font-weight:700;margin:0 0 4px}
+select{width:100%;padding:8px;border:1px solid #c9bfae;border-radius:8px;font:inherit;font-size:16px;background:#fff;color:var(--navy)}
+.steps{display:flex;flex-direction:column;gap:4px}
+.steps label{display:flex;gap:8px;align-items:flex-start;border:1px solid #c9bfae;border-radius:8px;padding:6px 10px;cursor:pointer;background:#fff;line-height:1.4}
+.steps label small{display:block;color:#5a6577;font-size:.78rem}
+.steps input{margin-top:3px}
+.radio{display:flex;flex-wrap:wrap;gap:6px}
+.radio label{border:1px solid #c9bfae;border-radius:8px;padding:4px 10px;cursor:pointer;background:#fff}
+.radio input{margin-right:4px}
+.check{display:flex;gap:6px;align-items:center;cursor:pointer;margin:0 0 6px}
+.note{font-size:.82rem;color:#5a6577;margin:4px 0 0}
+.error{background:#fdecea;color:#8a1f11;border-radius:8px;padding:8px 10px;margin:0 0 12px;font-size:.9rem}
+.print-btn{width:100%;padding:12px;border:none;border-radius:10px;background:var(--yellow);color:var(--navy);font:inherit;font-size:1.1rem;font-weight:700;cursor:pointer}
+.print-btn:disabled{opacity:.5;cursor:default}
+.sub-btn{width:100%;margin:8px 0 0;padding:8px;border:2px solid var(--navy);border-radius:10px;background:#fff;color:var(--navy);font:inherit;font-weight:700;cursor:pointer}
+.summary{font-size:.9rem;margin:8px 0 0;text-align:center}
+.preview-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 8px}
+.preview{display:flex;flex-direction:column;align-items:center;gap:16px;overflow:hidden}
+.page-wrap{position:relative;overflow:hidden}
+.page-wrap .page{transform-origin:top left;box-shadow:0 2px 10px rgba(31,45,77,.15)}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin:24px 0 0}
+.howto h2{font-size:1.15rem;margin:0 0 8px}
+.howto ol{margin:0;padding-left:1.4em}
+footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
+
+
+/* ===== 印刷するページ（A4・mm単位） ===== */
+.page{width:210mm;height:297mm;background:#fff;padding:12mm 15mm;display:flex;flex-direction:column;color:#2b2f36;font-family:var(--ui-font)}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start;height:22mm;border-bottom:.4mm solid #2b2f36;padding-bottom:2mm}
+.p-left{min-width:0;flex:1;padding-right:4mm}
+.p-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:7mm;font-weight:600;line-height:1.2;font-family:"Klee One",var(--ui-font)}
+.p-sub{font-size:3.4mm;color:#5a6577;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-stamp{font-size:3.2mm;margin-top:1mm;display:flex;align-items:center;gap:1.5mm}
+.p-stamp i{display:inline-block;width:5mm;height:5mm;border:.35mm solid #2b2f36;border-radius:50%}
+.p-stampbox{flex:none;width:19mm;height:19mm;border:.4mm solid #2b2f36;border-radius:1.5mm;margin-left:3mm;position:relative}
+.p-stampbox span{position:absolute;top:.8mm;left:0;right:0;text-align:center;font-size:2.4mm;line-height:1;color:#8f99a6}
+.p-meta{flex:none;font-size:4mm;text-align:right;line-height:1.9}
+.p-meta .blank{display:inline-block;width:42mm;border-bottom:.3mm solid #2b2f36}
+.p-meta .sblank{display:inline-block;width:9mm}
+.p-ans{flex:none;font-size:5mm;font-weight:700;color:#c0392b;border:.5mm solid #c0392b;border-radius:2mm;padding:1mm 4mm;font-family:"Klee One",var(--ui-font)}
+.p-guide{font-size:3.6mm;margin:3mm 0 0;font-family:"Klee One",var(--ui-font);font-weight:600}
+.p-grid{flex:1;display:grid;grid-template-columns:repeat(var(--cols),1fr);grid-template-rows:repeat(var(--rows),1fr);padding-top:2mm;min-height:0}
+.q{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2mm;min-height:0;overflow:hidden}
+.q .no{position:absolute;left:1mm;top:1mm;font-size:3.6mm;font-weight:700;width:6mm;height:6mm;border-radius:50%;background:#eef0f3;display:flex;align-items:center;justify-content:center}
+.p-foot{height:6mm;font-size:3mm;color:#7a8494;display:flex;justify-content:space-between;align-items:flex-end}
+
+.inapp{background:#fff4d6;border:2px solid var(--yellow);border-radius:12px;padding:12px 14px;margin:0 0 14px;font-size:.92rem;line-height:1.6}
+.inapp strong{display:block;font-size:1rem;margin:0 0 4px}
+.inapp ol{margin:6px 0 0;padding-left:1.3em}
+.inapp .ia-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.inapp .ia-btns a,.inapp .ia-btns button{flex:1 1 auto;text-align:center;padding:10px 12px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.inapp .ia-btns a{background:var(--navy);color:#fff}
+.inapp.flash{animation:iaflash .9s ease 2}
+@keyframes iaflash{50%{background:#ffe08a}}
+@media print{.inapp{display:none!important}}
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  .topbar,.wrap>*:not(.layout),.panel,.preview-head,footer.site,.howto{display:none!important}
+  .wrap{padding:0;max-width:none}
+  .layout{display:block}
+  .preview{display:block;gap:0;overflow:visible}
+  .page-wrap{width:auto!important;height:auto!important;overflow:visible}
+  .page-wrap .page{transform:none!important;box-shadow:none;break-after:page;page-break-after:always}
+  .page-wrap:last-child .page{break-after:auto;page-break-after:auto}
+}
+
+.q{flex-direction:row;justify-content:flex-start;padding-left:13mm;border-bottom:.25mm dashed #d5dae2}
+.q .ex{font-family:"Klee One",var(--ui-font);font-weight:600;font-size:var(--fs);line-height:1;white-space:nowrap;display:flex;align-items:center;gap:2mm}
+.q .bx{display:inline-flex;align-items:center;justify-content:center;width:calc(var(--fs) * 1.7);height:calc(var(--fs) * 1.35);border:.4mm solid #2b2f36;border-radius:1.2mm}
+.page.answer .q .bx{color:#c0392b;border-color:#c0392b}
+.q .wk{position:absolute;right:2mm;top:1.2mm;font-size:2.6mm;color:#b5651d;font-weight:700}
+.types{display:flex;flex-direction:column;gap:4px}
+.types label{display:flex;gap:8px;align-items:flex-start;border:1px solid #c9bfae;border-radius:8px;padding:6px 10px;cursor:pointer;background:#fff;line-height:1.4}
+.types label small{display:block;color:#5a6577;font-size:.78rem}
+.types input{margin-top:3px}
+.mark{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin:14px 0 0}
+.mark h3{font-size:1rem;margin:0 0 4px}
+.mgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:8px 0}
+.mgrid button{font:inherit;font-weight:700;padding:6px 0;border:1px solid #c9bfae;border-radius:6px;background:#fff;color:var(--navy);cursor:pointer}
+.mgrid button[aria-pressed="true"]{background:#e07a45;border-color:#e07a45;color:#fff}
+.weakinfo{font-size:.88rem;background:#fff4d6;border-radius:8px;padding:6px 10px;margin:6px 0 0}
+.mini-btn{font:inherit;font-size:.8rem;padding:3px 8px;border:1px solid #c9bfae;background:#fff;border-radius:6px;cursor:pointer;margin-top:6px}
+@media print{.mark{display:none!important}}
+</style>
+</head>
+<body>
+<div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
+<main class="wrap">
+  <h1>苦手だけもう一度出る計算プリント</h1>
+  <p class="lead">たし算・ひき算の型を選んで、計算プリントを作れます。答え合わせのあと、まちがえた問題を押して記録すると、次の日は「苦手だけ」のプリントが作れます。</p>
+  <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>答えのページつき</li></ul>
+
+  <div class="layout">
+    <form class="panel" id="form" onsubmit="return false">
+      <div class="field">
+        <span class="label">どんなプリント？</span>
+        <div class="radio">
+          <label><input type="radio" name="mode" value="normal" checked>ふつう</label>
+          <label><input type="radio" name="mode" value="weak">苦手だけ</label>
+        </div>
+        <p class="weakinfo" id="weakInfo"></p>
+      </div>
+      <div class="field" id="typeField">
+        <span class="label">問題の型（いくつでも）</span>
+        <div class="types" id="types"></div>
+      </div>
+      <div class="field">
+        <label for="count">問題の数</label>
+        <select id="count"><option value="10">10問</option><option value="20" selected>20問</option><option value="30">30問（2枚）</option></select>
+      </div>
+      <div class="field">
+        <label class="check"><input type="checkbox" id="answers" checked>答えのページをつける</label>
+      </div>
+      <div class="inapp" id="inappNote" hidden>
+        <strong>Instagramの中では印刷できません</strong>
+        いま開いているのはInstagramの中のブラウザです。印刷・PDF保存は、ChromeやSafariで開き直すと使えます。
+        <ol id="inappSteps"><li>右上の「︙」または「…」を押す</li><li>「ブラウザで開く」（「Chromeで開く」「Safariで開く」）を選ぶ</li></ol>
+        <div class="ia-btns"><a id="inappOpen" href="#" hidden>Chromeで開く</a><button type="button" id="inappCopy">このページのURLをコピー</button></div>
+        <p class="note" id="inappCopied" hidden>コピーしました。ChromeやSafariのアドレス欄に貼り付けて開いてください。</p>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <button type="button" class="print-btn" id="printBtn">印刷する・PDFで保存</button>
+      <button type="button" class="sub-btn" id="newBtn">ほかの問題にする</button>
+      <p class="summary" id="summary"></p>
+
+      <div class="mark" id="markBox">
+        <h3>答え合わせのあと</h3>
+        <p class="note">まちがえた問題の番号を押して「記録する」。次に「苦手だけ」を選ぶと、その問題と同じ型の問題が出ます。記録はこの端末の中だけに保存し、どこにも送りません。</p>
+        <div class="mgrid" id="mgrid"></div>
+        <button type="button" class="sub-btn" id="saveBtn">まちがえた問題を記録する</button>
+        <p class="note" id="saveMsg" hidden></p>
+        <button type="button" class="mini-btn" id="clearBtn">記録をぜんぶ消す</button>
+      </div>
+    </form>
+
+    <section aria-label="プレビュー">
+      <div class="preview-head"><strong>プレビュー</strong><span class="note" id="pageCount"></span></div>
+      <div class="preview" id="preview"></div>
+    </section>
+  </div>
+
+  <section class="howto">
+    <h2>使い方</h2>
+    <ol>
+      <li>問題の型と数を選んで印刷します。答えのページで答え合わせをします。</li>
+      <li>まちがえた問題の番号を押して「記録する」を押します。</li>
+      <li>次の日に「苦手だけ」を選ぶと、まちがえた問題と、同じ型の新しい問題が出ます。苦手だけのプリントで正解した問題は、記録から消えます。</li>
+    </ol>
+    <p class="note">記録はこのブラウザの中だけに保存します（ほかの端末やブラウザには引き継がれません）。名前などの入力はありません。</p>
+  </section>
+</main>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19a</span></footer>
+<script>
+console.log("BUILD_TAG: 2026-11-19a");
+(function(){
+  "use strict";
+  var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Bytedance|Twitter/i.test(navigator.userAgent||"");
+  var ANDROID=/Android/i.test(navigator.userAgent||"");
+  if(INAPP){
+    var nt=document.getElementById("inappNote"); nt.hidden=false;
+    if(ANDROID){
+      var op=document.getElementById("inappOpen");
+      op.href="intent://"+location.host+location.pathname+location.search+"#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(location.href)+";end";
+      op.hidden=false;
+    }
+    document.getElementById("inappCopy").addEventListener("click",function(){
+      var url=location.href, done=function(){document.getElementById("inappCopied").hidden=false};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){window.prompt("このURLをコピーしてください",url)})}
+      else window.prompt("このURLをコピーしてください",url);
+    });
+  }
+
+  // 問題の型。gen はその型の問題をすべて並べる
+  function range(a,b){var o=[];for(var i=a;i<=b;i++)o.push(i);return o}
+  var TYPES=[
+    {id:"a10",label:"たし算（こたえが10まで）",ex:"3 + 4",grade:"年長〜小1",op:"+",gen:function(){var o=[];range(1,9).forEach(function(a){range(1,9).forEach(function(b){if(a+b<=10)o.push([a,b])})});return o}},
+    {id:"aku",label:"たし算（くり上がり）",ex:"8 + 5",grade:"小1",op:"+",gen:function(){var o=[];range(2,9).forEach(function(a){range(2,9).forEach(function(b){if(a+b>=11)o.push([a,b])})});return o}},
+    {id:"s10",label:"ひき算（10までのかず）",ex:"9 − 4",grade:"年長〜小1",op:"-",gen:function(){var o=[];range(2,10).forEach(function(a){range(1,a-1).forEach(function(b){o.push([a,b])})});return o}},
+    {id:"sku",label:"ひき算（くり下がり）",ex:"13 − 8",grade:"小1",op:"-",gen:function(){var o=[];range(11,18).forEach(function(a){range(2,9).forEach(function(b){if(a%10<b&&a-b<10)o.push([a,b])})});return o}},
+    {id:"a2",label:"2けた＋1けた（くり上がりなし）",ex:"23 + 4",grade:"小1〜小2",op:"+",gen:function(){var o=[];range(11,89).forEach(function(a){if(a%10===0)return;range(1,9).forEach(function(b){if(a%10+b<=9)o.push([a,b])})});return o}},
+    {id:"s2",label:"2けた−1けた（くり下がりなし）",ex:"38 − 5",grade:"小1〜小2",op:"-",gen:function(){var o=[];range(11,99).forEach(function(a){range(1,9).forEach(function(b){if(b<=a%10)o.push([a,b])})});return o}}
+  ];
+  var BYID={};TYPES.forEach(function(t){t.pool=t.gen();BYID[t.id]=t});
+  var STORE="dougubako_keisan_weak_v1", PER_PAGE=20;
+  var $=function(id){return document.getElementById(id)};
+
+  function rng(seed){var s=seed>>>0||1;return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296}}
+  function shuffle(list,r){for(var i=list.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=list[i];list[i]=list[j];list[j]=t}return list}
+  function key(q){return q.a+q.op+q.b}
+  function make(t,ab){var a=ab[0],b=ab[1];return {t:t.id,op:t.op,a:a,b:b,ans:t.op==="+"?a+b:a-b}}
+  // 同じ問題が続かないよう、となりと同じなら後ろと入れかえる
+  function spread(list){for(var i=1;i<list.length;i++){if(key(list[i])===key(list[i-1])){for(var j=i+1;j<list.length;j++){if(key(list[j])!==key(list[i-1])){var t=list[i];list[i]=list[j];list[j]=t;break}}}}return list}
+  // 型の中から、まだ使っていない問題を順に取る。足りなければ使ったものからも取る
+  function pickFrom(typeIds,count,r,used){
+    var out=[],pools=typeIds.map(function(id){return shuffle(BYID[id].pool.slice(),r)}),idx=typeIds.map(function(){return 0}),k=0,guard=0;
+    while(out.length<count&&guard<count*50){
+      var ti=k%typeIds.length,t=BYID[typeIds[ti]],p=pools[ti];k++;guard++;
+      var found=null;
+      while(idx[ti]<p.length){var c=make(t,p[idx[ti]++]);if(!used[key(c)]){found=c;break}}
+      if(!found){var c2=make(t,p[Math.floor(r()*p.length)]);found=c2}
+      used[key(found)]=1;out.push(found);
+    }
+    return out;
+  }
+
+  function loadWeak(storage){try{var s=(storage||window.localStorage).getItem(STORE);var v=s?JSON.parse(s):null;return v&&Array.isArray(v.items)?v.items:[]}catch(e){return []}}
+  function saveWeak(items,storage){try{(storage||window.localStorage).setItem(STORE,JSON.stringify({items:items,updated:new Date().toISOString()}));return true}catch(e){return false}}
+  // 記録：苦手だけのプリントでは、正解した苦手の問題を消し、まちがえた問題を足す
+  function updateWeak(prev,sheet,wrongIdx,mode){
+    var map={};prev.forEach(function(q){map[key(q)]=q});
+    if(mode==="weak")sheet.forEach(function(q,i){if(map[key(q)]&&wrongIdx.indexOf(i)<0)delete map[key(q)]});
+    wrongIdx.forEach(function(i){var q=sheet[i];if(q)map[key(q)]={t:q.t,op:q.op,a:q.a,b:q.b,ans:q.ans}});
+    return Object.keys(map).map(function(k){return map[k]});
+  }
+
+  function build(o){
+    var errors=[],count=parseInt(o.count,10),r=rng(o.seed),qs=[];
+    if([10,20,30].indexOf(count)<0)errors.push("問題の数を選んでください。");
+    if(o.mode==="weak"){
+      var weak=(o.weak||[]).filter(function(q){return BYID[q.t]});
+      if(!weak.length)errors.push("まだ苦手の記録がありません。「ふつう」で解いて、まちがえた問題を記録してください。");
+      if(!errors.length){
+        var w=shuffle(weak.slice(),r).slice(0,count),used={};
+        w.forEach(function(q){used[key(q)]=1;q.weak=true});
+        var types=[];w.forEach(function(q){if(types.indexOf(q.t)<0)types.push(q.t)});
+        var fill=pickFrom(types,count-w.length,r,used);
+        qs=shuffle(w.map(function(q){return {t:q.t,op:q.op,a:q.a,b:q.b,ans:q.op==="+"?q.a+q.b:q.a-q.b,weak:true}}).concat(fill),r);
+      }
+    }else{
+      var ts=(o.types||[]).filter(function(id){return BYID[id]});
+      if(!ts.length)errors.push("問題の型を1つ以上選んでください。");
+      if(!errors.length)qs=shuffle(pickFrom(ts,count,r,{}),r);
+    }
+    if(errors.length)return {errors:errors,pages:[],qs:[]};
+    spread(qs);
+    var pages=[];for(var i=0;i<qs.length;i+=PER_PAGE)pages.push(qs.slice(i,i+PER_PAGE));
+    var names=[];qs.forEach(function(q){var l=BYID[q.t].label;if(names.indexOf(l)<0)names.push(l)});
+    return {errors:[],pages:pages,qs:qs,mode:o.mode,answers:!!o.answers,sub:(o.mode==="weak"?"にがてだけ　":"")+names.join("・")};
+  }
+
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function renderPage(qs,pi,np,res,isAnswer,offset){
+    var rows=Math.max(5,Math.ceil(qs.length/2)), fs=9;
+    var h='<section class="page'+(isAnswer?' answer':'')+'" style="--cols:2;--rows:'+rows+';--fs:'+fs+'mm">'+
+      '<div class="p-head"><div class="p-left"><div class="p-title">けいさん プリント</div><div class="p-sub">'+esc(res.sub)+'</div>'+
+      (isAnswer?'':'<div class="p-stamp">できたら いろを ぬろう <i></i><i></i><i></i></div>')+'</div>';
+    h+=isAnswer?'<div class="p-ans">こたえ</div>':'<div class="p-meta"><div>なまえ <span class="blank"></span></div><div><span class="sblank"></span>がつ<span class="sblank"></span>にち</div></div><div class="p-stampbox"><span>スタンプ</span></div>';
+    h+='</div><div class="p-grid" style="grid-auto-flow:column">';
+    qs.forEach(function(q,i){
+      var no=offset+i+1;
+      h+='<div class="q"><span class="no">'+no+'</span><span class="ex">'+q.a+' '+(q.op==="+"?"＋":"−")+' '+q.b+' ＝ <span class="bx">'+(isAnswer?q.ans:"")+'</span></span>'+(q.weak&&isAnswer?'<span class="wk">にがて</span>':'')+'</div>';
+    });
+    h+='</div><div class="p-foot"><span>おうち学習のどうぐばこ　Instagram @ouchi_dougubako</span><span>'+(pi+1)+' / '+np+'</span></div></section>';
+    return h;
+  }
+
+  var state={seed:(Date.now()%100000)+1,types:["aku"],wrong:[],res:null};
+  function readOpts(){return {mode:document.querySelector('input[name=mode]:checked').value,types:state.types.slice(),count:$("count").value,answers:$("answers").checked,seed:state.seed,weak:loadWeak()}}
+  function renderTypes(){
+    $("types").innerHTML=TYPES.map(function(t){return '<label><input type="checkbox" value="'+t.id+'"'+(state.types.indexOf(t.id)>=0?" checked":"")+'><span>'+esc(t.label)+'<small>れい：'+esc(t.ex)+'（'+esc(t.grade)+'）</small></span></label>'}).join("");
+  }
+  function weakInfo(){var n=loadWeak().length;$("weakInfo").textContent=n?("苦手の記録："+n+"問"):"苦手の記録：まだありません";}
+  function update(){
+    var o=readOpts(),res=build(o);state.res=res;state.wrong=[];
+    $("typeField").hidden=o.mode==="weak";
+    var eb=$("errorBox");if(res.errors.length){eb.hidden=false;eb.textContent=res.errors.join(" ")}else eb.hidden=true;
+    var html="",np=res.pages.length*(res.answers?2:1),pi=0;
+    res.pages.forEach(function(p,i){html+='<div class="page-wrap">'+renderPage(p,pi++,np,res,false,i*PER_PAGE)+'</div>'});
+    if(res.answers)res.pages.forEach(function(p,i){html+='<div class="page-wrap">'+renderPage(p,pi++,np,res,true,i*PER_PAGE)+'</div>'});
+    $("preview").innerHTML=html;
+    $("pageCount").textContent=res.pages.length?("A4 "+np+"枚"):"";
+    $("summary").textContent=res.pages.length?(res.qs.length+"問・A4で"+np+"枚（答えをふくむ）"):"";
+    $("printBtn").disabled=!res.pages.length;
+    $("mgrid").innerHTML=res.qs.map(function(q,i){return '<button type="button" data-i="'+i+'" aria-pressed="false">'+(i+1)+'</button>'}).join("");
+    $("markBox").hidden=!res.qs.length;$("saveMsg").hidden=true;
+    weakInfo();fit();window.__lastResult=res;
+  }
+  function fit(){
+    var pv=$("preview"),avail=Math.min(pv.clientWidth||600,820),probe=pv.querySelector(".page");if(!probe)return;
+    var pw=probe.offsetWidth,ph=probe.offsetHeight,sc=Math.min(1,avail/pw);
+    pv.querySelectorAll(".page-wrap").forEach(function(wr){wr.style.width=(pw*sc)+"px";wr.style.height=(ph*sc)+"px";wr.firstChild.style.transform="scale("+sc+")"});
+  }
+  renderTypes();
+  $("types").addEventListener("change",function(){state.types=Array.from(document.querySelectorAll("#types input:checked")).map(function(i){return i.value});update()});
+  document.querySelectorAll('input[name=mode]').forEach(function(r){r.addEventListener("change",update)});
+  ["count","answers"].forEach(function(id){$(id).addEventListener("change",update)});
+  $("newBtn").addEventListener("click",function(){state.seed=(state.seed*7919+13)%1000003+1;update()});
+  $("mgrid").addEventListener("click",function(e){var b=e.target.closest("button[data-i]");if(!b)return;var i=+b.dataset.i,k=state.wrong.indexOf(i);if(k>=0)state.wrong.splice(k,1);else state.wrong.push(i);b.setAttribute("aria-pressed",String(k<0))});
+  $("saveBtn").addEventListener("click",function(){
+    var res=state.res;if(!res||!res.qs.length)return;
+    var next=updateWeak(loadWeak(),res.qs,state.wrong,res.mode),ok=saveWeak(next),m=$("saveMsg");
+    m.hidden=false;m.textContent=ok?("記録しました。苦手の記録は "+next.length+"問です。"):"このブラウザでは記録できませんでした（プライベートモードなど）。";
+    weakInfo();
+  });
+  $("clearBtn").addEventListener("click",function(){saveWeak([]);weakInfo();if(document.querySelector('input[name=mode]:checked').value==="weak")update()});
+  window.addEventListener("resize",fit);
+  $("printBtn").addEventListener("click",function(){
+    if(INAPP){var nt=$("inappNote");nt.classList.remove("flash");void nt.offsetWidth;nt.classList.add("flash");nt.scrollIntoView({behavior:"smooth",block:"center"});return;}
+    var btn=this;btn.disabled=true;var label=btn.textContent;btn.textContent="準備中…";
+    var done=function(){btn.textContent=label;btn.disabled=false;window.print()};
+    if(document.fonts&&document.fonts.load){document.fonts.load('600 30px "Klee One"',"0123456789＋−＝けいさんプリントこたえにがて").then(function(){return document.fonts.ready}).then(done,done)}else done();
+  });
+  window.__keisan={TYPES:TYPES,BYID:BYID,build:build,updateWeak:updateWeak,loadWeak:loadWeak,saveWeak:saveWeak,key:key,PER_PAGE:PER_PAGE};
+  update();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>
