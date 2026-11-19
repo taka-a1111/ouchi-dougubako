@@ -31,6 +31,7 @@ const PAGES: [string, string][] = [
 	["/print/furikaeri/", "2026-11-19"],
 	["/print/mochimono/", "2026-11-19"],
 	["/print/gakunen-mokuhyo/", "2026-11-19"],
+	["/print/gohoubi/", "2026-11-19"],
 	["/print/nyugaku3/", "2026-11-19"],
 	["/print/matome1/", "2026-11-19"],
 	["/print/namae/", "2026-11-19"],
