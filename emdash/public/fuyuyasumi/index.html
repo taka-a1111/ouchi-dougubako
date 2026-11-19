@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- BUILD_TAG: 2026-11-18a -->
+<!-- BUILD_TAG: 2026-11-19a -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://ouchidougubako.com/fuyuyasumi/">
-<title>冬休みの学習計画表メーカー（チェック表つき）｜おうち学習のどうぐばこ</title>
-<meta name="description" content="冬休みの日にちと、宿題の量を入れるだけで、毎日やる量を割りふった学習計画表が作れます。お正月や予備日も入れられて、チェック欄つき。A4で印刷でき、無料・登録なしで使えます。">
+<title>冬休み・春休みの学習計画表メーカー（チェック表つき）｜おうち学習のどうぐばこ</title>
+<meta name="description" content="冬休みや春休みの日にちと、宿題の量を入れるだけで、毎日やる量を割りふった学習計画表が作れます。おやすみの日や予備日も入れられて、チェック欄つき。A4で印刷でき、無料・登録なしで使えます。">
 <link rel="stylesheet" href="/assets/fonts/klee-one/klee-one.css">
 <style>
 :root{
@@ -31,6 +31,9 @@ h1{font-size:1.5rem;margin:8px 0 4px}
 .field{margin:0 0 14px}
 .field>label,.field>.label{display:block;font-weight:700;margin:0 0 4px}
 input[type=date],input[type=text],input[type=number],select{padding:7px;border:1px solid #c9bfae;border-radius:8px;font:inherit;font-size:16px;background:#fff;color:var(--navy);min-width:0}
+.seasons{display:flex;gap:6px}
+.seasons label{flex:1;text-align:center;border:1px solid #c9bfae;border-radius:8px;padding:6px 8px;cursor:pointer;background:#fff;font-weight:700}
+.seasons input{margin-right:4px}
 .dates{display:flex;align-items:center;gap:6px}
 .dates input{flex:1;width:0}
 .check{display:flex;gap:6px;align-items:center;cursor:pointer;margin:0 0 6px}
@@ -122,21 +125,29 @@ table.plan{width:100%;border-collapse:collapse;table-layout:fixed;flex:none}
 <body>
 <div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
 <main class="wrap">
-  <h1>冬休みの学習計画表メーカー</h1>
-  <p class="lead">冬休みの日にちと、宿題の量を入れるだけ。毎日やる量を自動で割りふった、チェック欄つきの計画表が作れます。お正月のおやすみや、終わらなかった分をやる「よび日」も入れられます。</p>
+  <h1>冬休み・春休みの学習計画表メーカー</h1>
+  <p class="lead">休みの日にちと、宿題の量を入れるだけ。毎日やる量を自動で割りふった、チェック欄つきの計画表が作れます。おやすみの日や、終わらなかった分をやる「よび日」も入れられます。</p>
   <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>チェック欄つき</li></ul>
 
   <div class="layout">
     <form class="panel" id="form" onsubmit="return false">
       <div class="field">
-        <span class="label">冬休みの日にち</span>
+        <span class="label">どの休み？</span>
+        <div class="seasons" id="seasons">
+          <label><input type="radio" name="season" value="fuyu" checked>冬休み</label>
+          <label><input type="radio" name="season" value="haru">春休み</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="label" id="dateLabel">冬休みの日にち</span>
         <div class="dates"><input type="date" id="startDate" aria-label="はじまり">〜<input type="date" id="endDate" aria-label="おわり"></div>
         <p class="note">学校のお知らせで確かめて入れてください。</p>
       </div>
 
       <div class="field">
         <span class="label">おやすみの日（予定を入れない）</span>
-        <label class="check"><input type="checkbox" id="newYear" checked>12/31〜1/3 はおやすみ</label>
+        <label class="check" id="newYearRow"><input type="checkbox" id="newYear" checked>12/31〜1/3 はおやすみ</label>
         <p class="note">日にちを押すと、おやすみにする・もどすを切りかえられます。</p>
         <div class="chips" id="chips"></div>
       </div>
@@ -150,7 +161,7 @@ table.plan{width:100%;border-collapse:collapse;table-layout:fixed;flex:none}
         <span class="label">やること（6つまで）</span>
         <div class="tasks" id="tasks"></div>
         <button type="button" class="add-btn" id="addTask" style="margin-top:8px;width:100%">＋ やることを足す</button>
-        <p class="note">「全部で」は冬休み中の合計です。やる日に、なるべく同じ量になるように割りふります。「毎日」は、やる日とよび日にチェック欄を入れます。</p>
+        <p class="note">「全部で」は休みの間の合計です。やる日に、なるべく同じ量になるように割りふります。「毎日」は、やる日とよび日にチェック欄を入れます。</p>
       </div>
 
       <div class="inapp" id="inappNote" hidden>
@@ -176,18 +187,18 @@ table.plan{width:100%;border-collapse:collapse;table-layout:fixed;flex:none}
   <section class="howto">
     <h2>使い方</h2>
     <ol>
-      <li>冬休みのはじまりと終わりの日を入れます。</li>
-      <li>お正月など、予定を入れない日を選びます。最後の数日は「よび日」にしておくと、終わらなかった分をそこで取りもどせます。</li>
+      <li>冬休みか春休みかを選んで、はじまりと終わりの日を入れます。</li>
+      <li>お正月や旅行など、予定を入れない日を選びます。最後の数日は「よび日」にしておくと、終わらなかった分をそこで取りもどせます。</li>
       <li>宿題を「全部で何ページ・何まい・何回」と入れます。音読のように毎日やるものは「毎日」を選びます。</li>
       <li>「印刷する・PDFで保存」を押します。プリンターがない場合は「PDFに保存」を選び、コンビニのネットプリントで印刷できます。</li>
     </ol>
     <p class="note">計画表は冷蔵庫や机の前にはって、終わったら□にチェック、いちばん右に花まるやシールを。宿題の内容や量は、学校のお知らせを優先してください。</p>
   </section>
 </main>
-<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18a</span></footer>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19a</span></footer>
 
 <script>
-console.log("BUILD_TAG: 2026-11-18a");
+console.log("BUILD_TAG: 2026-11-19a");
 (function(){
   "use strict";
   var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Bytedance|Twitter/i.test(navigator.userAgent||"");
@@ -230,7 +241,7 @@ console.log("BUILD_TAG: 2026-11-18a");
   function build(o){
     var errors=[],warns=[];
     var s=parse(o.start),e=parse(o.end);
-    if(!s||!e)errors.push("冬休みのはじまりと終わりの日を入れてください。");
+    if(!s||!e)errors.push("休みのはじまりと終わりの日を入れてください。");
     var days=[];
     if(s&&e){
       if(e<s)errors.push("終わりの日が、はじまりの日より前になっています。");
@@ -243,7 +254,7 @@ console.log("BUILD_TAG: 2026-11-18a");
     }
     var toggled=o.toggled||{};
     var rows=days.map(function(d){
-      var key=iso(d),rest=(o.newYear&&isNewYear(d));
+      var key=iso(d),rest=(o.season!=="haru"&&o.newYear&&isNewYear(d));
       if(toggled[key])rest=!rest;
       return {date:key,label:md(d),wd:WD[d.getDay()],dow:d.getDay(),kind:rest?"rest":"work"};
     });
@@ -279,7 +290,7 @@ console.log("BUILD_TAG: 2026-11-18a");
       }
     });
     var counts={days:rows.length,work:work.length,spare:cnt,rest:rows.filter(function(r){return r.kind==="rest"}).length};
-    return {errors:errors,warns:warns,rows:rows,tasks:tasks,counts:counts};
+    return {errors:errors,warns:warns,rows:rows,tasks:tasks,counts:counts,season:o.season==="haru"?"haru":"fuyu"};
   }
 
   function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
@@ -301,7 +312,7 @@ console.log("BUILD_TAG: 2026-11-18a");
     var a=R[0],z=R[n-1],c=res.counts;
     var sub=a.label+"（"+a.wd+"）〜"+z.label+"（"+z.wd+"）"+c.days+"日間　やる日"+c.work+(c.spare?"・よび日"+c.spare:"")+(c.rest?"・おやすみ"+c.rest:"");
     var h='<section class="page" style="--rh:'+rh.toFixed(2)+'mm;--fs:'+fs.toFixed(2)+'mm;--cfs:'+cfs.toFixed(2)+'mm">';
-    h+='<div class="p-head"><div class="p-left"><div class="p-title">ふゆやすみの けいかくひょう</div><div class="p-sub">'+esc(sub)+'</div><div class="p-stamp">ぜんぶ おわったら いろを ぬろう <i></i><i></i><i></i></div></div>';
+    h+='<div class="p-head"><div class="p-left"><div class="p-title">'+(res.season==="haru"?"はるやすみ":"ふゆやすみ")+'の けいかくひょう</div><div class="p-sub">'+esc(sub)+'</div><div class="p-stamp">ぜんぶ おわったら いろを ぬろう <i></i><i></i><i></i></div></div>';
     h+='<div class="p-meta"><div>なまえ <span class="blank"></span></div><div><span class="sblank"></span>がつ<span class="sblank"></span>にち</div></div><div class="p-stampbox"><span>スタンプ</span></div></div>';
     h+='<div class="p-body"><table class="plan"><thead><tr><th class="d">ひにち</th>';
     T.forEach(function(t){h+='<th>'+esc(t.name)+'<small>'+(t.mode==="daily"?"まいにち":"ぜんぶで "+t.total+UNITS[t.unit])+'</small></th>'});
@@ -339,7 +350,27 @@ console.log("BUILD_TAG: 2026-11-18a");
   ]};
 
   function defaultYear(){var t=new Date();return t.getMonth()<=1?t.getFullYear()-1:t.getFullYear()}
-  (function(){var y=defaultYear();$("startDate").value=y+"-12-25";$("endDate").value=(y+1)+"-01-07"})();
+  // 春休みは、今が4月より前ならその年の春、4月以降なら次の年の春
+  function springYear(){var t=new Date();return t.getMonth()<=3?t.getFullYear():t.getFullYear()+1}
+  var HARU_TASKS=[
+    {name:"計算プリント",total:6,unit:"sheet",mode:"split"},
+    {name:"漢字のふくしゅう",total:6,unit:"page",mode:"split"},
+    {name:"音読",total:"",unit:"times",mode:"daily"}
+  ];
+  var FUYU_TASKS=JSON.parse(JSON.stringify(state.tasks));
+  function setSeason(se,keepTasks){
+    var haru=se==="haru";
+    if(haru){var y=springYear();$("startDate").value=y+"-03-25";$("endDate").value=y+"-04-05"}
+    else{var y2=defaultYear();$("startDate").value=y2+"-12-25";$("endDate").value=(y2+1)+"-01-07"}
+    $("dateLabel").textContent=(haru?"春休み":"冬休み")+"の日にち";
+    $("newYearRow").hidden=haru;
+    state.toggled={};
+    if(!keepTasks){state.tasks=JSON.parse(JSON.stringify(haru?HARU_TASKS:FUYU_TASKS));renderTasks()}
+    document.querySelector('input[name=season][value='+(haru?"haru":"fuyu")+']').checked=true;
+  }
+  setSeason(location.hash==="#haru"?"haru":"fuyu",false);
+  window.addEventListener("hashchange",function(){if(location.hash==="#haru"||location.hash==="#fuyu"){setSeason(location.hash.slice(1),false);update()}});
+  document.querySelectorAll('input[name=season]').forEach(function(r){r.addEventListener("change",function(){setSeason(this.value,false);update()})});
 
   function renderTasks(){
     var box=$("tasks");box.innerHTML="";
@@ -365,7 +396,7 @@ console.log("BUILD_TAG: 2026-11-18a");
   $("addTask").addEventListener("click",function(){if(state.tasks.length<MAX_TASKS){state.tasks.push({name:"",total:"",unit:"page",mode:"split"});renderTasks();update()}});
 
   function readOpts(){
-    return {start:$("startDate").value,end:$("endDate").value,newYear:$("newYear").checked,spare:parseInt($("spareSel").value,10),
+    return {season:document.querySelector('input[name=season]:checked').value,start:$("startDate").value,end:$("endDate").value,newYear:$("newYear").checked,spare:parseInt($("spareSel").value,10),
       toggled:state.toggled,tasks:state.tasks.map(function(t){return {name:t.name,total:t.total,unit:t.unit,mode:t.mode}})};
   }
 

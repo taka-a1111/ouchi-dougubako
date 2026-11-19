@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- BUILD_TAG: 2026-11-18b -->
+<!-- BUILD_TAG: 2026-11-19a -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="canonical" href="https://ouchidougubako.com/kuku/">
@@ -42,6 +42,12 @@ h1{font-size:1.45rem;margin:8px 0 4px;line-height:1.4}
 .seg button[aria-pressed="true"] small{color:#dfe5ef}
 .seg button:disabled{opacity:.45;cursor:default}
 .dans{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+#modeSeg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.dantbl{width:100%;border-collapse:collapse;margin:10px 0 0;font-size:.95rem}
+.dantbl th,.dantbl td{border-bottom:1px solid var(--line,#e6dccb);padding:5px 4px;text-align:center}
+.dantbl td.m{font-weight:700}
+.dantbl tr.ng td{background:#fdecea}
+.dantbl tr.slow td{background:#fff4d6}
 .dans button{padding:10px 0;border:2px solid #c9bfae;border-radius:12px;background:#fff;font-weight:700;font-size:1.05rem;cursor:pointer}
 .dans button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal);color:#fff}
 .dans .all{grid-column:span 1;font-size:.8rem}
@@ -177,6 +183,7 @@ select{width:100%;padding:8px;border:1px solid #c9bfae;border-radius:8px;font:in
       <button type="button" data-mode="dan" aria-pressed="true">段ごと<small>選んだ段だけ</small></button>
       <button type="button" data-mode="mix" aria-pressed="false">バラバラ<small>1〜9の段から</small></button>
       <button type="button" data-mode="weak" aria-pressed="false" id="weakBtn">苦手だけ<small id="weakSmall">まだなし</small></button>
+      <button type="button" data-mode="test" aria-pressed="false">全段テスト<small>81問・段ごとの成績</small></button>
     </div>
 
     <div id="danBox" style="margin-top:14px">
@@ -198,6 +205,10 @@ select{width:100%;padding:8px;border:1px solid #c9bfae;border-radius:8px;font:in
         <button type="button" data-n="30" aria-pressed="false">30問</button>
         <button type="button" data-n="81" aria-pressed="false">81問<small>ぜんぶ</small></button>
       </div>
+    </div>
+
+    <div id="testBox" style="margin-top:14px" hidden>
+      <p class="note" style="margin:0">1〜9の段の81問を、まぜて1回ずつ出します。終わると、段ごとの正解の数と1問の平均の時間がわかります。</p>
     </div>
 
     <div id="weakBox" style="margin-top:14px" hidden>
@@ -273,6 +284,7 @@ select{width:100%;padding:8px;border:1px solid #c9bfae;border-radius:8px;font:in
     <div id="resMissBox" hidden><p class="label" style="margin:12px 0 0">まちがえた問題</p><ul class="chips" id="resMiss"></ul></div>
     <div id="resSlowBox" hidden><p class="label" style="margin:12px 0 0">時間がかかった問題</p><ul class="chips" id="resSlow"></ul></div>
     <div id="resPerfect" hidden><ul class="chips good"><li>ぜんぶ正解！</li></ul></div>
+    <div id="resDanBox" hidden><p class="label" style="margin:12px 0 0">段ごとの成績</p><table class="dantbl" id="resDan"></table><p class="note" id="resDanNote" style="margin:6px 0 0"></p></div>
   </div>
   <button type="button" class="start" id="againBtn">もう一度</button>
   <button type="button" class="sub" id="weakAgainBtn">苦手だけ練習する</button>
@@ -281,10 +293,10 @@ select{width:100%;padding:8px;border:1px solid #c9bfae;border-radius:8px;font:in
 
 </main>
 <div id="printArea" aria-hidden="true"></div>
-<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18b</span></footer>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19a</span></footer>
 
 <script>
-console.log("BUILD_TAG: 2026-11-18b");
+console.log("BUILD_TAG: 2026-11-19a");
 (function(){
   "use strict";
   var $=function(id){return document.getElementById(id)};
@@ -369,6 +381,9 @@ console.log("BUILD_TAG: 2026-11-18b");
       var all=[];for(var a=1;a<=9;a++)for(var b=1;b<=9;b++)all.push(fact(a,b));
       shuffle(all,r);
       list=all.slice(0,Math.min(81,o.n||10));
+    }else if(o.mode==="test"){
+      var all81=[];for(var a3=1;a3<=9;a3++)for(var b3=1;b3<=9;b3++)all81.push(fact(a3,b3));
+      list=avoidAdjacent(shuffle(all81,r),r);
     }else if(o.mode==="weak"){
       list=weakList(o.facts||{}).slice(0,WEAK_MAX);
       if(!list.length)return {error:"苦手な問題はまだありません。ほかのモードで遊ぶと、まちがえた問題がここに入ります。",list:[]};
@@ -379,11 +394,13 @@ console.log("BUILD_TAG: 2026-11-18b");
   function modeKey(o){
     if(o.mode==="dan")return "dan:"+(o.dans||[]).slice().sort().join("")+":"+o.order;
     if(o.mode==="mix")return "mix:"+o.n;
+    if(o.mode==="test")return "test";
     return "weak";
   }
   function modeLabel(o){
     if(o.mode==="dan"){var d=(o.dans||[]).slice().sort(function(x,y){return x-y});var t=d.length===9?"1〜9の段":d.join("・")+"の段";return t+"（"+({up:"じゅんばん",down:"ぎゃく",rand:"バラバラ"})[o.order]+"）"}
     if(o.mode==="mix")return "バラバラ "+o.n+"問";
+    if(o.mode==="test")return "全段テスト";
     return "苦手だけ";
   }
   // 1問の結果を記録に入れる
@@ -399,6 +416,18 @@ console.log("BUILD_TAG: 2026-11-18b");
     return s;
   }
   function fmt(ms){return (Math.floor(ms/100)/10).toFixed(1)}
+  // 全段テストの段ごとの成績。◎ ぜんぶ正解で平均が DAN_SLOW_MS 以内、○ ぜんぶ正解だが遅い、△ まちがいあり
+  var DAN_SLOW_MS=3000;
+  function danStats(results){
+    var out=[];
+    for(var a=1;a<=9;a++){
+      var rs=results.filter(function(r){return r.a===a});
+      if(!rs.length)continue;
+      var ok=rs.filter(function(r){return r.ok}).length,avg=rs.reduce(function(t,r){return t+r.ms},0)/rs.length;
+      out.push({dan:a,n:rs.length,ok:ok,avg:avg,mark:ok<rs.length?"△":avg>DAN_SLOW_MS?"○":"◎"});
+    }
+    return out;
+  }
 
   // ---- 画面の状態 ----
   var opts={mode:"dan",dans:[2],order:"up",n:10};
@@ -472,7 +501,7 @@ console.log("BUILD_TAG: 2026-11-18b");
     pressGroup($("mixSeg"),"data-n",opts.n);
     var wl=weakList(pdata().facts);
     $("weakSmall").textContent=wl.length?wl.length+"問":"まだなし";
-    $("danBox").hidden=opts.mode!=="dan";$("mixBox").hidden=opts.mode!=="mix";$("weakBox").hidden=opts.mode!=="weak";
+    $("danBox").hidden=opts.mode!=="dan";$("mixBox").hidden=opts.mode!=="mix";$("weakBox").hidden=opts.mode!=="weak";$("testBox").hidden=opts.mode!=="test";
     $("weakNote").textContent=wl.length?"まちがえた問題と時間がかかった問題から、多くて"+WEAK_MAX+"問を出します（いま "+wl.length+"問）。2回つづけてすぐに正解すると、苦手から外れます。":"苦手な問題はまだありません。ほかのモードで遊ぶと、まちがえた問題がここに入ります。";
     var res=build({mode:opts.mode,dans:opts.dans,order:opts.order,n:opts.n,seed:1,facts:pdata().facts});
     $("errorBox").hidden=!res.error;$("errorBox").textContent=res.error||"";
@@ -575,6 +604,13 @@ console.log("BUILD_TAG: 2026-11-18b");
     $("resSlow").innerHTML=slow.map(function(r){return "<li>"+r.a+"×"+r.b+"="+r.ans+"</li>"}).join("");
     $("resMissBox").hidden=!miss.length;$("resSlowBox").hidden=!slow.length;$("resPerfect").hidden=!!miss.length;
     $("weakAgainBtn").hidden=!weakList(p.facts).length;
+    var ds=danStats(g.results);
+    $("resDanBox").hidden=g.o.mode!=="test";
+    if(g.o.mode==="test"){
+      $("resDan").innerHTML='<tr><th>段</th><th>正解</th><th>1問の平均</th><th></th></tr>'+ds.map(function(d){return '<tr class="'+(d.mark==="△"?"ng":d.mark==="○"?"slow":"")+'"><td class="m">'+d.dan+'の段</td><td>'+d.ok+' / '+d.n+'</td><td>'+(d.avg/1000).toFixed(1)+' 秒</td><td class="m">'+d.mark+'</td></tr>'}).join("");
+      var weakD=ds.filter(function(d){return d.mark!=="◎"}).map(function(d){return d.dan+"の段"});
+      $("resDanNote").textContent=weakD.length?("◎ ぜんぶ正解で1問"+(DAN_SLOW_MS/1000)+"秒以内　○ ぜんぶ正解だけど ゆっくり　△ まちがいあり。つぎは「段ごと」で "+weakD.join("・")+" を練習しよう。"):"どの段も、ぜんぶ正解で すらすら言えています。";
+    }
     lastOpts=g.o;
     show("resultView");
   }
@@ -596,7 +632,7 @@ console.log("BUILD_TAG: 2026-11-18b");
       var dans=(o.dans||[]).slice().sort(function(x,y){return x-y});
       if(o.order==="down")dans.forEach(function(a){for(var b=9;b>=1;b--)list.push(fact(a,b))});
       else dans.forEach(function(a){for(var b=1;b<=9;b++)list.push(fact(a,b))});
-    }else if(o.mode==="mix"){for(var a=1;a<=9;a++)for(var b=1;b<=9;b++)list.push(fact(a,b))}
+    }else if(o.mode==="mix"||o.mode==="test"){for(var a=1;a<=9;a++)for(var b=1;b<=9;b++)list.push(fact(a,b))}
     else list=weakList(o.facts||{});
     return list;
   }
@@ -619,7 +655,7 @@ console.log("BUILD_TAG: 2026-11-18b");
     for(var s=0;s<(o.pages||1);s++){
       var r=rng((o.seed||1)*31+s*7919+11),seq;
       if(o.mode==="dan"&&o.order!=="rand"&&s===0)seq=fillTo(base.slice(),base,o.n,r);   // 1枚目は順番どおり始める
-      else if(o.mode==="mix")seq=shuffle(base.slice(),r).slice(0,o.n);
+      else if(o.mode==="mix"||o.mode==="test")seq=shuffle(base.slice(),r).slice(0,o.n);
       else seq=fillTo([],base,o.n,r);
       sheets.push(seq);
     }
@@ -628,6 +664,7 @@ console.log("BUILD_TAG: 2026-11-18b");
   function printLabel(o){
     if(o.mode==="weak")return "苦手な問題";
     if(o.mode==="mix")return "1〜9の段からバラバラ";
+    if(o.mode==="test")return "1〜9の段（全段テスト）";
     return modeLabel(o);
   }
   function renderSheet(list,idx,total,isAnswer,o){
@@ -683,7 +720,7 @@ console.log("BUILD_TAG: 2026-11-18b");
     if(document.fonts&&document.fonts.load){Promise.all([document.fonts.load('600 20px "Klee One"',lastPrintText)]).then(function(){return document.fonts.ready}).then(done,done)}else done();
   });
   // 検査用
-  window.__kuku={build:build,weakList:weakList,recordFact:recordFact,isWeak:isWeak,modeKey:modeKey,modeLabel:modeLabel,SLOW_MS:SLOW_MS,WEAK_MAX:WEAK_MAX,
+  window.__kuku={build:build,weakList:weakList,recordFact:recordFact,isWeak:isWeak,modeKey:modeKey,modeLabel:modeLabel,SLOW_MS:SLOW_MS,WEAK_MAX:WEAK_MAX,danStats:danStats,DAN_SLOW_MS:DAN_SLOW_MS,
     db:function(){return db},press:press,buildPrint:buildPrint,PLAYOUT:PLAYOUT,lastPrint:function(){return lastPrint},state:function(){return {game:game,last:lastResult}},setOpts:function(o){for(var k in o)opts[k]=o[k];renderAll()}};
 
   renderAll();
