@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- BUILD_TAG: 2026-11-19a -->
+<!-- BUILD_TAG: 2026-11-19b -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://ouchidougubako.com/nazori/">
@@ -29,14 +29,18 @@ h1{font-size:1.5rem;margin:8px 0 4px}
 @media (max-width:860px){.panel{position:static}}
 .field{margin:0 0 14px}
 .field>label,.field>.label{display:block;font-weight:700;margin:0 0 4px}
-.tabs{display:flex;gap:6px}
-.tabs button{flex:1;padding:8px 4px;border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:8px;font:inherit;font-weight:700;cursor:pointer}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tabs button{flex:1 1 30%;min-width:0;padding:8px 4px;border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:8px;font:inherit;font-weight:700;cursor:pointer}
 .tabs button[aria-pressed="true"]{background:var(--navy);color:#fff}
 input[type=text],textarea,select{width:100%;padding:8px;border:1px solid #c9bfae;border-radius:8px;font:inherit;font-size:16px;background:#fff;color:var(--navy)}
 textarea{min-height:110px}
 .groups{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
 .groups label{display:flex;align-items:center;gap:4px;font-size:.95rem;background:var(--cream);border-radius:6px;padding:2px 6px;cursor:pointer}
 .mini{display:flex;gap:6px;margin:6px 0 0}
+.palette{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:3px;margin:6px 0 0}
+.palette button{font:inherit;font-family:"Klee One",var(--ui-font,inherit);font-weight:600;font-size:1.05rem;padding:3px 0;border:1px solid #c9bfae;background:#fff;border-radius:6px;cursor:pointer;color:var(--navy);min-width:0}
+.palette button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.palette button.sp{visibility:hidden}
 .mini button{font:inherit;font-size:.8rem;padding:2px 8px;border:1px solid #c9bfae;background:#fff;border-radius:6px;cursor:pointer}
 .radio{display:flex;flex-wrap:wrap;gap:6px}
 .radio label{border:1px solid #c9bfae;border-radius:8px;padding:4px 10px;cursor:pointer;background:#fff}
@@ -107,7 +111,7 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
 <div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
 <main class="wrap">
   <h1>名前入りなぞり書きプリント</h1>
-  <p class="lead">子どもの名前や、練習したいひらがな・カタカナの行を選ぶだけ。お手本→なぞる→自分で書く、の順に並んだプリントが作れます。</p>
+  <p class="lead">子どもの名前や、練習したいひらがな・カタカナの行、学校で習った順の字を選ぶだけ。お手本→なぞる→自分で書く、の順に並んだプリントが作れます。</p>
   <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>入力した名前は送信・保存しません</li></ul>
 
   <div class="layout">
@@ -119,6 +123,7 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
           <button type="button" data-mode="rows" aria-pressed="false">ひらがな</button>
           <button type="button" data-mode="kata" aria-pressed="false">カタカナ</button>
           <button type="button" data-mode="words" aria-pressed="false">ことば</button>
+          <button type="button" data-mode="order" aria-pressed="false">習った順</button>
         </div>
       </div>
 
@@ -133,6 +138,16 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
         <span class="label">練習する行</span>
         <div class="groups" id="groups"></div>
         <div class="mini"><button type="button" id="selAll">ぜんぶ</button><button type="button" id="selBasic">清音だけ</button><button type="button" id="selNone">はずす</button></div>
+      </div>
+
+      <div class="field" data-for="order" hidden>
+        <label for="orderInput">学校で習った字（習った順に）</label>
+        <input type="text" id="orderInput" maxlength="80" autocomplete="off" placeholder="例：くしつへい">
+        <p class="note">下の字をおすと、順に足されます。習う順は教科書や学校によってちがうので、学校で習った順に入れてください。入れた字は、この端末の中だけに保存します。</p>
+        <div class="palette" id="palette"></div>
+        <div class="mini"><button type="button" id="ordBack">1つ消す</button><button type="button" id="ordClear">ぜんぶ消す</button></div>
+        <label for="orderRange" style="display:block;font-weight:700;margin:10px 0 4px">プリントにする字</label>
+        <select id="orderRange" style="width:100%"><option value="all">ぜんぶ</option><option value="5">さいごに習った5こ</option><option value="10">さいごに習った10こ</option></select>
       </div>
 
       <div class="field" data-for="words" hidden>
@@ -186,17 +201,17 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
   <section class="howto">
     <h2>使い方</h2>
     <ol>
-      <li>「なまえ」「ひらがな」「カタカナ」「ことば」から練習するものを選びます。カタカナは、ひらがなと同じ行の並びで選べます。</li>
+      <li>「なまえ」「ひらがな」「カタカナ」「ことば」「習った順」から練習するものを選びます。カタカナは、ひらがなと同じ行の並びで選べます。「習った順」は、学校で習った字を習った順に入れると、その順にプリントになります。</li>
       <li>マスの大きさと、なぞる回数を選びます。はじめは「大」と「なぞる2回」がおすすめです。</li>
       <li>「印刷する・PDFで保存」を押すと、印刷の画面が開きます。プリンターがない場合は「PDFに保存」を選び、コンビニのネットプリントで印刷できます。</li>
     </ol>
     <p class="note">お手本の字は教科書の字に近い形の書体（Klee One）を使っています。書き順は入っていません。</p>
   </section>
 </main>
-<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19a</span></footer>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19b</span></footer>
 
 <script>
-console.log("BUILD_TAG: 2026-11-19a");
+console.log("BUILD_TAG: 2026-11-19b");
 (function(){
   "use strict";
 
@@ -303,6 +318,20 @@ console.log("BUILD_TAG: 2026-11-19a");
       title=opts.mode==="kata"?"カタカナ を かこう":"ひらがな を かこう";
       sub=gs.map(function(g){return groupName(g,opts.mode)}).join("・");
       if(sub.length>40)sub=sub.slice(0,39)+"…";
+    }else if(opts.mode==="order"){
+      var list=orderChars(opts.order);
+      var badO=chars(String(opts.order||"").replace(/[\s、,・]/g,"")).filter(function(c){return !/^[ぁ-ゖァ-ヺー]$/.test(c)});
+      if(badO.length)errors.push("ひらがな・カタカナだけ入れてください（使えない字："+badO.slice(0,5).join(" ")+"）。");
+      if(!list.length)errors.push("習った字を1つ以上入れてください。");
+      if(list.length>60)errors.push("習った字は60こまでです（いま"+list.length+"こ）。");
+      var from=0;
+      if(opts.range==="5"||opts.range==="10"){from=Math.max(0,list.length-parseInt(opts.range,10))}
+      if(!errors.length){
+        // 1字ずつ並べて、ページいっぱいに詰める（ページの見出しは「○〜○こめ」）
+        for(var k=from;k<list.length;k++){var rw=charRow(list[k],opts.trace,L.cols);rw.idx=k+1;blocks.push([rw])}
+      }
+      title="ならった じ を かこう";
+      sub=list.slice(from).join("");
     }else{
       var words=hanNum(opts.words).split(/\n/).map(function(w){return w.replace(/\s+/g,"")}).filter(Boolean);
       if(!words.length)errors.push("ことばを1つ以上入れてください。");
@@ -328,7 +357,15 @@ console.log("BUILD_TAG: 2026-11-19a");
       });
     });
     if(cur.length)pages.push(cur);
+    if(opts.mode==="order")pages.forEach(function(pg){var ix=pg.map(function(r){return r.idx});pg.labels=[ix[0]+"〜"+ix[ix.length-1]+"こめ"]});
     return {layout:L,pages:errors.length?[]:pages,errors:errors,warns:warns,title:title,sub:sub};
+  }
+
+  // 習った字：空白や区切りを除き、ひらがな・カタカナだけを、はじめに出た順に1回ずつ
+  function orderChars(str){
+    var out=[],seen={};
+    chars(String(str||"").replace(/[\s、,・]/g,"")).forEach(function(c){if(/^[ぁ-ゖァ-ヺー]$/.test(c)&&!seen[c]){seen[c]=1;out.push(c)}});
+    return out;
   }
 
   function esc(s){return s.replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
@@ -354,6 +391,8 @@ console.log("BUILD_TAG: 2026-11-19a");
       mode:state.mode,
       name:$("nameInput").value,
       words:$("wordsInput").value,
+      order:$("orderInput").value,
+      range:$("orderRange").value,
       groups:state.groups.slice(),
       size:document.querySelector('input[name=size]:checked').value,
       trace:parseInt($("traceCount").value,10),
@@ -407,6 +446,21 @@ console.log("BUILD_TAG: 2026-11-19a");
   }
 
   document.querySelectorAll(".tabs button").forEach(function(b){b.addEventListener("click",function(){setMode(b.dataset.mode)})});
+  // 習った順：字をおすと足す。入れた字はこの端末の localStorage にだけ保存する
+  var OKEY="dougubako_nazori_order";
+  var PAL="あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもや・ゆ・よらりるれろわ・を・んがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽゃゅょっー";
+  function renderPalette(){
+    var have=orderChars($("orderInput").value);
+    $("palette").innerHTML=Array.from(PAL).map(function(c){return c==="・"?'<button type="button" class="sp" tabindex="-1" aria-hidden="true">・</button>':'<button type="button" data-c="'+c+'"'+(have.indexOf(c)>=0?' class="on"':'')+'>'+c+'</button>'}).join("");
+  }
+  function saveOrder(){try{localStorage.setItem(OKEY,$("orderInput").value)}catch(e){}}
+  try{var sv=localStorage.getItem(OKEY);if(sv)$("orderInput").value=sv}catch(e){}
+  $("palette").addEventListener("click",function(e){var b=e.target.closest("button[data-c]");if(!b)return;var c=b.dataset.c,cur=orderChars($("orderInput").value);if(cur.indexOf(c)<0){$("orderInput").value=cur.join("")+c;saveOrder();renderPalette();update()}});
+  $("ordBack").addEventListener("click",function(){var cur=orderChars($("orderInput").value);cur.pop();$("orderInput").value=cur.join("");saveOrder();renderPalette();update()});
+  $("ordClear").addEventListener("click",function(){$("orderInput").value="";saveOrder();renderPalette();update()});
+  $("orderInput").addEventListener("input",function(){saveOrder();renderPalette();update()});
+  $("orderRange").addEventListener("change",update);
+  renderPalette();
   $("groups").addEventListener("change",syncGroups);
   $("selAll").addEventListener("click",function(){state.groups=GROUPS.map(function(g){return g.id});renderGroups();update()});
   $("selBasic").addEventListener("click",function(){state.groups=GROUPS.filter(function(g){return g.basic}).map(function(g){return g.id});renderGroups();update()});
@@ -425,10 +479,10 @@ console.log("BUILD_TAG: 2026-11-19a");
   });
 
   // 検査用：画面を使わずに組み立て結果だけを返す
-  window.__nazori={GROUPS:GROUPS,KGROUPS:KGROUPS,SIZES:SIZES,build:build,layoutFor:layoutFor,setMode:setMode};
+  window.__nazori={GROUPS:GROUPS,KGROUPS:KGROUPS,SIZES:SIZES,build:build,layoutFor:layoutFor,setMode:setMode,orderChars:orderChars,PAL:PAL};
 
   // /nazori/#kata のように開くと、そのタブから始まる
-  function modeFromHash(){var h=(location.hash||"").replace("#","");return ["name","rows","kata","words"].indexOf(h)>=0?h:""}
+  function modeFromHash(){var h=(location.hash||"").replace("#","");return ["name","rows","kata","words","order"].indexOf(h)>=0?h:""}
   if(modeFromHash()&&modeFromHash()!=="name")setMode(modeFromHash());
   else{renderGroups();update();}
   window.addEventListener("hashchange",function(){if(modeFromHash())setMode(modeFromHash())});

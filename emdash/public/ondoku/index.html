@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- BUILD_TAG: 2026-11-19a -->
+<!-- BUILD_TAG: 2026-11-19b -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://ouchidougubako.com/ondoku/">
 <title>音読カードメーカー｜おうち学習のどうぐばこ</title>
-<meta name="description" content="始める日と日数、チェックする項目を選ぶだけで、日付と曜日が入った音読カードが作れます。読んだもの・回数・おうちの人のひとこと欄つきで、無料・登録なしで使えます。">
+<meta name="description" content="月と学年を選ぶだけで、1か月分の日付と曜日が入った音読カードが作れます。始める日と日数を選ぶこともできます。読んだもの・回数・おうちの人のひとこと欄つきで、無料・登録なしで使えます。">
 <link rel="stylesheet" href="/assets/fonts/klee-one/klee-one.css">
 <style>
 :root{
@@ -73,6 +73,7 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
 .p-meta{flex:none;font-size:4mm;text-align:right;line-height:1.9}
 .p-meta .blank{display:inline-block;width:40mm;border-bottom:.3mm solid #2b2f36}
 .p-meta .sblank{display:inline-block;width:9mm}
+.p-meta .gr{font-family:"Klee One",var(--ui-font);font-weight:600;font-size:5mm;margin-right:.5mm}
 .p-body{flex:1;min-height:0;padding-top:3mm;display:flex;flex-direction:column}
 table.oc{width:100%;border-collapse:collapse;table-layout:fixed;flex:none}
 .oc th,.oc td{border:.3mm solid #8f99a6;text-align:center;vertical-align:middle;padding:0 .8mm;overflow:hidden}
@@ -123,16 +124,32 @@ input[type=text]{width:100%}
 <div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
 <main class="wrap">
   <h1>音読カードメーカー</h1>
-  <p class="lead">始める日と日数、チェックする項目を選ぶだけ。日付と曜日が入った音読カードが作れます。読んだもの・回数・おうちの人のひとこと欄つき。学校のカードがなくなったときや、長い休みの音読に。</p>
-  <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>日付と曜日入り</li></ul>
+  <p class="lead">月と学年を選ぶだけで、1か月分の音読カードが作れます。始める日と日数で作ることもできます。日付と曜日入りで、読んだもの・回数・おうちの人のひとこと欄つき。学校のカードがなくなったときや、長い休みの音読に。</p>
+  <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>日付と曜日入り</li><li>1か月分・学年入り</li></ul>
 
   <div class="layout">
     <form class="panel" id="form" onsubmit="return false">
       <div class="field">
+        <span class="label">作り方</span>
+        <div class="radio">
+          <label><input type="radio" name="mode" value="month" checked>1か月分（月を選ぶ）</label>
+          <label><input type="radio" name="mode" value="range">始める日と日数</label>
+        </div>
+      </div>
+      <div class="field" id="monthField">
+        <label for="month">月</label>
+        <select id="month" style="width:100%"></select>
+        <label class="check" style="margin-top:6px"><input type="checkbox" id="weekendM" checked>土曜・日曜もふくめる</label>
+      </div>
+      <div class="field">
+        <label for="grade">学年（なくてもOK）</label>
+        <select id="grade" style="width:100%"><option value="">入れない（手で書く）</option><option value="1">1年生</option><option value="2">2年生</option><option value="3">3年生</option><option value="4">4年生</option><option value="5">5年生</option><option value="6">6年生</option></select>
+      </div>
+      <div class="field rangeOnly" hidden>
         <label for="start">始める日</label>
         <input type="date" id="start">
       </div>
-      <div class="field">
+      <div class="field rangeOnly" hidden>
         <label for="days">日数</label>
         <select id="days"><option value="7">7日（1週間）</option><option value="10">10日</option><option value="14" selected>14日（2週間）</option><option value="21">21日（3週間）</option><option value="28">28日（4週間）</option><option value="31">31日</option></select>
         <label class="check" style="margin-top:6px"><input type="checkbox" id="weekend" checked>土曜・日曜もふくめる</label>
@@ -178,16 +195,16 @@ input[type=text]{width:100%}
   <section class="howto">
     <h2>使い方</h2>
     <ol>
-      <li>始める日と日数を選びます。土日に音読しないときは「土曜・日曜もふくめる」をはずします。</li>
+      <li>「1か月分」なら月を、「始める日と日数」なら始める日と日数を選びます。学年を選ぶと、カードに「○ねん」と入ります。土日に音読しないときは「土曜・日曜もふくめる」をはずします。</li>
       <li>チェックする項目を1〜4つ選びます。学校のカードと同じ項目にするとわかりやすくなります。</li>
       <li>読んだあと、項目ごとに ◎・○・△ をつけて、おうちの人がひとことやサインを書きます。</li>
     </ol>
     <p class="note">学校から音読カードが出ているときは、学校のカードを優先してください。入力した内容はこの画面の中だけで使い、どこにも送りません。</p>
   </section>
 </main>
-<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19a</span></footer>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19b</span></footer>
 <script>
-console.log("BUILD_TAG: 2026-11-19a");
+console.log("BUILD_TAG: 2026-11-19b");
 (function(){
   "use strict";
   var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Bytedance|Twitter/i.test(navigator.userAgent||"");
@@ -224,12 +241,27 @@ console.log("BUILD_TAG: 2026-11-19a");
     return out;
   }
 
+  // 1か月分の日付（週末を除くときは、その月の平日だけ）
+  function monthDates(y,m,weekend){
+    var out=[],d=new Date(y,m-1,1);
+    while(d.getMonth()===m-1){var w=d.getDay();if(weekend||(w!==0&&w!==6))out.push(new Date(d));d.setDate(d.getDate()+1)}
+    return out;
+  }
+  function parseMonth(s){var m=/^(\d{4})-(\d{2})$/.exec(s||"");if(!m)return null;var y=+m[1],mo=+m[2];return (mo>=1&&mo<=12&&y>=2000&&y<=2100)?{y:y,m:mo}:null}
+
   function build(o){
-    var errors=[], S=SIZES[o.size]||SIZES.L;
-    var start=parse(o.start);
-    if(!start)errors.push("始める日を選んでください。");
-    var n=parseInt(o.days,10);
-    if(!(n>=1&&n<=31))errors.push("日数は1〜31日にしてください。");
+    var errors=[], S=SIZES[o.size]||SIZES.L, mode=o.mode==="month"?"month":"range", start=null, n=0, mo=null;
+    if(mode==="month"){
+      mo=parseMonth(o.month);
+      if(!mo)errors.push("月を選んでください。");
+    }else{
+      start=parse(o.start);
+      if(!start)errors.push("始める日を選んでください。");
+      n=parseInt(o.days,10);
+      if(!(n>=1&&n<=31))errors.push("日数は1〜31日にしてください。");
+    }
+    var grade=String(o.grade||"");
+    if(grade&&!/^[1-6]$/.test(grade))errors.push("学年は1〜6年生から選んでください。");
     var items=o.items.slice();
     var cu=String(o.custom||"").replace(/\s+/g,"");
     if(cu){if(chars(cu).length>8)errors.push("自分で足す項目は8文字までです。");else if(items.indexOf(cu)<0)items.push(cu)}
@@ -238,11 +270,11 @@ console.log("BUILD_TAG: 2026-11-19a");
     var title=String(o.title||"").trim();
     if(chars(title).length>20)errors.push("読むものは20文字までです。");
     if(errors.length)return {errors:errors,pages:[],items:items};
-    var ds=dates(start,n,o.weekend), pages=[];
+    var ds=mode==="month"?monthDates(mo.y,mo.m,o.weekend):dates(start,n,o.weekend), pages=[];
     for(var i=0;i<ds.length;i+=S.rows)pages.push(ds.slice(i,i+S.rows));
     var last=ds[ds.length-1];
-    return {errors:[],pages:pages,items:items,title:title,count:!!o.count,size:S,dates:ds,
-      period:md(ds[0])+"（"+WD[ds[0].getDay()]+"）〜"+md(last)+"（"+WD[last.getDay()]+"）"};
+    return {errors:[],pages:pages,items:items,title:title,count:!!o.count,size:S,dates:ds,mode:mode,grade:grade,month:mo?mo.m:0,
+      period:(mo?mo.m+"がつ　":"")+md(ds[0])+"（"+WD[ds[0].getDay()]+"）〜"+md(last)+"（"+WD[last.getDay()]+"）"};
   }
 
   function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
@@ -258,9 +290,9 @@ console.log("BUILD_TAG: 2026-11-19a");
     var S=res.size, w=widths(res);
     var len=Math.max(1,chars(res.title).length), oneLine=(w.t-3.5)/len, tf=Math.max(2.8,Math.min(S.fs*.78,oneLine>=2.8?oneLine:(w.t-3.5)*2/len));
     var h='<section class="page" style="--rh:'+S.rh+'mm;--fs:'+S.fs+'mm;--tf:'+tf.toFixed(2)+'mm">'+
-      '<div class="p-head"><div class="p-left"><div class="p-title">おんどくカード</div><div class="p-sub">'+esc(res.period+(res.title?"　"+res.title:""))+'</div>'+
+      '<div class="p-head"><div class="p-left"><div class="p-title">'+(res.month?res.month+"がつの ":"")+'おんどくカード</div><div class="p-sub">'+esc(res.period+(res.title?"　"+res.title:""))+'</div>'+
       '<div class="p-stamp">ぜんぶ できたら いろを ぬろう <i></i><i></i><i></i></div></div>'+
-      '<div class="p-meta"><div>なまえ <span class="blank"></span></div><div>　ねん　くみ</div></div><div class="p-stampbox"><span>スタンプ</span></div></div>'+
+      '<div class="p-meta"><div>なまえ <span class="blank"></span></div><div>'+(res.grade?'<b class="gr">'+res.grade+'</b>':'　')+'ねん　くみ</div></div><div class="p-stampbox"><span>スタンプ</span></div></div>'+
       '<div class="p-body"><table class="oc"><colgroup><col style="width:'+w.d+'mm"><col style="width:'+w.t+'mm">'+(res.count?'<col style="width:'+w.n+'mm">':'');
     res.items.forEach(function(){h+='<col style="width:'+w.c+'mm">'});
     h+='<col style="width:'+w.s+'mm"></colgroup><thead><tr><th>日づけ</th><th>読んだもの</th>'+(res.count?'<th>回数</th>':'');
@@ -278,7 +310,8 @@ console.log("BUILD_TAG: 2026-11-19a");
   }
 
   function readOpts(){
-    return {start:$("start").value,days:$("days").value,weekend:$("weekend").checked,title:$("title").value,
+    var mode=document.querySelector('input[name=mode]:checked').value;
+    return {mode:mode,month:$("month").value,grade:$("grade").value,start:$("start").value,days:$("days").value,weekend:mode==="month"?$("weekendM").checked:$("weekend").checked,title:$("title").value,
       items:state.items.slice(),custom:$("custom").value,size:document.querySelector('input[name=size]:checked').value,count:$("count").checked};
   }
   function renderItems(){
@@ -292,7 +325,7 @@ console.log("BUILD_TAG: 2026-11-19a");
     $("pageCount").textContent=res.pages.length?("A4 "+res.pages.length+"枚"):"";
     $("summary").textContent=res.pages.length?(res.dates.length+"日分・A4で"+res.pages.length+"枚になります"):"";
     $("printBtn").disabled=!res.pages.length;
-    lastText="おんどくカード"+(res.title||"")+"0123456789日月火水木金土◎○△"+(res.period||"");
+    lastText="おんどくカードがつの"+(res.title||"")+"0123456789日月火水木金土◎○△ねん"+(res.period||"");
     fit(); window.__lastResult=res;
   }
   function fit(){
@@ -303,9 +336,15 @@ console.log("BUILD_TAG: 2026-11-19a");
   }
   // 初期値：次の月曜日（今日が月曜なら今日）
   (function(){var t=new Date(),d=new Date(t.getFullYear(),t.getMonth(),t.getDate());while(d.getDay()!==1)d.setDate(d.getDate()+1);$("start").value=iso(d)})();
+  // 月の選択肢：今月の前の月から14か月分。初期値は来月（25日以降）または今月
+  (function(){var t=new Date(),sel=$("month"),h="";for(var i=-1;i<13;i++){var d=new Date(t.getFullYear(),t.getMonth()+i,1);var v=d.getFullYear()+"-"+pad(d.getMonth()+1);h+='<option value="'+v+'">'+d.getFullYear()+"年"+(d.getMonth()+1)+"月</option>"}sel.innerHTML=h;
+    var dflt=new Date(t.getFullYear(),t.getMonth()+(t.getDate()>=25?1:0),1);sel.value=dflt.getFullYear()+"-"+pad(dflt.getMonth()+1)})();
+  function syncMode(){var m=document.querySelector('input[name=mode]:checked').value;$("monthField").hidden=m!=="month";document.querySelectorAll(".rangeOnly").forEach(function(e){e.hidden=m==="month"})}
+  document.querySelectorAll('input[name=mode]').forEach(function(r){r.addEventListener("change",function(){syncMode();update()})});
+  syncMode();
   renderItems();
   $("items").addEventListener("change",function(){state.items=Array.from(document.querySelectorAll("#items input:checked")).map(function(i){return i.value});update()});
-  ["start","days","weekend","title","custom","count"].forEach(function(id){$(id).addEventListener("input",update);$(id).addEventListener("change",update)});
+  ["month","weekendM","grade","start","days","weekend","title","custom","count"].forEach(function(id){$(id).addEventListener("input",update);$(id).addEventListener("change",update)});
   document.querySelectorAll('input[name=size]').forEach(function(r){r.addEventListener("change",update)});
   window.addEventListener("resize",fit);
   $("printBtn").addEventListener("click",function(){
@@ -314,7 +353,7 @@ console.log("BUILD_TAG: 2026-11-19a");
     var done=function(){btn.textContent=label;btn.disabled=false;window.print()};
     if(document.fonts&&document.fonts.load){Promise.all([document.fonts.load('600 20px "Klee One"',lastText)]).then(function(){return document.fonts.ready}).then(done,done)}else done();
   });
-  window.__ondoku={build:build,dates:dates,parse:parse,widths:widths,PRESETS:PRESETS,SIZES:SIZES};
+  window.__ondoku={build:build,dates:dates,monthDates:monthDates,parse:parse,widths:widths,PRESETS:PRESETS,SIZES:SIZES};
   update();
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
 })();
