@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<!-- BUILD_TAG: 2026-11-18c -->
+<!-- BUILD_TAG: 2026-11-19a -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://ouchidougubako.com/nazori/">
 <title>名前入りなぞり書きプリント｜おうち学習のどうぐばこ</title>
-<meta name="description" content="子どもの名前やひらがなの行を選ぶだけで、なぞり書きプリントが作れます。無料・登録なし。入力した名前は送信・保存しません。">
+<meta name="description" content="子どもの名前や、ひらがな・カタカナの行を選ぶだけで、なぞり書きプリントが作れます。無料・登録なし。入力した名前は送信・保存しません。">
 <link rel="stylesheet" href="/assets/fonts/klee-one/klee-one.css">
 <style>
 :root{
@@ -107,7 +107,7 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
 <div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
 <main class="wrap">
   <h1>名前入りなぞり書きプリント</h1>
-  <p class="lead">子どもの名前や、練習したいひらがなの行を選ぶだけ。お手本→なぞる→自分で書く、の順に並んだプリントが作れます。</p>
+  <p class="lead">子どもの名前や、練習したいひらがな・カタカナの行を選ぶだけ。お手本→なぞる→自分で書く、の順に並んだプリントが作れます。</p>
   <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>入力した名前は送信・保存しません</li></ul>
 
   <div class="layout">
@@ -117,6 +117,7 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
         <div class="tabs" role="group" aria-label="練習するもの">
           <button type="button" data-mode="name" aria-pressed="true">なまえ</button>
           <button type="button" data-mode="rows" aria-pressed="false">ひらがな</button>
+          <button type="button" data-mode="kata" aria-pressed="false">カタカナ</button>
           <button type="button" data-mode="words" aria-pressed="false">ことば</button>
         </div>
       </div>
@@ -128,7 +129,7 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
         <p class="warn" id="nameWarn" hidden></p>
       </div>
 
-      <div class="field" data-for="rows" hidden>
+      <div class="field" data-for="rows kata" hidden>
         <span class="label">練習する行</span>
         <div class="groups" id="groups"></div>
         <div class="mini"><button type="button" id="selAll">ぜんぶ</button><button type="button" id="selBasic">清音だけ</button><button type="button" id="selNone">はずす</button></div>
@@ -185,17 +186,17 @@ footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
   <section class="howto">
     <h2>使い方</h2>
     <ol>
-      <li>「なまえ」「ひらがな」「ことば」から練習するものを選びます。</li>
+      <li>「なまえ」「ひらがな」「カタカナ」「ことば」から練習するものを選びます。カタカナは、ひらがなと同じ行の並びで選べます。</li>
       <li>マスの大きさと、なぞる回数を選びます。はじめは「大」と「なぞる2回」がおすすめです。</li>
       <li>「印刷する・PDFで保存」を押すと、印刷の画面が開きます。プリンターがない場合は「PDFに保存」を選び、コンビニのネットプリントで印刷できます。</li>
     </ol>
     <p class="note">お手本の字は教科書の字に近い形の書体（Klee One）を使っています。書き順は入っていません。</p>
   </section>
 </main>
-<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-18c</span></footer>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19a</span></footer>
 
 <script>
-console.log("BUILD_TAG: 2026-11-18c");
+console.log("BUILD_TAG: 2026-11-19a");
 (function(){
   "use strict";
 
@@ -225,6 +226,13 @@ console.log("BUILD_TAG: 2026-11-18c");
     {id:"da",label:"だ",chars:"だぢづでど"},{id:"ba",label:"ば",chars:"ばびぶべぼ"},
     {id:"pa",label:"ぱ",chars:"ぱぴぷぺぽ"},{id:"small",label:"ゃゅょっ",chars:"ゃゅょっ"}
   ];
+  // カタカナはひらがなと同じ行の並び（文字コードを0x60ずらす）。小さい字の行には、のばす音「ー」も入れる
+  function toKata(str){return String(str).replace(/[ぁ-ゖ]/g,function(c){return String.fromCharCode(c.charCodeAt(0)+0x60)})}
+  var KGROUPS=GROUPS.map(function(g){
+    return {id:g.id,label:g.id==="small"?"ャュョッー":toKata(g.label),chars:g.id==="small"?"ャュョッー":toKata(g.chars),basic:g.basic};
+  });
+  function groupsFor(mode){return mode==="kata"?KGROUPS:GROUPS}
+  function groupName(g,mode){return g.id==="small"?(mode==="kata"?"ちいさい字・ー":"ちいさい字"):g.label+"行"}
   // マスの大きさ（mm）。列数・行数はA4の書ける範囲（横180mm×縦約240mm）から計算する
   var SIZES={L:{cell:28,gap:2.5},M:{cell:22,gap:2.5},S:{cell:17,gap:2.5}};
   var AREA_W=180, AREA_H=240;
@@ -283,17 +291,17 @@ console.log("BUILD_TAG: 2026-11-18c");
         blocks.push(wordBlock(name,opts.trace,L.cols));
         title=name+" を かこう";
       }
-    }else if(opts.mode==="rows"){
-      var gs=GROUPS.filter(function(g){return opts.groups.indexOf(g.id)>=0});
+    }else if(opts.mode==="rows"||opts.mode==="kata"){
+      var gs=groupsFor(opts.mode).filter(function(g){return opts.groups.indexOf(g.id)>=0});
       if(!gs.length)errors.push("練習する行を1つ以上選んでください。");
       // 1つの行（あ行など）は1つのかたまりにして、ページの途中で分けない
       gs.forEach(function(g){
         var blk=chars(g.chars).map(function(c){return charRow(c,opts.trace,L.cols)});
-        blk.label=g.id==="small"?"ちいさい字":g.label+"行";
+        blk.label=groupName(g,opts.mode);
         blocks.push(blk);
       });
-      title="ひらがな を かこう";
-      sub=gs.map(function(g){return g.id==="small"?"ちいさい字":g.label+"行"}).join("・");
+      title=opts.mode==="kata"?"カタカナ を かこう":"ひらがな を かこう";
+      sub=gs.map(function(g){return groupName(g,opts.mode)}).join("・");
       if(sub.length>40)sub=sub.slice(0,39)+"…";
     }else{
       var words=hanNum(opts.words).split(/\n/).map(function(w){return w.replace(/\s+/g,"")}).filter(Boolean);
@@ -383,12 +391,13 @@ console.log("BUILD_TAG: 2026-11-18c");
   function setMode(m){
     state.mode=m;
     document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.mode===m))});
-    document.querySelectorAll("[data-for]").forEach(function(el){el.hidden=el.dataset.for!==m});
+    document.querySelectorAll("[data-for]").forEach(function(el){el.hidden=el.dataset.for.split(" ").indexOf(m)<0});
+    renderGroups();
     update();
   }
 
   function renderGroups(){
-    $("groups").innerHTML=GROUPS.map(function(g){
+    $("groups").innerHTML=groupsFor(state.mode).map(function(g){
       return '<label><input type="checkbox" value="'+g.id+'"'+(state.groups.indexOf(g.id)>=0?" checked":"")+'>'+(g.id==="small"?g.label:g.label+"行")+'</label>';
     }).join("");
   }
@@ -416,10 +425,13 @@ console.log("BUILD_TAG: 2026-11-18c");
   });
 
   // 検査用：画面を使わずに組み立て結果だけを返す
-  window.__nazori={GROUPS:GROUPS,SIZES:SIZES,build:build,layoutFor:layoutFor};
+  window.__nazori={GROUPS:GROUPS,KGROUPS:KGROUPS,SIZES:SIZES,build:build,layoutFor:layoutFor,setMode:setMode};
 
-  renderGroups();
-  update();
+  // /nazori/#kata のように開くと、そのタブから始まる
+  function modeFromHash(){var h=(location.hash||"").replace("#","");return ["name","rows","kata","words"].indexOf(h)>=0?h:""}
+  if(modeFromHash()&&modeFromHash()!=="name")setMode(modeFromHash());
+  else{renderGroups();update();}
+  window.addEventListener("hashchange",function(){if(modeFromHash())setMode(modeFromHash())});
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
 })();
 </script>
