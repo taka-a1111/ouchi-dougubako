@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- BUILD_TAG: 2026-11-19a -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://ouchidougubako.com/ondoku/">
+<title>音読カードメーカー｜おうち学習のどうぐばこ</title>
+<meta name="description" content="始める日と日数、チェックする項目を選ぶだけで、日付と曜日が入った音読カードが作れます。読んだもの・回数・おうちの人のひとこと欄つきで、無料・登録なしで使えます。">
+<link rel="stylesheet" href="/assets/fonts/klee-one/klee-one.css">
+<style>
+:root{
+  --navy:#1f2d4d; --cream:#fff9ee; --yellow:#f5c542; --teal:#2a9d8f; --line:#e6dccb;
+  --ui-font:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN","Zen Maru Gothic","游ゴシック","Yu Gothic","メイリオ",Meiryo,"Noto Sans JP","Noto Sans CJK JP",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:var(--ui-font);line-height:1.7}
+a{color:var(--teal)}
+.topbar{background:var(--navy);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.topbar a{color:#fff;text-decoration:none;font-weight:700}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 4px}
+.lead{margin:0 0 16px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px;padding:0;list-style:none}
+.badges li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:.85rem}
+.layout{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+.layout>*{min-width:0}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:12px}
+@media (max-width:860px){.panel{position:static}}
+.field{margin:0 0 14px}
+.field>label,.field>.label{display:block;font-weight:700;margin:0 0 4px}
+input[type=date],input[type=text],input[type=number],select{padding:7px;border:1px solid #c9bfae;border-radius:8px;font:inherit;font-size:16px;background:#fff;color:var(--navy);min-width:0}
+.dates{display:flex;align-items:center;gap:6px}
+.dates input{flex:1;width:0}
+.check{display:flex;gap:6px;align-items:center;cursor:pointer;margin:0 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 0}
+.chips button{font:inherit;font-size:.78rem;padding:2px 6px;border:1px solid #c9bfae;border-radius:6px;background:#fff;color:var(--navy);cursor:pointer;line-height:1.4}
+.chips button.rest{background:#eef0f3;color:#8a93a3;text-decoration:line-through}
+.tasks{display:flex;flex-direction:column;gap:8px}
+.task{border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--cream);display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center}
+.task .name{grid-column:1 / 2;width:100%}
+.task .del{grid-column:2 / 3;font:inherit;font-size:.8rem;border:1px solid #c9bfae;background:#fff;border-radius:6px;cursor:pointer;padding:4px 8px}
+.task .row2{grid-column:1 / 3;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.task .row2 input[type=number]{width:72px}
+.task .row2 select{flex:1;min-width:0}
+.add-btn{font:inherit;font-weight:700;border:2px dashed #c9bfae;background:#fff;border-radius:10px;padding:6px;cursor:pointer;color:var(--navy)}
+.note{font-size:.82rem;color:#5a6577;margin:4px 0 0}
+.error{background:#fdecea;color:#8a1f11;border-radius:8px;padding:8px 10px;margin:0 0 12px;font-size:.9rem}
+.warn{background:#fff4d6;border-radius:8px;padding:8px 10px;margin:0 0 12px;font-size:.88rem}
+.print-btn{width:100%;padding:12px;border:none;border-radius:10px;background:var(--yellow);color:var(--navy);font:inherit;font-size:1.1rem;font-weight:700;cursor:pointer}
+.print-btn:disabled{opacity:.5;cursor:default}
+.summary{font-size:.9rem;margin:8px 0 0;text-align:center}
+.preview-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 8px}
+.preview{display:flex;flex-direction:column;align-items:center;gap:16px;overflow:hidden}
+.page-wrap{position:relative;overflow:hidden}
+.page-wrap .page{transform-origin:top left;box-shadow:0 2px 10px rgba(31,45,77,.15)}
+.howto{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin:24px 0 0}
+.howto h2{font-size:1.15rem;margin:0 0 8px}
+.howto ol{margin:0;padding-left:1.4em}
+footer.site{font-size:.8rem;color:#5a6577;text-align:center;padding:24px 16px}
+
+/* ===== 印刷するページ（A4・mm単位） ===== */
+.page{width:210mm;height:297mm;background:#fff;padding:12mm 13mm 9mm;display:flex;flex-direction:column;color:#2b2f36;font-family:var(--ui-font)}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start;height:22mm;border-bottom:.4mm solid #2b2f36;padding-bottom:2mm;flex:none}
+.p-left{min-width:0;flex:1;padding-right:4mm}
+.p-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:7mm;font-weight:600;line-height:1.35;font-family:"Klee One",var(--ui-font)}
+.p-sub{font-size:3.3mm;color:#5a6577;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-stamp{font-size:3.2mm;margin-top:1mm;display:flex;align-items:center;gap:1.5mm}
+.p-stamp i{display:inline-block;width:5mm;height:5mm;border:.35mm solid #2b2f36;border-radius:50%}
+.p-stampbox{flex:none;width:19mm;height:19mm;border:.4mm solid #2b2f36;border-radius:1.5mm;margin-left:3mm;position:relative}
+.p-stampbox span{position:absolute;top:.8mm;left:0;right:0;text-align:center;font-size:2.4mm;line-height:1;color:#8f99a6}
+.p-meta{flex:none;font-size:4mm;text-align:right;line-height:1.9}
+.p-meta .blank{display:inline-block;width:40mm;border-bottom:.3mm solid #2b2f36}
+.p-meta .sblank{display:inline-block;width:9mm}
+.p-body{flex:1;min-height:0;padding-top:3mm;display:flex;flex-direction:column}
+table.oc{width:100%;border-collapse:collapse;table-layout:fixed;flex:none}
+.oc th,.oc td{border:.3mm solid #8f99a6;text-align:center;vertical-align:middle;padding:0 .8mm;overflow:hidden}
+.oc thead th{background:#fdf0d2;font-size:2.8mm;font-weight:700;line-height:1.25;height:11mm}
+.oc thead th small{display:block;font-size:2.5mm;font-weight:500;color:#5a6577}
+.oc td{height:var(--rh)}
+.oc td.d{text-align:left;padding-left:1.5mm;font-family:"Klee One",var(--ui-font);font-weight:600;font-size:var(--fs);white-space:nowrap}
+.oc td.d .w{display:inline-block;margin-left:1.2mm;font-size:.78em;color:#5a6577}
+.oc td.d .w.sun{color:#c0392b}
+.oc td.d .w.sat{color:#2c6fb7}
+.oc td.t{text-align:left;padding-left:1.5mm;font-family:"Klee One",var(--ui-font);font-weight:600;font-size:var(--tf);line-height:1.15;color:#9aa3b3;white-space:normal;word-break:break-all}
+.oc td.n{font-size:calc(var(--fs) * .7);color:#5a6577;text-align:right;padding-right:1.5mm}
+.oc td.c i{display:inline-block;width:calc(var(--rh) * .6);height:calc(var(--rh) * .6);max-width:8mm;max-height:8mm;border:.3mm dashed #b3bac6;border-radius:50%;vertical-align:middle}
+.oc td.s{position:relative}
+.oc td.s span{position:absolute;right:1mm;bottom:.6mm;font-size:2.3mm;color:#b3bac6}
+.p-legend{flex:none;margin-top:2.5mm;font-size:3.2mm;font-weight:700;color:#5a6577;display:flex;gap:5mm;flex-wrap:wrap}
+.p-legend b{font-family:"Klee One",var(--ui-font);font-size:4.2mm;color:#2b2f36;margin-right:1mm}
+.items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 8px}
+.items label{display:flex;gap:6px;align-items:center;cursor:pointer;font-size:.95rem}
+.radio{display:flex;flex-wrap:wrap;gap:6px}
+.radio label{border:1px solid #c9bfae;border-radius:8px;padding:4px 10px;cursor:pointer;background:#fff}
+.radio input{margin-right:4px}
+input[type=text]{width:100%}
+.p-foot{height:6mm;font-size:3mm;color:#7a8494;display:flex;justify-content:space-between;align-items:flex-end;flex:none}
+
+.inapp{background:#fff4d6;border:2px solid var(--yellow);border-radius:12px;padding:12px 14px;margin:0 0 14px;font-size:.92rem;line-height:1.6}
+.inapp strong{display:block;font-size:1rem;margin:0 0 4px}
+.inapp ol{margin:6px 0 0;padding-left:1.3em}
+.inapp .ia-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.inapp .ia-btns a,.inapp .ia-btns button{flex:1 1 auto;text-align:center;padding:10px 12px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.inapp .ia-btns a{background:var(--navy);color:#fff}
+.inapp.flash{animation:iaflash .9s ease 2}
+@keyframes iaflash{50%{background:#ffe08a}}
+@media print{.inapp{display:none!important}}
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  .topbar,.wrap>*:not(.layout),.panel,.preview-head,footer.site,.howto{display:none!important}
+  .wrap{padding:0;max-width:none}
+  .layout{display:block}
+  .preview{display:block;gap:0;overflow:visible}
+  .page-wrap{width:auto!important;height:auto!important;overflow:visible}
+  .page-wrap .page{transform:none!important;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><a href="/">📦 おうち学習のどうぐばこ</a></div>
+<main class="wrap">
+  <h1>音読カードメーカー</h1>
+  <p class="lead">始める日と日数、チェックする項目を選ぶだけ。日付と曜日が入った音読カードが作れます。読んだもの・回数・おうちの人のひとこと欄つき。学校のカードがなくなったときや、長い休みの音読に。</p>
+  <ul class="badges"><li>無料</li><li>登録なし</li><li>A4で印刷・PDF保存</li><li>日付と曜日入り</li></ul>
+
+  <div class="layout">
+    <form class="panel" id="form" onsubmit="return false">
+      <div class="field">
+        <label for="start">始める日</label>
+        <input type="date" id="start">
+      </div>
+      <div class="field">
+        <label for="days">日数</label>
+        <select id="days"><option value="7">7日（1週間）</option><option value="10">10日</option><option value="14" selected>14日（2週間）</option><option value="21">21日（3週間）</option><option value="28">28日（4週間）</option><option value="31">31日</option></select>
+        <label class="check" style="margin-top:6px"><input type="checkbox" id="weekend" checked>土曜・日曜もふくめる</label>
+      </div>
+      <div class="field">
+        <label for="title">読むもの（なくてもOK）</label>
+        <input type="text" id="title" maxlength="20" placeholder="例：くじらぐも" autocomplete="off">
+        <p class="note">入れると、読んだものの欄にうすく入ります。毎日ちがうときは空けておきます。</p>
+      </div>
+      <div class="field">
+        <span class="label">チェックする項目（1〜4つ）</span>
+        <div class="items" id="items"></div>
+        <input type="text" id="custom" maxlength="8" placeholder="自分で足す（8文字まで）" autocomplete="off" style="margin-top:6px">
+      </div>
+      <div class="field">
+        <span class="label">行の大きさ</span>
+        <div class="radio">
+          <label><input type="radio" name="size" value="L" checked>大（1・2年生）</label>
+          <label><input type="radio" name="size" value="M">ふつう</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="check"><input type="checkbox" id="count" checked>「何回読んだか」の欄をつける</label>
+      </div>
+      <div class="inapp" id="inappNote" hidden>
+        <strong>Instagramの中では印刷できません</strong>
+        いま開いているのはInstagramの中のブラウザです。印刷・PDF保存は、ChromeやSafariで開き直すと使えます。
+        <ol><li>右上の「︙」または「…」を押す</li><li>「ブラウザで開く」（「Chromeで開く」「Safariで開く」）を選ぶ</li></ol>
+        <div class="ia-btns"><a id="inappOpen" href="#" hidden>Chromeで開く</a><button type="button" id="inappCopy">このページのURLをコピー</button></div>
+        <p class="note" id="inappCopied" hidden>コピーしました。ChromeやSafariのアドレス欄に貼り付けて開いてください。</p>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <button type="button" class="print-btn" id="printBtn">印刷する・PDFで保存</button>
+      <p class="summary" id="summary"></p>
+    </form>
+
+    <section aria-label="プレビュー">
+      <div class="preview-head"><strong>プレビュー</strong><span class="note" id="pageCount"></span></div>
+      <div class="preview" id="preview"></div>
+    </section>
+  </div>
+
+  <section class="howto">
+    <h2>使い方</h2>
+    <ol>
+      <li>始める日と日数を選びます。土日に音読しないときは「土曜・日曜もふくめる」をはずします。</li>
+      <li>チェックする項目を1〜4つ選びます。学校のカードと同じ項目にするとわかりやすくなります。</li>
+      <li>読んだあと、項目ごとに ◎・○・△ をつけて、おうちの人がひとことやサインを書きます。</li>
+    </ol>
+    <p class="note">学校から音読カードが出ているときは、学校のカードを優先してください。入力した内容はこの画面の中だけで使い、どこにも送りません。</p>
+  </section>
+</main>
+<footer class="site"><a href="https://www.instagram.com/ouchi_dougubako/" target="_blank" rel="noopener">Instagram @ouchi_dougubako</a>　© おうち学習のどうぐばこ　<span id="buildTag">BUILD_TAG: 2026-11-19a</span></footer>
+<script>
+console.log("BUILD_TAG: 2026-11-19a");
+(function(){
+  "use strict";
+  var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FBIOS|Line\/|TikTok|musical_ly|Bytedance|Twitter/i.test(navigator.userAgent||"");
+  var ANDROID=/Android/i.test(navigator.userAgent||"");
+  if(INAPP){
+    var nt=document.getElementById("inappNote"); nt.hidden=false;
+    if(ANDROID){
+      var op=document.getElementById("inappOpen");
+      op.href="intent://"+location.host+location.pathname+location.search+"#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(location.href)+";end";
+      op.hidden=false;
+    }
+    document.getElementById("inappCopy").addEventListener("click",function(){
+      var url=location.href, done=function(){document.getElementById("inappCopied").hidden=false};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,function(){window.prompt("このURLをコピーしてください",url)})}
+      else window.prompt("このURLをコピーしてください",url);
+    });
+  }
+  var PRESETS=["大きな声で","はっきり","すらすら","よいしせいで","気持ちをこめて","「。」で休む"];
+  var SIZES={L:{rows:12,rh:18.4,fs:5.4},M:{rows:16,rh:13.6,fs:4.6}};
+  var WD=["日","月","火","水","木","金","土"];
+  var state={items:["大きな声で","はっきり","すらすら"]};
+  var $=function(id){return document.getElementById(id)};
+
+  function pad(n){return (n<10?"0":"")+n}
+  function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+  function parse(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||"");if(!m)return null;var d=new Date(+m[1],+m[2]-1,+m[3]);return (d.getMonth()===+m[2]-1&&d.getDate()===+m[3])?d:null}
+  function md(d){return (d.getMonth()+1)+"/"+d.getDate()}
+  function chars(s){return Array.from(String(s||""))}
+
+  // 日付の並びを作る。週末を除くときは、日数ぶんの平日を数える
+  function dates(start,n,weekend){
+    var out=[],d=new Date(start.getFullYear(),start.getMonth(),start.getDate());
+    while(out.length<n){var w=d.getDay();if(weekend||(w!==0&&w!==6))out.push(new Date(d));d.setDate(d.getDate()+1)}
+    return out;
+  }
+
+  function build(o){
+    var errors=[], S=SIZES[o.size]||SIZES.L;
+    var start=parse(o.start);
+    if(!start)errors.push("始める日を選んでください。");
+    var n=parseInt(o.days,10);
+    if(!(n>=1&&n<=31))errors.push("日数は1〜31日にしてください。");
+    var items=o.items.slice();
+    var cu=String(o.custom||"").replace(/\s+/g,"");
+    if(cu){if(chars(cu).length>8)errors.push("自分で足す項目は8文字までです。");else if(items.indexOf(cu)<0)items.push(cu)}
+    if(!items.length)errors.push("チェックする項目を1つ以上選んでください。");
+    if(items.length>4)errors.push("チェックする項目は4つまでです（いま"+items.length+"つ）。");
+    var title=String(o.title||"").trim();
+    if(chars(title).length>20)errors.push("読むものは20文字までです。");
+    if(errors.length)return {errors:errors,pages:[],items:items};
+    var ds=dates(start,n,o.weekend), pages=[];
+    for(var i=0;i<ds.length;i+=S.rows)pages.push(ds.slice(i,i+S.rows));
+    var last=ds[ds.length-1];
+    return {errors:[],pages:pages,items:items,title:title,count:!!o.count,size:S,dates:ds,
+      period:md(ds[0])+"（"+WD[ds[0].getDay()]+"）〜"+md(last)+"（"+WD[last.getDay()]+"）"};
+  }
+
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+
+  // 列の幅（mm）。全体184mm。ひとこと欄が残りを使う
+  function widths(res){
+    var w={d:25,t:res.title?40:36,n:res.count?15:0,c:res.items.length>3?14:16};
+    w.s=184-w.d-w.t-w.n-w.c*res.items.length;
+    return w;
+  }
+
+  function renderPage(rows,pi,res){
+    var S=res.size, w=widths(res);
+    var len=Math.max(1,chars(res.title).length), oneLine=(w.t-3.5)/len, tf=Math.max(2.8,Math.min(S.fs*.78,oneLine>=2.8?oneLine:(w.t-3.5)*2/len));
+    var h='<section class="page" style="--rh:'+S.rh+'mm;--fs:'+S.fs+'mm;--tf:'+tf.toFixed(2)+'mm">'+
+      '<div class="p-head"><div class="p-left"><div class="p-title">おんどくカード</div><div class="p-sub">'+esc(res.period+(res.title?"　"+res.title:""))+'</div>'+
+      '<div class="p-stamp">ぜんぶ できたら いろを ぬろう <i></i><i></i><i></i></div></div>'+
+      '<div class="p-meta"><div>なまえ <span class="blank"></span></div><div>　ねん　くみ</div></div><div class="p-stampbox"><span>スタンプ</span></div></div>'+
+      '<div class="p-body"><table class="oc"><colgroup><col style="width:'+w.d+'mm"><col style="width:'+w.t+'mm">'+(res.count?'<col style="width:'+w.n+'mm">':'');
+    res.items.forEach(function(){h+='<col style="width:'+w.c+'mm">'});
+    h+='<col style="width:'+w.s+'mm"></colgroup><thead><tr><th>日づけ</th><th>読んだもの</th>'+(res.count?'<th>回数</th>':'');
+    res.items.forEach(function(it){h+='<th>'+esc(it)+'</th>'});
+    h+='<th>おうちの人から<small>ひとこと・サイン</small></th></tr></thead><tbody>';
+    rows.forEach(function(d){
+      var wd=d.getDay(), cls=wd===0?"sun":(wd===6?"sat":"");
+      h+='<tr><td class="d">'+md(d)+'<span class="w '+cls+'">'+WD[wd]+'</span></td><td class="t">'+esc(res.title)+'</td>'+(res.count?'<td class="n">かい</td>':'');
+      res.items.forEach(function(){h+='<td class="c"><i></i></td>'});
+      h+='<td class="s"><span>サイン</span></td></tr>';
+    });
+    h+='</tbody></table><div class="p-legend"><span><b>◎</b>よくできた</span><span><b>○</b>できた</span><span><b>△</b>もうすこし</span></div></div>'+
+      '<div class="p-foot"><span>おうち学習のどうぐばこ　Instagram @ouchi_dougubako</span><span>'+(pi+1)+' / '+res.pages.length+'</span></div></section>';
+    return h;
+  }
+
+  function readOpts(){
+    return {start:$("start").value,days:$("days").value,weekend:$("weekend").checked,title:$("title").value,
+      items:state.items.slice(),custom:$("custom").value,size:document.querySelector('input[name=size]:checked').value,count:$("count").checked};
+  }
+  function renderItems(){
+    $("items").innerHTML=PRESETS.map(function(p){return '<label><input type="checkbox" value="'+esc(p)+'"'+(state.items.indexOf(p)>=0?" checked":"")+'>'+esc(p)+'</label>'}).join("");
+  }
+  var lastText="";
+  function update(){
+    var res=build(readOpts()), eb=$("errorBox");
+    if(res.errors.length){eb.hidden=false;eb.textContent=res.errors.join(" ")}else eb.hidden=true;
+    $("preview").innerHTML=res.pages.map(function(p,i){return '<div class="page-wrap">'+renderPage(p,i,res)+'</div>'}).join("");
+    $("pageCount").textContent=res.pages.length?("A4 "+res.pages.length+"枚"):"";
+    $("summary").textContent=res.pages.length?(res.dates.length+"日分・A4で"+res.pages.length+"枚になります"):"";
+    $("printBtn").disabled=!res.pages.length;
+    lastText="おんどくカード"+(res.title||"")+"0123456789日月火水木金土◎○△"+(res.period||"");
+    fit(); window.__lastResult=res;
+  }
+  function fit(){
+    var pv=$("preview"), avail=Math.min(pv.clientWidth||600,820);
+    var probe=pv.querySelector(".page"); if(!probe)return;
+    var pw=probe.offsetWidth, ph=probe.offsetHeight, sc=Math.min(1,avail/pw);
+    pv.querySelectorAll(".page-wrap").forEach(function(wr){wr.style.width=(pw*sc)+"px";wr.style.height=(ph*sc)+"px";wr.firstChild.style.transform="scale("+sc+")"});
+  }
+  // 初期値：次の月曜日（今日が月曜なら今日）
+  (function(){var t=new Date(),d=new Date(t.getFullYear(),t.getMonth(),t.getDate());while(d.getDay()!==1)d.setDate(d.getDate()+1);$("start").value=iso(d)})();
+  renderItems();
+  $("items").addEventListener("change",function(){state.items=Array.from(document.querySelectorAll("#items input:checked")).map(function(i){return i.value});update()});
+  ["start","days","weekend","title","custom","count"].forEach(function(id){$(id).addEventListener("input",update);$(id).addEventListener("change",update)});
+  document.querySelectorAll('input[name=size]').forEach(function(r){r.addEventListener("change",update)});
+  window.addEventListener("resize",fit);
+  $("printBtn").addEventListener("click",function(){
+    if(INAPP){var nt=$("inappNote");nt.classList.remove("flash");void nt.offsetWidth;nt.classList.add("flash");nt.scrollIntoView({behavior:"smooth",block:"center"});return;}
+    var btn=this; btn.disabled=true; var label=btn.textContent; btn.textContent="準備中…";
+    var done=function(){btn.textContent=label;btn.disabled=false;window.print()};
+    if(document.fonts&&document.fonts.load){Promise.all([document.fonts.load('600 20px "Klee One"',lastText)]).then(function(){return document.fonts.ready}).then(done,done)}else done();
+  });
+  window.__ondoku={build:build,dates:dates,parse:parse,widths:widths,PRESETS:PRESETS,SIZES:SIZES};
+  update();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>
